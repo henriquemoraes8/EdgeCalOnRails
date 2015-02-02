@@ -1,6 +1,22 @@
 source 'https://rubygems.org'
 
 
+###############
+# Added by @brianbolze
+
+# Authentication framework
+gem 'devise'
+
+# HTML5 Boilerplate Front-End templates
+gem "rails-boilerplate"
+
+# Basic HTML layout template
+group :development do
+  gem 'rails_layout'
+end
+
+################
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 # Use postgresql as the database for Active Record
@@ -17,10 +33,6 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'rails_12factor', group: :production
 
 gem 'fullcalendar-rails'
-
-
-# Authentication framework
-gem 'devise'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
