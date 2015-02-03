@@ -19,6 +19,15 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.inet     :current_sign_in_ip
       t.inet     :last_sign_in_ip
 
+      
+      /# 
+       #  Added by @brianbolze 
+      create_table :events do |t|
+        t.belongs_to :user, index:true
+        t.timestamps null: false
+      end
+      #/
+
       ## Confirmable
       # t.string   :confirmation_token
       # t.datetime :confirmed_at
