@@ -4,9 +4,12 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    # get signed_in_user
-    # get events where user = signed_in_user
-    @events = Event.all
+    if(params[:user_id].nil?)
+        @events = Event.where(creator_id: current_user.id)
+    else
+        @events = Event.where(creator_id: params[:user_id])
+    end
+    @friends = User.all
   end
 
   # GET /events/1
@@ -28,6 +31,7 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
+    @event.creator_id = current_user.id
 
     respond_to do |format|
       if @event.save
