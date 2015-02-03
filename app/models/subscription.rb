@@ -1,6 +1,6 @@
 class Subscription < ActiveRecord::Base
 
-  enum visibility: [ :private, :busy, :visible, :modify]
+  enum visibility: [ :invisible, :busy, :visible, :modify ]
 
   belongs_to :subscriber, class_name: "User"
   belongs_to :subscibed_event, class_name: "Event"

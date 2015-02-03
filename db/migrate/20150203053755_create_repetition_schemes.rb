@@ -5,6 +5,7 @@ class CreateRepetitionSchemes < ActiveRecord::Migration
       t.integer :weekdays
       t.integer :month_day
       t.integer :year_day
+      t.column :weekdays, :integer, default: 0
 
       t.timestamps null: false
     end

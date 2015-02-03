@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyString
-  description: MyText
+  title: Event 1
+  description: Do stuff
   start_time: 2015-01-29 23:02:11
-  end_time: 2015-01-29 23:02:11
+  end_time: 2015-01-29 23:30:11
 
 two:
-  title: MyString
-  description: MyText
-  start_time: 2015-01-29 23:02:11
-  end_time: 2015-01-29 23:02:11
+  title: Event 2
+  description: Do More stuff
+  start_time: 2015-01-30 20:02:11
+  end_time: 2015-01-30 22:02:11

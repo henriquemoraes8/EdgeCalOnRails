@@ -4,7 +4,7 @@ class CreateSubscriptions < ActiveRecord::Migration
       t.integer :subscriber_id
       t.integer :subscribed_event_id
 
-      t.integer :visibility
+      t.column :visibility, :integer, default: 0
 
       t.timestamps null: false
     end

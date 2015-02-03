@@ -22,8 +22,9 @@ ActiveRecord::Schema.define(version: 20150203053755) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer  "repetition_scheme_id"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "groups", force: :cascade do |t|
@@ -37,22 +38,23 @@ ActiveRecord::Schema.define(version: 20150203053755) do
   end
 
   create_table "repetition_schemes", force: :cascade do |t|
-    t.integer  "weekdays"
+    t.integer  "weekdays",   default: 0
     t.integer  "month_day"
     t.integer  "year_day"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "subscriber_id"
     t.integer  "subscribed_event_id"
-    t.integer  "visibility"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.integer  "visibility",          default: 0
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   create_table "users", force: :cascade do |t|
+    t.string   "username"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
