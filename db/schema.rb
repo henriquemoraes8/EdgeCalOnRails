@@ -48,9 +48,11 @@ ActiveRecord::Schema.define(version: 20150203053755) do
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "subscriber_id"
     t.integer  "subscribed_event_id"
-    t.integer  "visibility",          default: 0
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "has_email_notification"
+    t.integer  "visibility",                   default: 0
+    t.integer  "email_notification_time_unit", default: 0
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "users", force: :cascade do |t|
