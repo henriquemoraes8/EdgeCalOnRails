@@ -8,5 +8,6 @@ class Event < ActiveRecord::Base
 
 	has_one :repetition_scheme
 
-	validates_presence_of :title
+	validates_presence_of :title, :start_time, :end_time
+	# validates_presence_of :creator
 end

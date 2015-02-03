@@ -4,7 +4,7 @@ class EventTest < ActiveSupport::TestCase
 
 	test "should create event with title" do
 		event  = Event.create( title: 'ECE 458 Lecture', description: 
-			'A really stupid class full of boners')
+			'description text')
 		assert event.save, "saved event with a title and description"
 	end
 
@@ -12,7 +12,11 @@ class EventTest < ActiveSupport::TestCase
 		event = Event.new
 		assert_not event.save, "saved the event without a title"
 	end
-  # test "the truth" do
-  #   assert true
-  # end
+
+	test "should not create event without creator" do
+		event  = Event.create( title: 'ECE 458 Lecture', description: 
+			'description text')
+		assert_not event.save, "saved the event without a creator"
+	end
+
 end
