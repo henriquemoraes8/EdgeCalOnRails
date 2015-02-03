@@ -16,12 +16,20 @@ ActiveRecord::Schema.define(version: 20150203053755) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "created_events", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "created_events", ["user_id"], name: "index_created_events_on_user_id", using: :btree
+
   create_table "events", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer  "user_id"
+    t.integer  "creator_id"
     t.integer  "repetition_scheme_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
@@ -48,9 +56,11 @@ ActiveRecord::Schema.define(version: 20150203053755) do
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "subscriber_id"
     t.integer  "subscribed_event_id"
-    t.integer  "visibility",          default: 0
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.boolean  "has_email_notification"
+    t.integer  "visibility",                   default: 0
+    t.integer  "email_notification_time_unit", default: 0
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
   create_table "users", force: :cascade do |t|
