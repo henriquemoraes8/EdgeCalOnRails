@@ -7,8 +7,6 @@ class CreateEvents < ActiveRecord::Migration
       t.datetime :start_time
       t.datetime :end_time
 
-      t.belongs_to :creator, index: true
-
       t.references :subscriptions
       t.references :subscribers
 
@@ -16,6 +14,8 @@ class CreateEvents < ActiveRecord::Migration
       
       t.timestamps null: false
     end
+
+    add_column :events, :creator_id, :integer
 
   end
 end

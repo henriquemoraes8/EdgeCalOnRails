@@ -21,15 +21,13 @@ ActiveRecord::Schema.define(version: 20150203053755) do
     t.text     "description"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.integer  "creator_id"
     t.integer  "subscriptions_id"
     t.integer  "subscribers_id"
     t.integer  "repetition_scheme_id"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.integer  "creator_id"
   end
-
-  add_index "events", ["creator_id"], name: "index_events_on_creator_id", using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.datetime "created_at", null: false
