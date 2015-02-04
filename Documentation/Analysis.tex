@@ -127,6 +127,10 @@ One of the components of the project that I worked on heavily was the model. One
 
 Once the team finalized our schema for the database, we began developing individual aspects of the entire design on each of our own git branches.  However, we noticed that when testing newly added features on our own individual branches, the database would for some reason roll back to an older version of the database that would cause the website to break.  For a very long time, we thought it was because the database schema and model files were being transferred over to new branches incorrectly.  However, after trying to implement new features on both individual branches and on the master branch, we realized that in order to update the database layout using rake db:migrate (the rails command to automatically update the database) on an individual branch, both the migrations and the database files needed to be committed to master whereas we were only committing the schema files.  After running the experiment of developing on two different branches and seeing the different outcomes (along with some help from stackoverflow), we were able to solve this bug using an experiment.
 
+\textit{Henrique's Contribution}
+
+I have spent some nights trying to get a calendar interface up and running on Django with no luck. I got the impression that the Django community was not big enough and several of its libraries were outdated. I have tried implementing Django-schedule and Django-scheduler only to later find a blog implementing an HTML Calendar and claiming that the mentioned libraries have not been maintained for over a year. Therfore I have decided to put up a Rails project in parallel and, if successful, I would present the proposal to my team to shift our core language. Overnight I was able to get the project up and running with a basic calendar interface.The next step would be to fill the calendar with created events, so I started conducting some trials. Firstly, I would create events through the terminal in a sandbox environment, then I moved to a development enviroment on the terminal to finally start adding events graphically.
+
 \subsection{Analyzed and Interpreted Data}
 
 \textit{Brian's Contribution}
@@ -136,6 +140,10 @@ Most of the analysis and interpretation I performed during this stage of the pro
 \textit{Jeff's Contribution}
 
 Included in the rails framework is the ability to write tests for all of the different models that we create.  In order to confirm the functionality of our models and the associated database, we developed a number of test files that would create instances of our models, manipulate them in some way (add, edit, or delete specific fields of the model), and then display the result.  In confirmation of our model design and function, we developed different data schemes to test and analyzed their outcomes to make sure that our implementation was sound.
+
+\textit{Henrique's Contribution}
+
+Most of my tests were conducted over a terminal development enviroment or graphically. The idea was to find out if the controllers were generating consistent data according to the user actions. The most important mechanic of our database is to create a subscription for each new event to bond it with a specific user. Therefore a single event may have several subscriptions including the one of its own creator. This design allows for users to flexibly modify some aspects of the event (i.e. adding and alarm or tag) without necessarily altering the original one. To accomplish that, I have written the controller such that for every event created, a corresponding subscription would be created as well. Over the "show" method of the controller, I also displayed the subscription information to get a graphical feedback of whether the design was working or not. 
 
 \subsection{Designed System Component to Meet Desired Needs}
 
@@ -147,6 +155,10 @@ Included in the rails framework is the ability to write tests for all of the dif
 
 Our team as a whole spent many hours designing our database schema and model to make sure that our design had the ability to meet all the desired needs specified by the evolution document.  Although not every single requirement was implemented perfectly by the specified deadline, we our confident that our design deals with every possible relationship necessary to facilitate the completion of the requirements.
 
+\textit{Henrique's Contribution}
+
+The Subscription features linked with an User and an Event is not complete, even though the concept is well defined. The lack of familiarity of all the languages involved on Rails drew us back to meet all the required needs. Nevertheless, an Event has all its basic funcitonality working properly and integrated with its foreign key objects. A subscription already discerns its visibility although the only case treated on the controller is whether another user's Event has a corresponding private Subscription or not. 
+
 \subsection{Deal with Realistic Constraints}
 
 \textit{Brian's Contribution}
@@ -157,6 +169,10 @@ Our team as a whole spent many hours designing our database schema and model to 
 
 The fact that we made a decision part way through the development process to switch from a Django framework to a Rails framework made the time of total development much smaller.  This restraint required us to quickly design our new model in Rails while still having to consider good design principles in what we decided to implement.
 
+\textit{Henrique's Contribution}
+
+Django seemed as promising as any other language to start the project. I came late to the group and by that time the team had already decided on implementing the calendar on Django. However, I did not sense a lot of progress over the first week and decided to make a test by putting a simple interface up. I never lost so much time fixing configurations and not actually coding. Therefore, I decided to try on Rails, which took me less than half the time to do much more. By that time, I had lost three nights that could be used for working on the calendar. After that, I sat with my team to migrate their project to Rails. Nevertheless, understanding the MVC logic in Rails was not easy. We have not accounted that the task would be that complex. It was not for lack of time spent, I must have worked 30 hours on it, but for the lack of organization and previous learning. What happened was that we had spent our first weeks learning Django only to move to Rails later with no previous knowledge. I have asked some Rails programmers about the best ways to get started and compiled a set of tutorials that I intend to distribute to my team members before we proceed with development.
+
 \subsection{Contributed to Team Work and Interacted with Team Members}
 
 \textit{Brian's Contribution}
@@ -164,6 +180,10 @@ The fact that we made a decision part way through the development process to swi
 \textit{Jeff's Contribution}
 
 I attended every single team meeting and highly contributed to the initial model design.  Specifically, I helped white board out the model and collaborated with Henrique on integrating aspects of how events are displayed and how the overall look and feel of the application should be.
+
+\textit{Henrique's Contribution}
+
+I have been present in every team meeting and worked overnights to just get the project started. I could not accept so many configuration and terminal errors on my screen. Furthermore, I realized that other team members were also getting frustrated and for not being able to run anything. Therefore I proposed to work on a new solution that we would all implement if they agreed that it was viable. The team agreed promptly once I showed a simple calendar running in Rails and we migrated the project right away. Besides that, I have implemented mos of the front end except for the login validation. I have implemented the logic of adding events, linking them to the respective subscriptions and users on the database. I have also implemented the visibility parameters on subscriptions and visualizing other users. At first I would make the users clickable such that you then see their events apart from yours. Currently, it is possible to see the events of all users that are not private to yourself. However, this logic is still something that requires some more elaboration.
 
 \section{Next Steps}
 
