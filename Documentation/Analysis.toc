@@ -7,10 +7,10 @@
 \contentsline {subsection}{\numberline {3.1}Status}{3}
 \contentsline {subsection}{\numberline {3.2}Design}{3}
 \contentsline {subsection}{\numberline {3.3}Alternate Designs}{3}
-\contentsline {section}{\numberline {4}Design Process Notes}{3}
-\contentsline {subsection}{\numberline {4.1}Designed and Conducted Experiment}{3}
+\contentsline {section}{\numberline {4}Design Process Notes}{4}
+\contentsline {subsection}{\numberline {4.1}Designed and Conducted Experiment}{4}
 \contentsline {subsection}{\numberline {4.2}Analyzed and Interpreted Data}{4}
-\contentsline {subsection}{\numberline {4.3}Designed System Component to Meet Desired Needs}{4}
+\contentsline {subsection}{\numberline {4.3}Designed System Component to Meet Desired Needs}{5}
 \contentsline {subsection}{\numberline {4.4}Deal with Realistic Constraints}{5}
 \contentsline {subsection}{\numberline {4.5}Contributed to Team Work and Interacted with Team Members}{5}
-\contentsline {section}{\numberline {5}Next Steps}{5}
+\contentsline {section}{\numberline {5}Next Steps}{6}
