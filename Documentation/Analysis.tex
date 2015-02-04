@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage{listings}
+\usepackage{setspace}
 \usepackage{color}
 
 \renewcommand{\baselinestretch}{1.4}
@@ -44,6 +45,7 @@ Evolution 1 Analysis\\
 Brian Bolze, Jeff Day, Henrique Rusca, Wes Koorbusch
 \end{center}
 
+\singlespacing
 \tableofcontents
 
 % Writen Analysis (25%) Along with every software deliverable, you will turn in a written docu- ment which will cover two main points:
@@ -66,8 +68,8 @@ For our project, we built an application using the Ruby on Rails framework. This
 
 \subsection{Design Goals}
 
-% Choose a good language/ framework
-% 
+In order to set ourselves up for a successful project, it was really important to us that we lay out our design goals and priorities before moving forward. We aimed at grounding our design discussions in the fundamentals, which we hoped would help us set up a solid foundation for a project of such a significant size. The core design principles that we focused on primarily were modularity (Open-Closed Principle), re-usability, and the DRY principle. Another consideration that we put a lot of thought into was our language and framework choice, which will be expanded on in the next section. Besides promoting good code design, a well-chosen framework would allow us to get up to speed quickly, which was another important criteria for our team given our experience level with web applications. During our initial stages, a particular focus was placed on developing a robust, accurate, and extensible model for our data. This would lay the groundwork for our API with the front-end components, which we saw as vital to our success down the line. 
+
 
 \subsection{Language Choice}
 
@@ -78,15 +80,20 @@ For our project, we built an application using the Ruby on Rails framework. This
 %%% MVC
 %%% Convention over Configuration
 
+%% Modular -- independence --> work by ourselves
+%% DRY --> keep business logic in the model, filters in controller
+%% Reusable --> Partials in View
+
 % Ruby
 %%% Dynamically typed
 %%% embedded ruby...
 
-stuf stuf stuf
+The language decision was extremely important for our group for a few reasons. Firstly, no one in our group had previous experience in developing web applications. Accordingly, we stressed finding a language and framework with a strong community, good documentation, and abundant resources. Secondly, seeing as our project would be maintained over an entire semester, we strived to find an environment that would support and promote good design practices. To do this, we would need a language with strong object orientation and a framework with a highly modular architecture. Lastly, we also needed the flexibility to implement our application with high customizability to meet any obscure requirements. After extensive research and testing, we found that Ruby on Rails was able to meet our needs better than any other framework. 
 
-\subsection{Timeline}
+% originally started with Django, chiefly because two members of the team had a strong background in Python, but did not turn out to be much of an advantage
+% switched over due to roadblocks getting off the ground
+% Realized rails had larger community, better documentation, and Rails is a widely sought out skill so we wanted to learn about it
 
-stuf stuf stuf
 
 \subsection{High-Level API}
 
@@ -107,9 +114,44 @@ As a result of utilizing the Ruby on Rails framework, we separated our program i
 
 stuf stuf stuf
 
+\section{Design Process Notes}
+
+\subsection{Designed and Conducted Experiment}
+
+Jeff's Contribution
+
+Once the team finalized our schema for the database, we began developing individual aspects of the entire design on each of our own git branches.  However, we noticed that when testing newly added features on our own individual branches, the database would for some reason roll back to an older version of the database that would cause the website to break.  For a very long time, we thought it was because the database schema and model files were being transferred over to new branches incorrectly.  However, after trying to implement new features on both individual branches and on the master branch, we realized that in order to update the database layout using rake db:migrate (the rails command to automatically update the database) on an individual branch, both the migrations and the database files needed to be committed to master whereas we were only committing the schema files.  After running the experiment of developing on two different branches and seeing the different outcomes (along with some help from stackoverflow), we were able to solve this bug using an experiment.
+
+\subsection{Analyzed and Interpreted Data}
+
+Jeff's Contribution
+
+Included in the rails framework is the ability to write tests for all of the different models that we create.  In order to confirm the functionality of our models and the associated database, we developed a number of test files that would create instances of our models, manipulate them in some way (add, edit, or delete specific fields of the model), and then display the result.  In confirmation of our model design and function, we developed different data schemes to test and analyzed their outcomes to make sure that our implementation was sound.
+
+\subsection{Designed System Component to Meet Desired Needs}
+
+Jeff's Contribution
+
+Our team as a whole spent many hours designing our database schema and model to make sure that our design had the ability to meet all the desired needs specified by the evolution document.  Although not every single requirement was implemented perfectly by the specified deadline, we our confident that our design deals with every possible relationship necessary to facilitate the completion of the requirements.
+
+\subsection{Deal with Realistic Constraints}
+
+Jeff's Contribution
+
+The fact that we made a decision part way through the development process to switch from a Django framework to a Rails framework made the time of total development much smaller.  This restraint required us to quickly design our new model in Rails while still having to consider good design principles in what we decided to implement.
+
+\subsection{Contributed to Team Work and Interacted with Team Members}
+
+Jeff's Contribution
+
+I attended every single team meeting and highly contributed to the initial model design.  Specifically, I helped white board out the model and collaborated with Henrique on integrating aspects of how events are displayed and how the overall look and feel of the application should be.
+
 \section{Next Steps}
 
-stuf stuf stuf
+One key aspect of our current implementation that needs to be fixed is code reusability.  In rendering views in Rails, we can implement Partials which allow us to specify a piece of repeated code, and refer to the partial in the actual view files instead of the actual source code (basically like creating methods for rendering front end pieces of the application).  This allows for less lines of code in general and better module design.  We can do the same thing with the controllers of the application using what are called Filters.  Implementing Filters and Partials into our framework will result in fewer lines of code to get the same job done and more modularity in our design, two key aspects of good design that we discussed in class.
 
+We also need to finalize some of the front end views for the Evolution 1 requirements.  Although we have implemented the appropriate models and database schemas, we unfortunately did not have enough time to implement an elegant front end for interacting with rules and repeating events.  These must be finalized before moving on to significant aspects of the Evolution 2 requirements.
+
+Finally, we want to embellish our user interface more to make it look more elegant.  Because each member of the group has had very little front end experience, we initially focused more on the back end design and database implementation.  Our front end implementation we really only wanted to be functional.  For our final product, we want our website to not only be functional, but cool and fun to use.  More research into Javascript abilities and front end frameworks like Angular.js are probably necessary.
 
 \end{document}
