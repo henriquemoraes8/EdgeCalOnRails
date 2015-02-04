@@ -4,6 +4,12 @@ class DeviseCreateUsers < ActiveRecord::Migration
 
       t.string :username
 
+      t.references :created_events
+      t.references :subscriptions
+      t.references :subscribed_events
+      t.references :memeberships
+      t.references :member_of_group
+
       ## Database authenticatable
       t.string :email,              null: false, default: ""
       t.string :encrypted_password, null: false, default: ""

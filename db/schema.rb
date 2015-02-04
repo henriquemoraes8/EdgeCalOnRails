@@ -30,13 +30,20 @@ ActiveRecord::Schema.define(version: 20150203053755) do
   end
 
   create_table "groups", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "memberships_id"
+    t.integer  "members_id"
+    t.integer  "owner_id"
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "member_id"
+    t.integer  "member_of_group_id"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "repetition_schemes", force: :cascade do |t|
@@ -59,6 +66,11 @@ ActiveRecord::Schema.define(version: 20150203053755) do
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
+    t.integer  "created_events_id"
+    t.integer  "subscriptions_id"
+    t.integer  "subscribed_events_id"
+    t.integer  "memeberships_id"
+    t.integer  "member_of_group_id"
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
