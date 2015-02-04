@@ -120,7 +120,7 @@ stuf stuf stuf
 
 Jeff's Contribution
 
-Once the team finalized our schema for the database, we began developing individual aspects of the entire design on each of our own git branches.  However, we noticed that when testing newly added features on our own individual branches, the database would for some reason roll back to an older version of the database that would cause the website to break.  For a very long time, we thought it was because the database schema and model files were being transferred over to new branches incorrectly.  However, after trying to implement new features on both individual branches and on the master branch, we realized that in order to update the database layout using rake db:migrate (the rails command to automatically update the database) on an individual branch, both the migrations and the database files needed to be committed to master whereas we were only committing the schema files.  After running the experiment of developing on two different branches and seeing the different outcomes (along with some help from stackoverflow), we were able to solve this bug using an experiment
+Once the team finalized our schema for the database, we began developing individual aspects of the entire design on each of our own git branches.  However, we noticed that when testing newly added features on our own individual branches, the database would for some reason roll back to an older version of the database that would cause the website to break.  For a very long time, we thought it was because the database schema and model files were being transferred over to new branches incorrectly.  However, after trying to implement new features on both individual branches and on the master branch, we realized that in order to update the database layout using rake db:migrate (the rails command to automatically update the database) on an individual branch, both the migrations and the database files needed to be committed to master whereas we were only committing the schema files.  After running the experiment of developing on two different branches and seeing the different outcomes (along with some help from stackoverflow), we were able to solve this bug using an experiment.
 
 \subsection{Analyzed and Interpreted Data}
 
@@ -148,7 +148,10 @@ I attended every single team meeting and highly contributed to the initial model
 
 \section{Next Steps}
 
-stuf stuf stuf
+One key aspect of our current implementation that needs to be fixed is code reusability.  In rendering views in Rails, we can implement Partials which allow us to specify a piece of repeated code, and refer to the partial in the actual view files instead of the actual source code (basically like creating methods for rendering front end pieces of the application).  This allows for less lines of code in general and better module design.  We can do the same thing with the controllers of the application using what are called Filters.  Implementing Filters and Partials into our framework will result in fewer lines of code to get the same job done and more modularity in our design, two key aspects of good design that we discussed in class.
 
+We also need to finalize some of the front end views for the Evolution 1 requirements.  Although we have implemented the appropriate models and database schemas, we unfortunately did not have enough time to implement an elegant front end for interacting with rules and repeating events.  These must be finalized before moving on to significant aspects of the Evolution 2 requirements.
+
+Finally, we want to embellish our user interface more to make it look more elegant.  Because each member of the group has had very little front end experience, we initially focused more on the back end design and database implementation.  Our front end implementation we really only wanted to be functional.  For our final product, we want our website to not only be functional, but cool and fun to use.  More research into Javascript abilities and front end frameworks like Angular.js are probably necessary.
 
 \end{document}
