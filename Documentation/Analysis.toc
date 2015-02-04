@@ -1,10 +1,16 @@
 \contentsline {section}{\numberline {1}Introduction}{2}
 \contentsline {section}{\numberline {2}Project Plan}{2}
 \contentsline {subsection}{\numberline {2.1}Design Goals}{2}
-\contentsline {subsection}{\numberline {2.2}Language Choice}{3}
+\contentsline {subsection}{\numberline {2.2}Language Choice}{2}
 \contentsline {subsection}{\numberline {2.3}High-Level API}{3}
 \contentsline {section}{\numberline {3}Design Review}{3}
 \contentsline {subsection}{\numberline {3.1}Status}{3}
 \contentsline {subsection}{\numberline {3.2}Design}{3}
 \contentsline {subsection}{\numberline {3.3}Alternate Designs}{3}
-\contentsline {section}{\numberline {4}Next Steps}{4}
+\contentsline {section}{\numberline {4}Design Process Notes}{3}
+\contentsline {subsection}{\numberline {4.1}Designed and Conducted Experiment}{3}
+\contentsline {subsection}{\numberline {4.2}Analyzed and Interpreted Data}{3}
+\contentsline {subsection}{\numberline {4.3}Designed System Component to Meet Desired Needs}{4}
+\contentsline {subsection}{\numberline {4.4}Deal with Realistic Constraints}{4}
+\contentsline {subsection}{\numberline {4.5}Contributed to Team Work and Interacted with Team Members}{4}
+\contentsline {section}{\numberline {5}Next Steps}{4}
