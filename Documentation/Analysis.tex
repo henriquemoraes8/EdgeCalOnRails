@@ -108,7 +108,7 @@ stuf stuf stuf
 
 \subsection{Design}
 
-As a result of utilizing the Ruby on Rails framework, we separated our program into four distinct large scale sections: the Model, View, Controller, and Database.  A browser is used to 
+As a result of utilizing the Ruby on Rails framework, we separated our program into four distinct large scale sections: the Model, View, Controller, and Database.  A majority of our first evolution design consisted of developing our models and database schemas from the model.  In the design of our model, we wanted to make sure that each component we created could have a clear relationship to every other component that was necessary in the design requirements.  In order to make these relationships flexible and dynamic, we took to heart a computer science principle that has been driven into us by many of our professors: the solution in a level of indirection.  One key idea that we believe helps significantly with easily allowing one user to follow another user's calendar is the subscription model.  Instead of directly associating a list of other users and events of those other users that a single user can view on the calendar, we gave each user many subscriptions that cleanly encapsulate the subscribing user, the user being subscribed to, the event being subscribed to, the visibility of that event, and the ability to send email notifications regarding that event.  We created a similar model for managing groups called memberships that help to relate various users to various groups.  These two models gives us the flexibility 
 
 \subsection{Alternate Designs}
 
