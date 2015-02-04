@@ -1,6 +1,11 @@
 <ul class="nav">
+	<% if user_signed_in? %>	
   <li><%= link_to 'Home', events_path %></li>
   <%= render 'layouts/navigation_links' %>
   <li><%= link_to 'Create Event', new_event_path%></li>
-
+  <%else%>
+  <li><%= link_to 'Home', new_user_session_path %></li>
+  <%= render 'layouts/navigation_links' %>
+  <li><%= link_to 'Create Event', new_user_session_path%></li>
+  <%end%>
 </ul>
