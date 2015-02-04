@@ -4,7 +4,7 @@ class Subscription < ActiveRecord::Base
   enum email_notification_time_unit: [ :minutes, :hours, :days ]
 
   belongs_to :subscriber, class_name: "User"
-  belongs_to :subscibed_event, class_name: "Event"
+  belongs_to :subscribed_event, class_name: "Event"
 
   validates :subscriber, presence: true
   validates :subscibed_event, presence: true
