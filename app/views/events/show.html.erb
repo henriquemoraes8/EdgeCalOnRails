@@ -25,13 +25,20 @@
 
 <p>
   <strong>User id:</strong>
-  <%= @subscription.first.subscriber_id %>
+  <%= @subscription.subscriber_id %>
 </p>
 
 <p>
   <strong>Event id:</strong>
-  <%= @subscription.first.subscribed_event_id %>
+  <%= @subscription.subscribed_event_id %>
 </p>
+
+<p>
+  <strong>Visibility:</strong>
+  <%= @subscription.visibility %>
+</p>
+
+<br><br>
 
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>

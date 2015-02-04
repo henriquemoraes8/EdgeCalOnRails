@@ -19,7 +19,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
-    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id)
+    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
   end
 
   # GET /events/new
@@ -49,6 +49,8 @@ class EventsController < ApplicationController
         @subscription.subscribed_event_id = @event.id
         @subscription.subscriber_id = current_user.id
         @subscription.save
+
+        @event.subscriptions << @subscription
 
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
