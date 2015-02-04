@@ -10,4 +10,5 @@ class Event < ActiveRecord::Base
 
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
+
 end
