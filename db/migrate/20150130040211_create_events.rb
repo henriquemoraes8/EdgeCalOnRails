@@ -6,8 +6,14 @@ class CreateEvents < ActiveRecord::Migration
       t.text :description
       t.datetime :start_time
       t.datetime :end_time
-      t.references :creator
+
+      t.belongs_to :creator, index: true
+
+      t.references :subscriptions
+      t.references :subscribers
+
       t.references :repetition_scheme
+      
       t.timestamps null: false
     end
 

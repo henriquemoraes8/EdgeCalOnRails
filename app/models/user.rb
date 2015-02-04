@@ -7,7 +7,6 @@ class User < ActiveRecord::Base
   # Added by @brianbolze and @jeffday -- 2/2
   has_many :created_events, :foreign_key => "creator_id", :class_name => "Event"
 
-
   has_many :subscriptions, :foreign_key => "subscriber_id"
   has_many :subscribed_events, :through => :subscriptions
 
