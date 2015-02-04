@@ -5,11 +5,19 @@
     <title><%= content_for?(:title) ? yield(:title) : "Edgecal" %></title>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Edgecal" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+	
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
+	
+	<%= javascript_tag do %>
+		$(document).ready(function() {
+			$('#calendar').fullCalendar(
+				events: '/events.json'
+			)
+		});
+	<% end %>
   </head>
   <body>
-
   	<% if notice %>
       <p class="alert alert-success"><%= notice %></p>
     <% end %>
@@ -34,5 +42,8 @@
       <%= render 'layouts/messages' %>
       <%= yield %>
     </main>
+	
+    <script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script>
+    <link rel="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css">
   </body>
 </html>
