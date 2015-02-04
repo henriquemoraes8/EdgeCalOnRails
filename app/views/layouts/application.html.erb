@@ -3,21 +3,21 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= content_for?(:title) ? yield(:title) : "Edgecal" %></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.0/fullcalendar.min.css' />
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.0/fullcalendar.print.css' media='print'/>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Edgecal" %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
 	
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-	
-	<%= javascript_tag do %>
-		$(document).ready(function() {
-			$('#calendar').fullCalendar(
-				events: '/events.json'
-			)
-		});
-	<% end %>
+
   </head>
   <body>
+
   	<% if notice %>
       <p class="alert alert-success"><%= notice %></p>
     <% end %>

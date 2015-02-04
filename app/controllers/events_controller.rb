@@ -4,14 +4,18 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    if(params[:user_id].nil?)
-        @events = Event.where(creator_id: current_user.id)  
-        ### @brianbolze -- throws error in test 
-        ### NoMethodError: undefined method `id' for nil:NilClass 
-        ##### fails here   
-    else
-        @events = Event.where(creator_id: params[:user_id])
+    @subscription = Subscription.where('subscriber_id = ? or visibility IN(?)',current_user.id,[Subscription.visibilities[:busy],
+                                                                                                Subscription.visibilities[:visible],
+                                                                                                Subscription.visibilities[:modify]])
+    @Events_id_array = []
+    @subscription.each do |subscript|
+      @Events_id_array << subscript.subscribed_event_id
     end
+
+    @events = Event.where('id in(?)',@Events_id_array)
+    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
+    
+
     @friends = User.all
   end
 
@@ -19,7 +23,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
-    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id)
+    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
   end
 
   # GET /events/new
@@ -29,6 +33,8 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @event = Event.find(params[:id])
+    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
   end
 
   # POST /events
@@ -45,10 +51,11 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
 
-        @subscription = Subscription.new()
-        @subscription.subscribed_event_id = @event.id
-        @subscription.subscriber_id = current_user.id
+        @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
+        @subscription.visibility = params[:subscription_visibility].to_i
         @subscription.save
+
+        @event.subscriptions << @subscription
 
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
