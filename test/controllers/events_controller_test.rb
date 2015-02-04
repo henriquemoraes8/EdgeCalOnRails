@@ -5,17 +5,21 @@ class EventsControllerTest < ActionController::TestCase
     @event = events(:one)
   end
 
+  ## error
   test "should get index" do
     get :index
     assert_response :success
     assert_not_nil assigns(:events)
   end
 
+  ## error
   test "should get new" do
     get :new
     assert_response :success
   end
 
+
+  ## error
   test "should create event" do
     assert_difference('Event.count') do
       post :create, event: { description: @event.description, end_time: @event.end_time, start_time: @event.start_time, title: @event.title }
@@ -24,21 +28,25 @@ class EventsControllerTest < ActionController::TestCase
     assert_redirected_to event_path(assigns(:event))
   end
 
+  ## error
   test "should show event" do
     get :show, id: @event
     assert_response :success
   end
 
+  ## error
   test "should get edit" do
     get :edit, id: @event
     assert_response :success
   end
 
+  ## PASS
   test "should update event" do
     patch :update, id: @event, event: { description: @event.description, end_time: @event.end_time, start_time: @event.start_time, title: @event.title }
     assert_redirected_to event_path(assigns(:event))
   end
 
+  ## PASS
   test "should destroy event" do
     assert_difference('Event.count', -1) do
       delete :destroy, id: @event

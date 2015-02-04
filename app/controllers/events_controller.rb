@@ -5,7 +5,10 @@ class EventsController < ApplicationController
   # GET /events.json
   def index
     if(params[:user_id].nil?)
-        @events = Event.where(creator_id: current_user.id)
+        @events = Event.where(creator_id: current_user.id)  
+        ### @brianbolze -- throws error in test 
+        ### NoMethodError: undefined method `id' for nil:NilClass 
+        ##### fails here   
     else
         @events = Event.where(creator_id: params[:user_id])
     end
@@ -32,7 +35,12 @@ class EventsController < ApplicationController
   # POST /events.json
   def create
     @event = Event.new(event_params)
-    @event.creator_id = current_user.id
+
+    ##### fails
+    @event.creator_id = current_user.id   
+    ### @brianbolze -- throws error in test 
+    ### NoMethodError: undefined method `id' for nil:NilClass
+
 
     respond_to do |format|
       if @event.save
