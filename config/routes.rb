@@ -1,6 +1,17 @@
 Rails.application.routes.draw do
+  get 'groups/index'
+
+  get 'groups/show'
+
+  get 'groups/new'
+
+  get 'groups/edit'
+
+  get 'groups/delete'
+
   devise_for :users
   resources :events
+  resources :groups
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

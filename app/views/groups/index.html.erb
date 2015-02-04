@@ -1,0 +1,11 @@
+<h1>Listing of All User Groups</h1>
+<!--<p>Find me in app/views/groups/index.html.erb</p>-->
+<tbody>
+<% @groups.each do |group|%>
+<tr>
+	<td><%=group.title %></td>
+	<td><%=group.description %></td>
+	<td><%=group.memberships %></td>
+</tr>
+<%end%>
+</tbody>
