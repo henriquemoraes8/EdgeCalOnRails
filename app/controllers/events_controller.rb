@@ -4,11 +4,11 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    if(params[:user_id].nil)
-      ##### fails
-      ### @brianbolze -- throws error in test 
-      ### NoMethodError: undefined method `id' for nil:NilClass 
-        @events = Event.where(creator_id: current_user.id)     
+    if(params[:user_id].nil?)
+        @events = Event.where(creator_id: current_user.id)  
+        ### @brianbolze -- throws error in test 
+        ### NoMethodError: undefined method `id' for nil:NilClass 
+        ##### fails here   
     else
         @events = Event.where(creator_id: params[:user_id])
     end
