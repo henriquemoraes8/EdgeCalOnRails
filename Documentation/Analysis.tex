@@ -93,6 +93,7 @@ The language decision was extremely important for our group for a few reasons. F
 % originally started with Django, chiefly because two members of the team had a strong background in Python, but did not turn out to be much of an advantage
 % switched over due to roadblocks getting off the ground
 % Realized rails had larger community, better documentation, and Rails is a widely sought out skill so we wanted to learn about it
+% Integrated test modules + fixtures
 
 
 \subsection{High-Level API}
@@ -118,31 +119,49 @@ stuf stuf stuf
 
 \subsection{Designed and Conducted Experiment}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+One of the components of the project that I worked on heavily was the model. One of the few annoyances of Rails, however, is in how it separates out its model files from the underlying database migration files. This made it very difficult to keep track of the attributes and associations with each of the models. In order to ensure that the work on the model was accurate and would not break any other parts of the system, I decided to write a collections of tests. One of the benefits of RoR is the integrated test environment. It allows a developer to write tests for models, controllers, and other components at varying granularities, as well as seed the database with sample data using \textit{fixtures}. After writing a suite of tests for the model and running them against a few fixtures, I was able to quickly identify and resolve some errors in the way we were performing associations in the model. After running this experiment I was motivated to continue writing tests for controller components and others, which we can check in on continuously. 
+
+\textit{Jeff's Contribution}
 
 Once the team finalized our schema for the database, we began developing individual aspects of the entire design on each of our own git branches.  However, we noticed that when testing newly added features on our own individual branches, the database would for some reason roll back to an older version of the database that would cause the website to break.  For a very long time, we thought it was because the database schema and model files were being transferred over to new branches incorrectly.  However, after trying to implement new features on both individual branches and on the master branch, we realized that in order to update the database layout using rake db:migrate (the rails command to automatically update the database) on an individual branch, both the migrations and the database files needed to be committed to master whereas we were only committing the schema files.  After running the experiment of developing on two different branches and seeing the different outcomes (along with some help from stackoverflow), we were able to solve this bug using an experiment.
 
 \subsection{Analyzed and Interpreted Data}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+Most of the analysis and interpretation I performed during this stage of the project was in the tests that I wrote. One of the tests I wrote for the User Model included generating 1000 new user emails and passwords and ensuring that all 1000 saved successfully. Even with encryption of all passwords, the test was able to complete in less than a second, which was a promising result when considering the deployment environment where there may be hundreds of new users signing on every second. 
+
+\textit{Jeff's Contribution}
 
 Included in the rails framework is the ability to write tests for all of the different models that we create.  In order to confirm the functionality of our models and the associated database, we developed a number of test files that would create instances of our models, manipulate them in some way (add, edit, or delete specific fields of the model), and then display the result.  In confirmation of our model design and function, we developed different data schemes to test and analyzed their outcomes to make sure that our implementation was sound.
 
 \subsection{Designed System Component to Meet Desired Needs}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+
+
+\textit{Jeff's Contribution}
 
 Our team as a whole spent many hours designing our database schema and model to make sure that our design had the ability to meet all the desired needs specified by the evolution document.  Although not every single requirement was implemented perfectly by the specified deadline, we our confident that our design deals with every possible relationship necessary to facilitate the completion of the requirements.
 
 \subsection{Deal with Realistic Constraints}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+
+
+\textit{Jeff's Contribution}
 
 The fact that we made a decision part way through the development process to switch from a Django framework to a Rails framework made the time of total development much smaller.  This restraint required us to quickly design our new model in Rails while still having to consider good design principles in what we decided to implement.
 
 \subsection{Contributed to Team Work and Interacted with Team Members}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+\textit{Jeff's Contribution}
 
 I attended every single team meeting and highly contributed to the initial model design.  Specifically, I helped white board out the model and collaborated with Henrique on integrating aspects of how events are displayed and how the overall look and feel of the application should be.
 
