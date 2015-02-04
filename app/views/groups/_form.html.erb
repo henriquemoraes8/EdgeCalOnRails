@@ -1,0 +1,23 @@
+<%=form_for (@group) do |f|%>
+
+	<div class = "title">
+		<%=f.label :title%>
+		<%=f.text_field :title%>
+	</div>
+
+	<div class = "description">
+		<%=f.label :description%>
+		<%=f.text_field :description%>
+	</div>
+
+	<div class = "memberships">
+		<%for user in @users%>
+			<%= label_tag user.email%>
+			<%=f.check_box :memberships%>
+		<% end %>
+	</div>
+
+	<div class="actions">
+		<%=f.submit%>
+	</div>
+<%end%>
