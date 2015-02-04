@@ -1,8 +1,8 @@
 \contentsline {section}{\numberline {1}Introduction}{2}
 \contentsline {section}{\numberline {2}Project Plan}{2}
 \contentsline {subsection}{\numberline {2.1}Design Goals}{2}
-\contentsline {subsection}{\numberline {2.2}Language Choice}{2}
-\contentsline {subsection}{\numberline {2.3}Timeline}{2}
+\contentsline {subsection}{\numberline {2.2}Language Choice}{3}
+\contentsline {subsection}{\numberline {2.3}Timeline}{3}
 \contentsline {subsection}{\numberline {2.4}High-Level API}{3}
 \contentsline {section}{\numberline {3}Design Review}{3}
 \contentsline {subsection}{\numberline {3.1}Status}{3}
