@@ -7,5 +7,6 @@ class Subscription < ActiveRecord::Base
   belongs_to :subscribed_event, class_name: "Event"
 
   validates :subscriber, presence: true
-  validates :subscibed_event, presence: true
+  validates :subscribed_event, presence: true
+
 end

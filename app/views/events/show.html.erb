@@ -20,5 +20,18 @@
   <%= @event.end_time %>
 </p>
 
+<br><br>
+<h1>Subscription information</h1>
+
+<p>
+  <strong>User id:</strong>
+  <%= @subscription.first.subscriber_id %>
+</p>
+
+<p>
+  <strong>Event id:</strong>
+  <%= @subscription.first.subscribed_event_id %>
+</p>
+
 <%= link_to 'Edit', edit_event_path(@event) %> |
 <%= link_to 'Back', events_path %>

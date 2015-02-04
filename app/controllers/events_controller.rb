@@ -19,6 +19,7 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
+    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id)
   end
 
   # GET /events/new
@@ -43,6 +44,12 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
+
+        @subscription = Subscription.new()
+        @subscription.subscribed_event_id = @event.id
+        @subscription.subscriber_id = current_user.id
+        @subscription.save
+
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
