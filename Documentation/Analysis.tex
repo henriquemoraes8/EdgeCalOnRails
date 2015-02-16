@@ -93,58 +93,85 @@ The language decision was extremely important for our group for a few reasons. F
 % originally started with Django, chiefly because two members of the team had a strong background in Python, but did not turn out to be much of an advantage
 % switched over due to roadblocks getting off the ground
 % Realized rails had larger community, better documentation, and Rails is a widely sought out skill so we wanted to learn about it
+% Integrated test modules + fixtures
 
+\section{Design}
 
-\subsection{High-Level API}
+As a result of utilizing the Ruby on Rails framework, we separated our program into four distinct large scale sections: the Model, View, Controller, and Database.  A majority of our first evolution design consisted of developing our models and database schemas from the model.  In the design of our model, we wanted to make sure that each component we created could have a clear relationship to every other component that was necessary in the design requirements.  In order to make these relationships flexible and dynamic, we took to heart a computer science principle that has been driven into us by many of our professors: the solution in a level of indirection.  One key idea that we believe helps significantly with easily allowing one user to follow another user's calendar is the subscription model.  Instead of directly associating a list of other users and events of those other users that a single user can view on the calendar, we gave each user many subscriptions that cleanly encapsulate the subscribing user, the user being subscribed to, the event being subscribed to, the visibility of that event, and the ability to send email notifications regarding that event.  We created a similar model for managing groups called memberships that help to relate various users to various groups.  These two models gives us the flexibility to easily and logically add memberships to groups and visibilities while being able to apply rules to them.
 
-% PitL vs PitS
-stuf stuf stuf
-
-\section{Design Review}
-
-\subsection{Status}
-
-stuf stuf stuf
-
-\subsection{Design}
-
-As a result of utilizing the Ruby on Rails framework, we separated our program into four distinct large scale sections: the Model, View, Controller, and Database.  A browser is used to 
-
-\subsection{Alternate Designs}
-
-stuf stuf stuf
+One strong aspect of our overall system design is the ability to easily create new views for every aspect of the model.  Using the rails framework, a single terminal command can create controllers for every aspect of the model along with associated views for creating, deleting, editing, and viewing model information.  However, currently our implementation repeats a lot of code for user forms and other aspects of the view.  In order to fix this problem in the future, we will attempt to utilize what are called Partials in order to more easily reuse aspects of our front end design.
 
 \section{Design Process Notes}
 
 \subsection{Designed and Conducted Experiment}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+One of the components of the project that I worked on heavily was the model. One of the few annoyances of Rails, however, is in how it separates out its model files from the underlying database migration files. This made it very difficult to keep track of the attributes and associations with each of the models. In order to ensure that the work on the model was accurate and would not break any other parts of the system, I decided to write a collections of tests. One of the benefits of RoR is the integrated test environment. It allows a developer to write tests for models, controllers, and other components at varying granularities, as well as seed the database with sample data using \textit{fixtures}. After writing a suite of tests for the model and running them against a few fixtures, I was able to quickly identify and resolve some errors in the way we were performing associations in the model. After running this experiment I was motivated to continue writing tests for controller components and others, which we can check in on continuously. 
+
+\textit{Jeff's Contribution}
 
 Once the team finalized our schema for the database, we began developing individual aspects of the entire design on each of our own git branches.  However, we noticed that when testing newly added features on our own individual branches, the database would for some reason roll back to an older version of the database that would cause the website to break.  For a very long time, we thought it was because the database schema and model files were being transferred over to new branches incorrectly.  However, after trying to implement new features on both individual branches and on the master branch, we realized that in order to update the database layout using rake db:migrate (the rails command to automatically update the database) on an individual branch, both the migrations and the database files needed to be committed to master whereas we were only committing the schema files.  After running the experiment of developing on two different branches and seeing the different outcomes (along with some help from stackoverflow), we were able to solve this bug using an experiment.
 
+\textit{Henrique's Contribution}
+
+I have spent some nights trying to get a calendar interface up and running on Django with no luck. I got the impression that the Django community was not big enough and several of its libraries were outdated. I have tried implementing Django-schedule and Django-scheduler only to later find a blog implementing an HTML Calendar and claiming that the mentioned libraries have not been maintained for over a year. Therfore I have decided to put up a Rails project in parallel and, if successful, I would present the proposal to my team to shift our core language. Overnight I was able to get the project up and running with a basic calendar interface.The next step would be to fill the calendar with created events, so I started conducting some trials. Firstly, I would create events through the terminal in a sandbox environment, then I moved to a development enviroment on the terminal to finally start adding events graphically.
+
 \subsection{Analyzed and Interpreted Data}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+Most of the analysis and interpretation I performed during this stage of the project was in the tests that I wrote. One of the tests I wrote for the User Model included generating 1000 new user emails and passwords and ensuring that all 1000 saved successfully. Even with encryption of all passwords, the test was able to complete in less than a second, which was a promising result when considering the deployment environment where there may be hundreds of new users signing on every second. 
+
+\textit{Jeff's Contribution}
 
 Included in the rails framework is the ability to write tests for all of the different models that we create.  In order to confirm the functionality of our models and the associated database, we developed a number of test files that would create instances of our models, manipulate them in some way (add, edit, or delete specific fields of the model), and then display the result.  In confirmation of our model design and function, we developed different data schemes to test and analyzed their outcomes to make sure that our implementation was sound.
 
+\textit{Henrique's Contribution}
+
+Most of my tests were conducted over a terminal development enviroment or graphically. The idea was to find out if the controllers were generating consistent data according to the user actions. The most important mechanic of our database is to create a subscription for each new event to bond it with a specific user. Therefore a single event may have several subscriptions including the one of its own creator. This design allows for users to flexibly modify some aspects of the event (i.e. adding and alarm or tag) without necessarily altering the original one. To accomplish that, I have written the controller such that for every event created, a corresponding subscription would be created as well. Over the "show" method of the controller, I also displayed the subscription information to get a graphical feedback of whether the design was working or not. 
+
 \subsection{Designed System Component to Meet Desired Needs}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+One of the core components that our team collaborated on heavily was the data representation in the back-end. Henrique and I were the only two members with experience in database programming, so we were able to guide the discussions in the right direction. After many white-board sessions, as a team we were able to establish a robust model representation that we later translated into a series of Ruby models and database migrations. 
+
+\textit{Jeff's Contribution}
 
 Our team as a whole spent many hours designing our database schema and model to make sure that our design had the ability to meet all the desired needs specified by the evolution document.  Although not every single requirement was implemented perfectly by the specified deadline, we our confident that our design deals with every possible relationship necessary to facilitate the completion of the requirements.
 
+\textit{Henrique's Contribution}
+
+The Subscription features linked with an User and an Event is not complete, even though the concept is well defined. The lack of familiarity of all the languages involved on Rails drew us back to meet all the required needs. Nevertheless, an Event has all its basic funcitonality working properly and integrated with its foreign key objects. A subscription already discerns its visibility although the only case treated on the controller is whether another user's Event has a corresponding private Subscription or not. 
+
 \subsection{Deal with Realistic Constraints}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+One of the crucial design considerations for our group was the selection of language and framework for our development environment. No one on the team had had much (if any) experience with web development, so given the time constraints and project requirements, it was important that we used an environment with extensive libraries and resources, a large community, and good documentation. Initially, we ended up starting with Django and Python due to two team members background in Python. However, due to the reasons stated above we came to realize that Ruby On Rails met our needs far greater than Django and Python, and justified our switch. 
+
+\textit{Jeff's Contribution}
 
 The fact that we made a decision part way through the development process to switch from a Django framework to a Rails framework made the time of total development much smaller.  This restraint required us to quickly design our new model in Rails while still having to consider good design principles in what we decided to implement.
 
+\textit{Henrique's Contribution}
+
+Django seemed as promising as any other language to start the project. I came late to the group and by that time the team had already decided on implementing the calendar on Django. However, I did not sense a lot of progress over the first week and decided to make a test by putting a simple interface up. I never lost so much time fixing configurations and not actually coding. Therefore, I decided to try on Rails, which took me less than half the time to do much more. By that time, I had lost three nights that could be used for working on the calendar. After that, I sat with my team to migrate their project to Rails. Nevertheless, understanding the MVC logic in Rails was not easy. We have not accounted that the task would be that complex. It was not for lack of time spent, I must have worked 30 hours on it, but for the lack of organization and previous learning. What happened was that we had spent our first weeks learning Django only to move to Rails later with no previous knowledge. I have asked some Rails programmers about the best ways to get started and compiled a set of tutorials that I intend to distribute to my team members before we proceed with development. Evolution 1 might not have been the most successful one, but the game is not over yet.
+
 \subsection{Contributed to Team Work and Interacted with Team Members}
 
-Jeff's Contribution
+\textit{Brian's Contribution}
+
+I often acted as the mediator and organizer of the group. I set up a Trello page to help us with Project Management and task delegation. I also hosted most of our major hacking sessions at my apartment, which helped foster collaboration in the group. I also attended all meetings and contributed greatly to the design and implementation of the back-end model, business logic, and model-controller API. 
+
+\textit{Jeff's Contribution}
 
 I attended every single team meeting and highly contributed to the initial model design.  Specifically, I helped white board out the model and collaborated with Henrique on integrating aspects of how events are displayed and how the overall look and feel of the application should be.
+
+\textit{Henrique's Contribution}
+
+I have been present in every team meeting and worked overnights to just get the project started. I could not accept so many configuration and terminal errors on my screen. Furthermore, I realized that other team members were also getting frustrated and for not being able to run anything. Therefore I proposed to work on a new solution that we would all implement if they agreed that it was viable. The team agreed promptly once I showed a simple calendar running in Rails and we migrated the project right away. Besides that, I have implemented mos of the front end except for the login validation. I have implemented the logic of adding events, linking them to the respective subscriptions and users on the database. I have also implemented the visibility parameters on subscriptions and visualizing other users. At first I would make the users clickable such that you then see their events apart from yours. Currently, it is possible to see the events of all users that are not private to yourself. However, this logic is still something that requires some more elaboration.
 
 \section{Next Steps}
 
