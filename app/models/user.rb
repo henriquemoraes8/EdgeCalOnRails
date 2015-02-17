@@ -15,4 +15,6 @@ class User < ActiveRecord::Base
 
   has_many :visibilities
   
+  validates_presence_of :name, :email, :encrypted_password
+  
 end
