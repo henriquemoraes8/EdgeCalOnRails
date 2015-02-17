@@ -3,4 +3,6 @@ class Group < ActiveRecord::Base
 
 	has_many :memberships, :foreign_key => "member_of_group_id"
 	has_many :members, :through => :memberships
+
+	has_many :visibilities
 end

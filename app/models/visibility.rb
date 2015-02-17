@@ -1,0 +1,9 @@
+class Visibility < ActiveRecord::Base
+  enum visibility_status: [ :invisible, :busy, :visible, :modify ]
+
+  belongs_to :event
+  belongs_to :user
+  belongs_to :group
+
+  acts_as_list scope: :event
+end

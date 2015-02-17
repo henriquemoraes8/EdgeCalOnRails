@@ -27,7 +27,22 @@
       <%= f.label :end_time %><br>
       <%= f.datetime_select :end_time %>
     </div>
+    <h3>Visibility Settings</h3>
+    <%= f.fields_for(:visibility) do |v_form| %>
+        <div class="field">
+        <%= v_form.label(:group_id, "Group for rule") %><br>
+        <%= v_form.select(:group_id, @groups.map {|g| [g.title, g.id]}, {:include_blank => true}) %>
+        </div>
+        <div class="field">
+        <%= v_form.label(:user_id, "Group for rule") %><br>
+        <%= v_form.select(:user_id, User.all.map {|u| [u.email, u.id]}, {:include_blank => true}) %>
+        </div>
+        <div class="field">
+        <%= v_form.label(:status) %><br>
+        <%= v_form.select(:status, Visibility.visibility_statuses.keys.to_a) %>
+        </div>
 
+    <% end %>
 
     <div class="actions">
       <%= f.submit %>

@@ -12,5 +12,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships, :foreign_key => "member_id"
   has_many :member_of_group, :through => :memberships
+
+  has_many :visibilities
   
 end
