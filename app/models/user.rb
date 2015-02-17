@@ -13,4 +13,6 @@ class User < ActiveRecord::Base
   has_many :memberships, :foreign_key => "member_id"
   has_many :member_of_group, :through => :memberships
   
+  validates_presence_of :name, :email, :encrypted_password
+  
 end
