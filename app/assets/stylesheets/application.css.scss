@@ -13,4 +13,25 @@
  *= require fullcalendar
  *= require_tree .
  *= require_self
+ //= require foundation_and_overrides
+
  */
+
+#user_nav {
+	padding-top: 5px;
+	padding-right: 20px;
+	font-size: small;
+	text-align: right;
+	vertical-align: middle;
+	color: #FFFFFF;
+	height: 30px;
+	background-color: #999999;
+}
+
+.user_nav_link {
+	color: #FFCCCC;
+}
+.user_nav_link:hover {
+	color: #FFFFFF;
+	background-color: #999999;
+}

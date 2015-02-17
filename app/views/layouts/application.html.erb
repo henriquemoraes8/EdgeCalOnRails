@@ -1,51 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Edgecal" %></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.0/fullcalendar.min.css' />
-    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.2.0/fullcalendar.print.css' media='print'/>
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <title><%= content_for?(:title) ? yield(:title) : "EdgeCal" %></title>
 
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Edgecal" %>">
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-	
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "vendor/modernizr" %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
     <%= csrf_meta_tags %>
-
   </head>
+
   <body>
 
-  	<% if notice %>
-      <p class="alert alert-success"><%= notice %></p>
-    <% end %>
-    <% if alert %>
-      <p class="alert alert-danger"><%= alert %></p>
-    <% end %>
+	<nav class="top-bar">
+	  <ul class="title-area">
+	      <li class="name"><h2><img src="<%= asset_path 'edge-cal-logo.png' %>"/></h2></li>
+	  </ul>
+	  <section class="top-bar-section">
+		<ul class="right">
+		  	<% if user_signed_in? %>
+			<li class="divider"></li>
+		    <li><%= link_to 'Home', events_path %></li>
+			<li class="divider"></li>
+		    <li><%= link_to 'Create Event', new_event_path%></li>
+			<li class="divider"></li>
+		    <li><%= link_to 'Groups', groups_path%></li>
+		    <%else%>
+			<li class="divider"></li>
+		    <li><%= link_to 'Home', new_user_session_path %></li>
+			<li class="divider"></li>
+		    <li><%= link_to 'Create Event', new_user_session_path%></li>
+			<li class="divider"></li>
+		    <li><%= link_to 'Groups', new_user_session_path%></li>
+		    <%end%>
+			<li class="divider"></li>
+			<li><%= link_to "Contact Us", events_path %></li>
+		</ul>
+	  </section>
+	</nav>
 
-
-    <p class="navbar-text pull-right">
-      <% if user_signed_in? %>
-        User: <strong><%= current_user.email %></strong>.
-        <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
-      <% else %>
-        <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
-        <%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
-
-      <% end %>
-      <p style="float : right"><font size=20>EdgeCal</font></p>
-    <header>
-      <%= render 'layouts/navigation' %>
-    </header>
-    <main role="main">
-      <%= render 'layouts/messages' %>
-      <%= yield %>
-    </main>
+	  <div class="container">
+	  	<div id="user_nav">
+	    	<% if user_signed_in? %>
+	      	Signed in as <b><%= current_user.name %></b>. | Not you?
+	      	<%= link_to "Sign out", destroy_user_session_path, :method => :delete, class: "user_nav_link" %>
+	    	<% else %>
+	     	 <%= link_to "Sign up", new_user_registration_path, class: "user_nav_link" %> or <%= link_to "sign in", new_user_session_path, class: "user_nav_link" %>
+	    	 <% end %>
+	  	</div>
+  	  </div>
+	  
+	  <br>
+	 
+	  
+	  <div class="row">
+		  <div class="small-12 columns"><%= render 'layouts/messages' %></div>
+  	  </div> 
+		 
+	  <br>
+	  
+	  <div class="row">
+		  <div class="small-6 columns"><%= yield %></div>
+		  <div class="small-6 columns"><%= yield :task_list %></div>
+	  </div>
+	  
+	  <br>
+	  
+	  <div class="row">
+		  <div class="small-12 columns"><%= yield :calendar %></div>
+	  </div>
+	  
+	  <br>
+	  <br>
 	
     <script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script>
     <link rel="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css">
+	
+  <br>
+  <br>
+
   </body>
 </html>

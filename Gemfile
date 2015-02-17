@@ -8,7 +8,11 @@ source 'https://rubygems.org'
 gem 'devise'
 
 # HTML5 Boilerplate Front-End templates
-gem "rails-boilerplate"
+# gem "rails-boilerplate"
+gem "foundation-rails"
+
+# Puma webserver for hosting (better performance)
+gem 'puma'
 
 # Basic HTML layout template
 group :development do
@@ -63,3 +67,4 @@ group :development, :test do
   gem 'spring'
 end
 
+ruby '2.0.0'
