@@ -90,6 +90,7 @@ ActiveRecord::Schema.define(version: 20150217041859) do
 
   create_table "visibilities", force: :cascade do |t|
     t.integer  "status",     null: false
+    t.integer  "event_id",   null: false
     t.integer  "position",   null: false
     t.integer  "user_id"
     t.integer  "group_id"

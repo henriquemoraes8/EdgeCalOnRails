@@ -38,6 +38,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
     @groups = current_user.member_of_group
+    @visibility_count = @event.visibilities.count
   end
 
   # POST /events
@@ -75,8 +76,14 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+
     respond_to do |format|
       if @event.update(event_params)
+
+        if !params[:event][:visibility][:status].blank?
+          @event.set_visibility(params[:event][:visibility])
+        end
+
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
