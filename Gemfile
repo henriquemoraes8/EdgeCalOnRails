@@ -10,6 +10,9 @@ gem 'devise'
 # HTML5 Boilerplate Front-End templates
 gem "rails-boilerplate"
 
+# Puma webserver for hosting (better performance)
+gem 'puma'
+
 # Basic HTML layout template
 group :development do
   gem 'rails_layout'
