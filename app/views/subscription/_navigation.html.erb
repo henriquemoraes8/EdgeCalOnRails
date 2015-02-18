@@ -1,0 +1,9 @@
+<% users ||= [] %>
+<h3>Select user</h3>
+<ul>
+  <% users.each do |user| %>
+      <li>
+        <%= link_to_unless_current(user.email, :action => :index, :id => user.id) %>
+      </li>
+  <% end %>
+</ul>
