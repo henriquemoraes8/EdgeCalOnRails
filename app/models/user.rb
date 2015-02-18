@@ -16,5 +16,10 @@ class User < ActiveRecord::Base
   has_many :visibilities
   
   validates_presence_of :name, :email, :encrypted_password
+
+  def has_subscription_to_event(event_id)
+    puts "GOT TO METHOD"
+    return !(self.subscribed_events.find(event_id).nil?)
+  end
   
 end
