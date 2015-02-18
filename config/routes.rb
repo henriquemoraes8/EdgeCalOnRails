@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'subscription/index'
+
   get 'groups/index'
 
   get 'groups/show'
@@ -8,6 +10,8 @@ Rails.application.routes.draw do
   get 'groups/edit'
 
   get 'groups/delete'
+
+  post 'subscription/manage'
 
   devise_for :users
   resources :events

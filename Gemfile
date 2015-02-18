@@ -34,6 +34,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
+# Orders the list of visibility priorities
+gem 'acts_as_list'
+
 gem 'rails_12factor', group: :production
 
 gem 'fullcalendar-rails'
