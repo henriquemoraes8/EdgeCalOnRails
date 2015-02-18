@@ -35,3 +35,11 @@
 	color: #FFFFFF;
 	background-color: #999999;
 }
+
+#navigation { float: left; width: 180px; min-height: 480px; padding: 10px;
+  background: #94B26F; color: #4C2516; }
+#navigation ul { list-style: none; margin: 0; padding: 0; }
+#navigation ul li { margin-bottom: 0.5em; }
+
+#display { padding-left: 100px; padding-right: 100px; }
+#display h2 { width: 100%; text-align: center; }

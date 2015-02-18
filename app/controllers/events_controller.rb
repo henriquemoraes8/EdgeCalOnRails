@@ -4,9 +4,11 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @subscription = Subscription.where('subscriber_id = ? or visibility IN(?)',current_user.id,[Subscription.visibilities[:busy],
-                                                                                                Subscription.visibilities[:visible],
-                                                                                                Subscription.visibilities[:modify]])
+    @subscription = Subscription.where('subscriber_id = ?',current_user.id)
+
+    #Subscription.where('subscriber_id = ? or visibility IN(?)',current_user.id,[Subscription.visibilities[:busy],
+                                                                                                #Subscription.visibilities[:visible],
+                                                                                                #Subscription.visibilities[:modify]])
     @Events_id_array = []
     @subscription.each do |subscript|
       @Events_id_array << subscript.subscribed_event_id
@@ -14,7 +16,7 @@ class EventsController < ApplicationController
 
     @events = Event.where('id in(?)',@Events_id_array)
     @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
-    
+
 
     @friends = User.all
   end
@@ -35,6 +37,8 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
     @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
+    @groups = current_user.member_of_group
+    @visibility_count = @event.visibilities.count
   end
 
   # POST /events
@@ -46,11 +50,12 @@ class EventsController < ApplicationController
     @event.creator_id = current_user.id   
     ### @brianbolze -- throws error in test 
     ### NoMethodError: undefined method `id' for nil:NilClass
-
+    puts "GETTIN INTO SAVING"
 
     respond_to do |format|
       if @event.save
 
+        puts "SUCCESSFUL SAVE"
         @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
         @subscription.visibility = params[:subscription_visibility].to_i
         @subscription.save
@@ -60,6 +65,8 @@ class EventsController < ApplicationController
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
+        puts "DID NOT SAVE"
+        puts @event.errors.full_messages
         format.html { render :new }
         format.json { render json: @event.errors, status: :unprocessable_entity }
       end
@@ -69,8 +76,14 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+
     respond_to do |format|
       if @event.update(event_params)
+
+        if !params[:event][:visibility][:status].blank?
+          @event.set_visibility(params[:event][:visibility])
+        end
+
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
