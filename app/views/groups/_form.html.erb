@@ -13,7 +13,7 @@
 	<div class = "memberships">
 		<%for user in @users%>
 			<%= label_tag user.email%>
-			<%=f.check_box "member[#{user.id}]"%>
+			<%= check_box('members', "[#{user.id}]") %>
 		<% end %>
 	</div>
 
