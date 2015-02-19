@@ -6,8 +6,15 @@
 <tr>
 	<td><strong>Group Title: </strong><%=group.title %></td><br>
 	<td><strong>Group Description: </strong><%=group.description %></td><br>
-	<td><strong>Group Members: </strong><%=group.memberships %></td><br>
-	<!-- TODO: Print out member names, not the raw membership -->
+	<td><strong>Group Members: </strong></td><br>
+	<ul>
+		<% group.memberships.each do |m| %>
+			<% u_id = m.member_id %>
+			<% user = User.where(id: u_id) %>
+			<li><%= user %> </li>
+			<!-- TODO: Print out member names, not the raw user -->
+		<% end %>
+	</ul>
 	<br>
 </tr>
 <%end%>

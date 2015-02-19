@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
 
-###############
-# Added by @brianbolze
+## gem 'fullcalendar_engine'
+gem 'fullcalendar-rails'
 
 # Authentication framework
 gem 'devise'
@@ -38,8 +38,6 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'acts_as_list'
 
 gem 'rails_12factor', group: :production
-
-gem 'fullcalendar-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
