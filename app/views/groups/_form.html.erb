@@ -12,12 +12,12 @@
 
 	<div class = "memberships">
 		<%for user in @users%>
-			<%= label_tag user.email%>
+			<%= label_tag user.name%>
 			<%= check_box('members', "[#{user.id}]") %>
 		<% end %>
 	</div>
 
 	<div class="actions">
-		<%=f.submit%>
+		<%= f.submit 'Submit', class: "button radius"%>
 	</div>
 <%end%>

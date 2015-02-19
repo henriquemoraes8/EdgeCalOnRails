@@ -14,6 +14,17 @@ Rails.application.routes.draw do
   post 'subscription/manage'
 
   devise_for :users
+  
+  devise_scope :user do
+    authenticated :user do
+      root 'events#index', as: :authenticated_root
+    end
+
+    unauthenticated do
+      root 'devise/sessions#new', as: :unauthenticated_root
+    end
+  end
+  
   resources :events
   resources :groups
 
@@ -21,7 +32,6 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
