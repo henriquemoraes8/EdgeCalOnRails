@@ -4,19 +4,10 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @subscription = Subscription.where('subscriber_id = ?',current_user.id)
-
-    #Subscription.where('subscriber_id = ? or visibility IN(?)',current_user.id,[Subscription.visibilities[:busy],
-                                                                                                #Subscription.visibilities[:visible],
-                                                                                                #Subscription.visibilities[:modify]])
-    @Events_id_array = []
-    @subscription.each do |subscript|
-      @Events_id_array << subscript.subscribed_event_id
-    end
-
-    @events = Event.where('id in(?)',@Events_id_array)
-    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
-
+    @own_events = current_user.created_events
+    @visible_events = current_user.get_visible_events
+    @modifiable_events = current_user.get_modifiable_events
+    @busy_events = current_user.get_busy_events
 
     @friends = User.all
   end

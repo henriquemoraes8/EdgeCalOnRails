@@ -31,8 +31,6 @@
     <%= f.fields_for(:visibility) do |v_form| %>
         <div class="field">
           <%= v_form.label(:position,"priority") %><br>
-          <%= puts "*** VISIBILITY COUNT *** " %>
-          <% puts @visibility_count %>
           <%= v_form.select(:position, 1..(@visibility_count == 0 ? 1 : @visibility_count)) %>
         </div>
         <div class="field">
@@ -45,7 +43,7 @@
         </div>
         <div class="field">
         <%= v_form.label(:status) %><br>
-        <%= v_form.select(:status, Visibility.visibility_statuses.keys.to_a, {:include_blank => true}) %>
+        <%= v_form.select(:status, Visibility.statuses.keys, {:include_blank => true}) %>
         </div>
 
     <% end %>

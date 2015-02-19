@@ -1,0 +1,25 @@
+
+<table class="listing" summary="Event list">
+  <tr class="header">
+    <th>Title</th>
+    <th>Description</th>
+    <% if !status.nil? %>
+    <th>Owner</th>
+    <% end %>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th>Visibility Status</th>
+  </tr>
+  <% events.each do |event| %>
+      <tr class=status>
+        <td><%= event.title %></td>
+        <td><%= event.description %></td>
+        <% if !status.nil? %>
+            <th><%= event.creator.email %></th>
+        <% end %>
+        <td class="center"><%= event.start_time.strftime("%-d %b - %H:%M") %></td>
+        <td class="center"><%= event.end_time.strftime("%-d %b - %H:%M") %></td>
+        <td class="center"><%= status.nil? ? "own" : status %></td>
+      </tr>
+  <% end %>
+</table>
