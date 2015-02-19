@@ -13,9 +13,11 @@ class User < ActiveRecord::Base
   has_many :memberships, :foreign_key => "member_id"
   has_many :groups, :foreign_key => "owner_id", :class_name => "Group"
 
-  has_many :visibilities
+  has_many :visibilities, -> { order("position ASC") }
   
   validates_presence_of :name, :email, :encrypted_password
+
+  #model logic by @henriquemoraes
 
   def has_subscription_to_event(event_id)
     puts "GOT TO METHOD, WILL RETURN, USER ID #{self.id} EVENT ID #{event_id} #{!(self.subscribed_events.find_by_id(event_id).nil?)}"
@@ -32,6 +34,33 @@ class User < ActiveRecord::Base
     if !Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).empty?
       Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).first.destroy
     end
+  end
+
+  def get_visible_events
+    return get_events_for_status(Visibility.visibility_statuses[:visible])
+  end
+
+  def get_busy_events
+    events = get_events_for_status(Visibility.visibility_statuses[:busy])
+    events.each do |e|
+      e.description = ''
+      e.title = "#{e.creator.email} is busy"
+    end
+    return events
+  end
+
+  def get_modifiable_events
+    return get_events_for_status(Visibility.visibility_statuses[:modify])
+  end
+
+  private
+
+  def get_events_for_status(status)
+    events = []
+    self.subscribed_events.each do |e|
+      events << e if e.is_right_visibility_for_user(status, self.id)
+    end
+    return events
   end
   
 end

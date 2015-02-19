@@ -1,6 +1,6 @@
 class Event < ActiveRecord::Base
 
-	# Added by @brianbolze -- 2/2
+	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
 
 	has_many :subscriptions
@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
 
 	has_one :repetition_scheme
 
-	has_many :visibilities
+	has_many :visibilities, -> { order("position ASC") }
 
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
@@ -23,6 +23,18 @@ class Event < ActiveRecord::Base
 			visibility = Visibility.create(:group_id => params_v[:user_id], :position => params_v[:position], :status => Visibility.visibility_statuses[params_v[:status]])
 			self.visibilities << visibility
 		end
+	end
+
+	def is_right_visibility_for_user(visibility, user_id)
+		visibilities.each do |v|
+			puts "CHECKING VISIBILITY STATUS #{v.status} WITH POSITION #{v.position}"
+			if (!v.user.nil? && v.user.id == user_id) || (!v.group.nil? && v.group.contains_user_id(user_id))
+				"TRUE CASE FOR USER #{(!v.user.nil? && v.user.id == user_id)} OR GROUP #{(!v.group.nil? && v.group.contains_user_id(user_id))}"
+				return v.status == visibility
+			end
+		end
+		#if no match, default to visible
+		return visibility == Visibility.visibility_statuses[:visible]
 	end
 
 end

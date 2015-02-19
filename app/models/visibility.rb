@@ -5,7 +5,7 @@ class Visibility < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
 
-  validates_presence_of :event_id
-
   acts_as_list scope: :event
+
+  validates_presence_of :event_id
 end
