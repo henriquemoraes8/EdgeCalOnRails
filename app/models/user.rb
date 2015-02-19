@@ -37,11 +37,11 @@ class User < ActiveRecord::Base
   end
 
   def get_visible_events
-    return get_events_for_status(Visibility.visibility_statuses[:visible])
+    return get_events_for_status('visible')
   end
 
   def get_busy_events
-    events = get_events_for_status(Visibility.visibility_statuses[:busy])
+    events = get_events_for_status('busy')
     events.each do |e|
       e.description = ''
       e.title = "#{e.creator.email} is busy"
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   end
 
   def get_modifiable_events
-    return get_events_for_status(Visibility.visibility_statuses[:modify])
+    return get_events_for_status('modify')
   end
 
   private

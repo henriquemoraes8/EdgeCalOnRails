@@ -17,10 +17,10 @@ class Event < ActiveRecord::Base
 		puts "*** SAVING IN EVENT ****"
 		puts params_v
 		if !params_v[:group_id].blank?
-			visibility = Visibility.create(:group_id => params_v[:group_id], :position => params_v[:position], :status => Visibility.visibility_statuses[params_v[:status]])
+			visibility = Visibility.create(:group_id => params_v[:group_id], :position => params_v[:position], :status => Visibility.statuses[params_v[:status]])
 			self.visibilities << visibility
 		elsif !params_v[:user_id].blank?
-			visibility = Visibility.create(:group_id => params_v[:user_id], :position => params_v[:position], :status => Visibility.visibility_statuses[params_v[:status]])
+			visibility = Visibility.create(:group_id => params_v[:user_id], :position => params_v[:position], :status => Visibility.statuses[params_v[:status]])
 			self.visibilities << visibility
 		end
 	end
@@ -34,7 +34,7 @@ class Event < ActiveRecord::Base
 			end
 		end
 		#if no match, default to visible
-		return visibility == Visibility.visibility_statuses[:visible]
+		return visibility == "visible"
 	end
 
 end
