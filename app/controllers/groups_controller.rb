@@ -24,10 +24,12 @@ class GroupsController < ApplicationController
     @group.owner_id = current_user.id
 
     if @group.save
-      params[:members].keys.each do |u_id|
-        if params[:members][u_id] == '1'
-          puts "ADDING MEMBER ID: #{u_id}"
-          @group.members << User.find(u_id)
+      if params[:members]
+        params[:members].keys.each do |u_id|
+          if params[:members][u_id] == '1'
+            puts "ADDING MEMBER ID: #{u_id}"
+            @group.members << User.find(u_id)
+          end
         end
       end
       redirect_to(:action => 'index')
