@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
 	# Added by @brianbolze -- 2/2
 	belongs_to :creator, :class_name => "User"
 
-	has_many :subscriptions, :foreign_key => "subscribed_event_id"
+	has_many :subscriptions
 	has_many :subscribers, :through => :subscriptions
 
 	has_one :repetition_scheme

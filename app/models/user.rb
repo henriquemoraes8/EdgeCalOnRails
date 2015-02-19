@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :subscribed_events, :through => :subscriptions
 
   has_many :memberships, :foreign_key => "member_id"
-  has_many :member_of_group, :through => :memberships
+  has_many :groups, :foreign_key => "owner_id", :class_name => "Group"
 
   has_many :visibilities
   

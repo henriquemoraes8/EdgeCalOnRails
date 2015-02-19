@@ -15,7 +15,7 @@ class GroupsController < ApplicationController
   def new
     @group = Group.new
     #@group.owner_id = current_user.id
-    @users = User.all
+    @users = User.where.not(id: current_user.id)
   end
 
   def create
@@ -38,6 +38,6 @@ class GroupsController < ApplicationController
   private
 
   def group_params
-    params.require(:group).permit(:title, :description)
+    params.require(:group).permit(:title, :description, :)
   end
 end
