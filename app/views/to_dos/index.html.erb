@@ -7,14 +7,15 @@
 <hr>
 
 <% @todos.each do |todo| %>
-    <div class="todo">
+    <div class=<%= todo.done? ? "done" : "not done" %>>
       <em>Title:</em> <%= todo.title %><br>
       <em>Description:</em> <%= todo.description %><br>
       <em>Priority:</em> <%= todo.position %><br>
       <em>Duration:</em> <%= "#{pluralize(todo.duration.hour, 'hour') if todo.duration.hour > 0} #{pluralize(todo.duration.min, 'minute') if todo.duration.min > 0}" %><br>
       <em>Recurrence:</em> <%= todo.recurrence.humanize %><br>
       <%= link_to('Delete', {:action => :destroy, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
-      <%= link_to('Edit', {:action => :edit, :id => todo.id, :class => 'action todo'}) %>
+      <%= link_to('Edit', {:action => :edit, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
+      <%= link_to('Done', {:action => :done, :id => todo.id, :class => 'action todo'}) if !todo.done? %>
     </div>
     <hr>
     <br>

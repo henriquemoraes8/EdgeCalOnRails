@@ -13,11 +13,20 @@ class ToDosController < ApplicationController
     @todo_count = current_user.to_dos.count + 1
   end
 
+  def done
+    @todo = ToDo.find(params[:id])
+    @todo.update_attributes(:done => true)
+    @todos = current_user.to_dos.sorted
+    flash[:notice] = "To-do '#{@todo.title}' is done"
+    render('index')
+  end
+
   def create
     @todo = ToDo.new(todo_params)
     @todo.creator_id = current_user.id
 
     if @todo.save
+      flash[:notice] = "To-do '#{@todo.title}' created successfully"
       redirect_to(:action => 'index')
     else
       @todo = ToDo.new
@@ -30,6 +39,7 @@ class ToDosController < ApplicationController
     @todo = ToDo.find(params[:id])
 
     if @todo.update_attributes(todo_params)
+      flash[:notice] = "To-do '#{@todo.title}' updated successfully"
       redirect_to(:action => 'index')
     else
       @todo = ToDo.new
