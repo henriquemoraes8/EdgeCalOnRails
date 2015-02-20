@@ -12,6 +12,7 @@
 	<a href="new.html" class="button" data-reveal-id="myNormal">New Group</a>
 	<div class="reveal-modal" id="myNormal" data-reveal>
   		<a class="close-reveal-modal">x</a>
+  		<%= render 'form' %>
 	</div>
 	<script>
   		$(document).foundation();
@@ -22,7 +23,8 @@
 <!--<p>Find me in app/views/groups/index.html.erb</p>-->
 <%= link_to 'New Group', new_group_path %><br>
 <tbody>
-<% @groups.each do |group|%>
+<% grps = @groups.all %>
+<% grps.each do |group|%>
 <tr>
 	<td><strong>Group Title: </strong><%=group.title %></td><br>
 	<td><strong>Group Description: </strong><%=group.description %></td><br>
@@ -31,4 +33,7 @@
 	<br>
 </tr>
 <%end%>
+<% if grps.size == 0 %>
+	<em>No Groups Found</em>
+<% end %>
 </tbody>
