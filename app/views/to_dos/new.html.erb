@@ -1,2 +1,7 @@
-<h1>ToDos#new</h1>
-<p>Find me in app/views/to_dos/new.html.erb</p>
+<h1>Edit To-do</h1>
+
+<%= form_for(:section, :url => {:action => 'create'}) do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Back', to_dos_index_path %>

@@ -8,6 +8,7 @@ class ToDosController < ApplicationController
   end
 
   def new
+    @todo = ToDo.new
   end
 
   def create
