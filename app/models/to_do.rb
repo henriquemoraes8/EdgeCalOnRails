@@ -2,6 +2,9 @@ class ToDo < ActiveRecord::Base
   enum recurrence: [:no_recurrence, :always, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly]
 
   belongs_to :event
+  belongs_to :creator, :class_name => "User"
+
+  acts_as_list scope: :creator
 
   def self.recurrence_to_date_time(period)
     return 0.seconds if period == ToDo.recurrences[:always] || period == "always"
@@ -13,5 +16,7 @@ class ToDo < ActiveRecord::Base
     return 1.year if period == ToDo.recurrences[:yearly] || period == "yearly"
     return 0.seconds
   end
+
+  
 
 end

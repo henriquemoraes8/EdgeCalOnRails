@@ -14,9 +14,16 @@ class ToDosController < ApplicationController
   end
 
   def create
-    puts "GOT TODO PARAMS: #{params}"
     @todo = ToDo.new(todo_params)
-    redirect_to(:action => 'index')
+    @todo.creator_id = current_user.id
+
+    if @todo.save
+      redirect_to(:action => 'index')
+    else
+      @todo = ToDo.new
+      @todo_count = current_user.to_dos.count + 1
+      render('new')
+    end
   end
 
   def destroy

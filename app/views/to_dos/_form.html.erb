@@ -14,11 +14,11 @@
 </div>
 <div class="field">
   <%= f.label :duration %><br>
-  <%= f.time_select :duration, {:include_blank => true, :minute_step => 5} %>
+  <%= f.time_select :duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and "} %> minutes
 </div>
 <div class="field">
   <%= f.label :recurrence %><br>
-  <%= f.select :recurrence, ToDo.recurrences.keys.map {|r| [r, ToDo.recurrences[r]]}, {:include_blank => true} %>
+  <%= f.select :recurrence, ToDo.recurrences.keys.map {|r| [r.humanize, r]} %>
 </div>
 
 
