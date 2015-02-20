@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'to_dos/index'
+
+  get 'to_dos/edit'
+
+  get 'to_dos/new'
+
   get 'subscription/index'
 
   get 'groups/index'
