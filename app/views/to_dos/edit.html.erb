@@ -1,6 +1,6 @@
 <h1>Edit To-do</h1>
 
-<%= form_for(:section, :url => {:action => 'create', :id => @todo.id}) do |f| %>
+<%= form_for(:section, :url => {:action => 'update', :id => @todo.id}) do |f| %>
     <%= render :partial => 'form', :locals => {:f => f} %>
 <% end %>
 

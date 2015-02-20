@@ -10,12 +10,12 @@
 
 <% @todos.each do |todo| %>
     <div class="todo">
-      <em>Title:</em> <%= todo.title %>
-      <em>Description:</em> <%= todo.description %>
-      <em>Priority:</em> <%= todo.position %>
-      <em>Duration:</em> <%= todo.duration %>
-      <em>Recurrence</em> <%= todo.recurrence %>
+      <em>Title:</em> <%= todo.title %><br>
+      <em>Description:</em> <%= todo.description %><br>
+      <em>Priority:</em> <%= todo.position %><br>
+      <em>Duration:</em> <%= todo.duration %><br>
+      <em>Recurrence:</em> <%= todo.recurrence %><br>
       <%= link_to('Delete', {:action => :destroy, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
-      <%= link_to('Edit', {:action => :edit, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
+      <%= link_to('Edit', {:action => :edit, :id => todo.id, :class => 'action todo'}) %>
     </div>
 <% end %>
