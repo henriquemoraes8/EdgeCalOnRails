@@ -56,11 +56,11 @@ class EventsController < ApplicationController
       if @event.save
 
         puts "SUCCESSFUL SAVE"
-        # @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
-        # @subscription.visibility = params[:subscription_visibility].to_i
-        # @subscription.save
+        @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
+        @subscription.visibility = params[:subscription_visibility].to_i
+        @subscription.save
 
-        # @event.subscriptions << @subscription
+        #@event.subscriptions << @subscription
 
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
