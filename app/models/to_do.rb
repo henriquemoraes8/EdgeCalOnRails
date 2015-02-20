@@ -23,7 +23,7 @@ class ToDo < ActiveRecord::Base
   scope :sorted, lambda {order('to_dos.position ASC')}
 
   def reschedule
-    todo = ToDo.new(:title => title, :description => description, :position => position, :recurrence => recurrence, :creator_id=>creator_id)
+    todo = ToDo.new(:title => title, :duration => duration, :description => description, :position => position, :recurrence => recurrence, :creator_id=>creator_id)
     todo.save
   end
 
