@@ -1,6 +1,6 @@
 class ToDosController < ApplicationController
   def index
-    @todos = current_user.to_dos
+    @todos = current_user.to_dos.sorted
   end
 
   def edit
@@ -18,6 +18,18 @@ class ToDosController < ApplicationController
     @todo.creator_id = current_user.id
 
     if @todo.save
+      redirect_to(:action => 'index')
+    else
+      @todo = ToDo.new
+      @todo_count = current_user.to_dos.count + 1
+      render('new')
+    end
+  end
+
+  def update
+    @todo = ToDo.find(params[:id])
+
+    if @todo.update_attributes(todo_params)
       redirect_to(:action => 'index')
     else
       @todo = ToDo.new

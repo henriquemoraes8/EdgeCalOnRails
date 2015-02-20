@@ -17,6 +17,6 @@ class ToDo < ActiveRecord::Base
     return 0.seconds
   end
 
-  
+  scope :sorted, lambda {order('to_dos.position ASC')}
 
 end

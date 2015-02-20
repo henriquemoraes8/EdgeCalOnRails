@@ -1,6 +1,6 @@
 <h1>New To-do</h1>
 
-<%= form_for(:to_do, :url => {:action => 'create'}) do |f| %>
+<%= form_for(@todo, :url => {:action => 'create'}) do |f| %>
     <%= render :partial => 'form', :locals => {:f => f} %>
 <% end %>
 
