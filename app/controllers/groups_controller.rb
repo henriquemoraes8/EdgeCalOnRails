@@ -14,6 +14,7 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
+    #Why is the line below commented out? -jeffday
     #@group.owner_id = current_user.id
     @users = User.where.not(id: current_user.id)
   end
@@ -45,6 +46,12 @@ class GroupsController < ApplicationController
   end
 
   def delete
+    @group = Group.find(params[:id])
+  end
+
+  def destroy
+    Group.destroy(params[:id]).destroy
+    redirect_to(:action => 'index')
   end
 
   private

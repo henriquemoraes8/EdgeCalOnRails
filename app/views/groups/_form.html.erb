@@ -10,10 +10,13 @@
 		<%=f.text_field :description%>
 	</div>
 
-	<div class = "memberships">
+	<div class = "members">
+		<h5>Choose Members</h5>
 		<%for user in @users%>
-			<%= label_tag user.name%>
-			<%= check_box('members', "[#{user.id}]") %>
+			<%#= label_tag user.email%>
+			<%#= check_box('members', "[#{user.id}]") %>
+			<%=f.label :members, user.email%>
+			<%= f.check_box :members%>
 		<% end %>
 	</div>
 

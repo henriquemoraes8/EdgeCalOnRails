@@ -1,13 +1,14 @@
 <h1>My Groups</h1>
 <!--<p>Find me in app/views/groups/index.html.erb</p>-->
-<%= link_to 'New Group', new_group_path %><br>
+<%= link_to 'Create New Group', new_group_path %><br><br>
 <tbody>
 <% @groups.each do |group|%>
 <tr>
 	<td><strong>Group Title: </strong><%=group.title %></td><br>
 	<td><strong>Group Description: </strong><%=group.description %></td><br>
-	<td><strong>Group Members: </strong><%=group.memberships %></td><br>
+	<td><%= link_to 'View All Group Members', group %> </td>
 	<!-- TODO: Print out member names, not the raw membership -->
+	<br>
 	<br>
 </tr>
 <%end%>
