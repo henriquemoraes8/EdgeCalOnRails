@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220085029) do
+ActiveRecord::Schema.define(version: 20150220095925) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,16 +69,17 @@ ActiveRecord::Schema.define(version: 20150220085029) do
   end
 
   create_table "to_dos", force: :cascade do |t|
-    t.boolean  "done",        default: false
+    t.boolean  "done",            default: false
     t.integer  "event_id"
-    t.integer  "position",                    null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "recurrence",  default: 0
-    t.string   "title",                       null: false
+    t.integer  "position",                        null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "recurrence",      default: 0
+    t.string   "title",                           null: false
     t.string   "description"
-    t.integer  "creator_id",                  null: false
+    t.integer  "creator_id",                      null: false
     t.time     "duration"
+    t.datetime "next_reschedule"
   end
 
   create_table "users", force: :cascade do |t|

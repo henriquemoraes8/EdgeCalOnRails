@@ -37,6 +37,9 @@ gem 'coffee-rails', '~> 4.1.0'
 # Orders the list of visibility priorities
 gem 'acts_as_list'
 
+#adds scheduling tasks
+gem 'rufus-scheduler', '~> 3.0.9'
+
 gem 'rails_12factor', group: :production
 
 gem 'fullcalendar-rails'
