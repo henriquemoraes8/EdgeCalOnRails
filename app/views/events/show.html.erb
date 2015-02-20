@@ -25,23 +25,23 @@
 
 <p>
   <strong>User id:</strong>
-  <%= @subscription.subscriber_id %>
+  <%#= @subscription.subscriber_id %>
 </p>
 
 <p>
   <strong>Event id:</strong>
-  <%= @subscription.subscribed_event_id %>
+  <%#= @subscription.subscribed_event_id %>
 </p>
 
 <h3>Visibility information</h3>
 <div>
-  <% @subscription.subscribed_event.visibilities.each do |v| %>
-    <p>
-    <strong>Visibility id:</strong><%= v.id %><br>
-    status: <%= v.status %><br>
-    is group? <%= v.group_id.nil? ? "yes" : "no" %>
+  <% #@subscription.subscribed_event.visibilities.each do |v| %>
+   <p>
+    <strong>Visibility id:</strong><%#= v.id %><br>
+    status: <%#= v.status %><br>
+    is group? <%#= v.group_id.nil? ? "yes" : "no" %>
     </p>
-<% end %>
+<% #end %>
 </div>
 
 
