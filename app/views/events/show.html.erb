@@ -33,10 +33,17 @@
   <%= @subscription.subscribed_event_id %>
 </p>
 
-<p>
-  <strong>Visibility:</strong>
-  <%= @subscription.visibility %>
-</p>
+<h3>Visibility information</h3>
+<div>
+  <% @subscription.subscribed_event.visibilities.each do |v| %>
+    <p>
+    <strong>Visibility id:</strong><%= v.id %><br>
+    status: <%= v.status %><br>
+    is group? <%= v.group_id.nil? ? "yes" : "no" %>
+    </p>
+<% end %>
+</div>
+
 
 <br><br>
 

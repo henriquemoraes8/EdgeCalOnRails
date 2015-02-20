@@ -1,0 +1,33 @@
+<div id="navigation">
+  <%= render(:partial => 'navigation', :locals => {:users => @users}) %>
+</div>
+
+<div class="display">
+  <h2>events</h2>
+  <%= form_tag(subscription_manage_path, :id => @selected_user.id) do %>
+  <table class="listing" summary="events list">
+    <tr class="header">
+      <th>title</th>
+      <th>description</th>
+      <th>start time</th>
+      <th>end time</th>
+      <th>subscribe</th>
+    </tr>
+    <% @events.each do |event| %>
+        <% puts "*** event is #{event.title} with id #{event.id} ***" %>
+        <tr>
+          <%= fields_for("events[#{event.id}]", event) do |ef| %>
+          <td><%= event.title %></td>
+          <td><%= event.description %></td>
+          <td><%= event.start_time %></td>
+          <td><%= event.end_time %></td>
+          <td class="actions">
+            <%= check_box("events","#{event.id}", {:checked => current_user.has_subscription_to_event(event.id)}) %>
+          </td>
+          <% end %>
+        </tr>
+    <% end %>
+  </table>
+  <%= submit_tag("Subscribe") %>
+  <% end %>
+</div>

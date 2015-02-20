@@ -13,4 +13,33 @@
  *= require fullcalendar
  *= require_tree .
  *= require_self
+ //= require foundation_and_overrides
+
  */
+
+#user_nav {
+	padding-top: 5px;
+	padding-right: 20px;
+	font-size: small;
+	text-align: right;
+	vertical-align: middle;
+	color: #FFFFFF;
+	height: 30px;
+	background-color: #999999;
+}
+
+.user_nav_link {
+	color: #FFCCCC;
+}
+.user_nav_link:hover {
+	color: #FFFFFF;
+	background-color: #999999;
+}
+
+#navigation { float: left; width: 180px; min-height: 480px; padding: 10px;
+  background: #94B26F; color: #4C2516; }
+#navigation ul { list-style: none; margin: 0; padding: 0; }
+#navigation ul li { margin-bottom: 0.5em; }
+
+#display { padding-left: 100px; padding-right: 100px; }
+#display h2 { width: 100%; text-align: center; }
