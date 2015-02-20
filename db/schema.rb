@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 20150220052243) do
     t.integer  "recurrence",  default: 0
     t.string   "title",                       null: false
     t.string   "description"
-    t.integer  "creator_id"
+    t.integer  "creator_id",                  null: false
   end
 
   create_table "users", force: :cascade do |t|

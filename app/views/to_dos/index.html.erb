@@ -1,2 +1,21 @@
-<h1>ToDos#index</h1>
-<p>Find me in app/views/to_dos/index.html.erb</p>
+<p id="notice"><%= notice %></p>
+
+<h1>My To-Dos</h1>
+
+<br>
+
+<%= link_to 'New To-Do', new_to_do_path %>
+
+<hr>
+
+<% @todos.each do |todo| %>
+    <div class="todo">
+      <em>Title:</em> <%= todo.title %>
+      <em>Description:</em> <%= todo.description %>
+      <em>Priority:</em> <%= todo.position %>
+      <em>Duration:</em> <%= todo.duration %>
+      <em>Recurrence</em> <%= todo.recurrence %>
+      <%= link_to('Delete', {:action => :destroy, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
+      <%= link_to('Edit', {:action => :edit, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
+    </div>
+<% end %>

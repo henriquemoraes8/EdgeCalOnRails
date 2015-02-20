@@ -10,6 +10,8 @@ class User < ActiveRecord::Base
   has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :delete_all
   has_many :subscribed_events, :through => :subscriptions
 
+  #model logic by @henriquemoraes
+
   has_many :memberships, :foreign_key => 'member_id'
   has_many :groups, :foreign_key => 'owner_id', :class_name => 'Group'
   has_many :to_dos, :foreign_key => 'creator_id', :class_name => 'ToDo'
@@ -17,8 +19,6 @@ class User < ActiveRecord::Base
   has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
   
   validates_presence_of :name, :email, :encrypted_password
-
-  #model logic by @henriquemoraes
 
   def has_subscription_to_event(event_id)
     puts "GOT TO METHOD, WILL RETURN, USER ID #{self.id} EVENT ID #{event_id} #{!(self.subscribed_events.find_by_id(event_id).nil?)}"
