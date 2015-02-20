@@ -14,7 +14,9 @@ class ToDosController < ApplicationController
   end
 
   def create
-
+    puts "GOT TODO PARAMS: #{params}"
+    @todo = ToDo.new(todo_params)
+    redirect_to(:action => 'index')
   end
 
   def destroy
@@ -23,4 +25,11 @@ class ToDosController < ApplicationController
     flash[:notice] = "To-do '#{@todo.title}' deleted successfully"
     redirect_to(to_dos_index_path)
   end
+
+  private
+
+  def todo_params
+    params.require(:to_do).permit(:title,:description,:duration,:position,:recurrence)
+  end
+
 end

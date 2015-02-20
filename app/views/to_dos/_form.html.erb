@@ -13,12 +13,12 @@
   <%= f.select :position, 1..@todo_count %>
 </div>
 <div class="field">
-  <%= f.label :end_time %><br>
-  <%= f.datetime_select :end_time %>
+  <%= f.label :duration %><br>
+  <%= f.time_select :duration, {:include_blank => true, :minute_step => 5} %>
 </div>
 <div class="field">
   <%= f.label :recurrence %><br>
-  <%= f.select :recurrence, ToDo.recurrences.keys, {:include_blank => true} %>
+  <%= f.select :recurrence, ToDo.recurrences.keys.map {|r| [r, ToDo.recurrences[r]]}, {:include_blank => true} %>
 </div>
 
 

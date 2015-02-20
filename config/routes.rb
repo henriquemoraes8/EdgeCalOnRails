@@ -17,6 +17,8 @@ Rails.application.routes.draw do
 
   get 'groups/delete'
 
+  match ':controller(/:action(/:id))', :via => [:get, :post]
+
   post 'subscription/manage'
 
   devise_for :users
