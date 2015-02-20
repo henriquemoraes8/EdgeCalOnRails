@@ -11,6 +11,8 @@ gem 'devise'
 # gem "rails-boilerplate"
 gem "foundation-rails"
 
+gem 'simple_form'
+
 # Puma webserver for hosting (better performance)
 gem 'puma'
 

@@ -1,4 +1,4 @@
-<%=form_for (@group) do |f|%>
+<%=form_for @group do |f|%>
 
 	<div class = "title">
 		<%=f.label :title%>
@@ -20,4 +20,15 @@
 	<div class="actions">
 		<%= f.submit 'Submit', class: "button radius"%>
 	</div>
+
 <%end%>
+
+<%= simple_form_for @group do |f| %>
+	<%=f.input :title%>
+	<%=f.input :description%>
+	<%for user in @users%>
+		<%= label_tag user.name%>
+		<%= check_box('members', "[#{user.id}]") %>
+	<% end %>
+	<%= f.submit 'Submit', class: "button radius"%>
+<% end %>
