@@ -1,0 +1,27 @@
+<%= error_messages_for(@todo) %>
+
+<div class="field">
+  <%= f.label :title %><br>
+  <%= f.text_field :title %>
+</div>
+<div class="field">
+  <%= f.label :description %><br>
+  <%= f.text_area :description %>
+</div>
+<div class="field">
+  <%= f.label :position, 'priority' %><br>
+  <%= f.select :position, 1..@todo_count %>
+</div>
+<div class="field">
+  <%= f.label :duration %><br>
+  <%= f.time_select :duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and "} %> minutes
+</div>
+<div class="field">
+  <%= f.label :recurrence %><br>
+  <%= f.select :recurrence, ToDo.recurrences.keys.map {|r| [r.humanize, r]} %>
+</div>
+
+
+<div class="actions">
+  <%= f.submit %>
+</div>

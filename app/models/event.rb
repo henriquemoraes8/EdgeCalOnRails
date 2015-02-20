@@ -3,12 +3,12 @@ class Event < ActiveRecord::Base
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
 
-	has_many :subscriptions
+	has_many :subscriptions, :dependent => :delete_all
 	has_many :subscribers, :through => :subscriptions
 
 	has_one :repetition_scheme
 
-	has_many :visibilities, -> { order("position ASC") }
+	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
 
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
