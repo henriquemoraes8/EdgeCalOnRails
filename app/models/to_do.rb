@@ -6,6 +6,7 @@ class ToDo < ActiveRecord::Base
 
   belongs_to :event
   belongs_to :creator, :class_name => "User"
+  has_one :reminder
 
   acts_as_list scope: :creator
 
