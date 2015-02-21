@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
 	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
 
 	before_validation :check_to_do
-	before_create :next_to_do
+	after_create :next_to_do
 
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
@@ -73,16 +73,20 @@ class Event < ActiveRecord::Base
 		duration = start_time > Time.now && end_time < Time.now ? end_time - Time.now : end_time - start_time
 
 		creator.to_dos.each do |t|
-			if t.duration.hour*3600 + t.duration.min*60 < duration
+			if t.duration.hour*3600 + t.duration.min*60 < duration && t.can_be_allocated
 				self.to_do_id = t.id
 				t.event_id = id
 				self.title = "allocated for to-do: #{t.title}"
 				self.description = t.description
+				puts "GOT A TODO AND ASSIGNED ID #{id}"
+				t.save
+				save
 				return
 			end
 		end
 		self.description = creator.to_dos.count == 0 ? 'there is no to-do to be assigned' : 'event too short for any to-do'
 		self.description = 'no to-do could be fit for this event'
+		save
 	end
 
 	private

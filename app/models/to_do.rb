@@ -1,7 +1,7 @@
 class ToDo < ActiveRecord::Base
   enum recurrence: [:no_recurrence, :always, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly, :less_than_minute]
 
-  before_update :reschedule_if_needed
+  before_update :reschedule_if_needed, :notify_event_if_needed
   before_create :verify_next_schedule
 
   belongs_to :event
@@ -22,6 +22,11 @@ class ToDo < ActiveRecord::Base
   end
 
   scope :sorted, lambda {order('to_dos.position ASC')}
+
+  def can_be_allocated
+    puts "SEE IF #{title} CAN BE ALLOCATED, EVENTNIL #{event_id.nil?}, DONE #{done}"
+    return event_id.nil? && !done
+  end
 
   private
 
@@ -54,9 +59,14 @@ class ToDo < ActiveRecord::Base
       scheduler.at next_reschedule do
         reschedule
       end
-
     end
+  end
 
+  def notify_event_if_needed
+    if !event_id.nil? && done
+      event.next_to_do
+      event.save
+    end
   end
 
 end
