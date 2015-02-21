@@ -1,15 +1,20 @@
 class Event < ActiveRecord::Base
-	enum type: [:regular, :to_do, :request]
+	enum event_type: [:regular, :to_do, :request]
 
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
 
-	has_many :subscriptions, :dependent => :delete_all
+	has_many :subscriptions, :foreign_key => 'subscribed_event_id', :dependent => :delete_all
 	has_many :subscribers, :through => :subscriptions
 
 	has_one :repetition_scheme
+	has_one :request_map
+	has_one :to_do
 
 	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
+
+	before_validation :check_to_do
+	before_create :next_to_do
 
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
@@ -39,15 +44,43 @@ class Event < ActiveRecord::Base
 	end
 
 	def humanize_type
-		case type
-			when 'regular'
-				return 'regular event'
+		case event_type
 			when 'to_do'
-				return 'allocated for a to-do'
+				return 'reserved for a to-do'
 			when 'request'
 				return 'requested event'
+			else
+				return 'regular event'
 		end
-		return ''
+	end
+
+	def next_to_do
+		if event_type != 'to_do'
+			return
+		end
+
+		creator.to_dos.each do |t|
+			if t.duration.hour + t.duration.min < end_time - start_time
+				self.to_do_id = t.id
+				t.event_id = id
+				self.title = "allocated for to-do: #{t.title}"
+				self.description = t.description
+				return
+			end
+		end
+
+		self.description = 'no to-do could be fit for this event'
+	end
+
+	private
+
+	def check_to_do
+		if event_type == 'to_do' && end_time - start_time <= 15.minutes
+			errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+			return
+		end
+
+
 	end
 
 end

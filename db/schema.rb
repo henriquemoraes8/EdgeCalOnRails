@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20150221150825) do
     t.datetime "created_at",                       null: false
     t.datetime "updated_at",                       null: false
     t.integer  "creator_id"
-    t.integer  "type",                 default: 0
+    t.integer  "event_type",           default: 0
     t.integer  "to_do_id"
     t.integer  "request_map_id"
   end

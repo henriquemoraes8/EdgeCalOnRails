@@ -41,7 +41,14 @@ class EventsController < ApplicationController
     @event.creator_id = current_user.id   
     ### @brianbolze -- throws error in test 
     ### NoMethodError: undefined method `id' for nil:NilClass
-    puts "GETTIN INTO SAVING"
+
+    puts "MASS ASSIGNED EVENT IS #{@event}"
+
+    # if @event.event_type == 'to_do' && @event.end_time - @event.start_time <= 15.minutes
+    #   @event.errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+    #   render('new')
+    #   return
+    # end
 
     respond_to do |format|
       if @event.save
@@ -67,7 +74,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-
+    puts "MASS ASSIGNED EVENT FROM UPDATE IS #{@event}"
     respond_to do |format|
       if @event.update(event_params)
 
@@ -102,6 +109,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:title, :description, :start_time, :end_time)
+      params.require(:event).permit(:title, :description, :start_time, :end_time, :event_type)
     end
 end

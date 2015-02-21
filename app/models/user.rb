@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships, :foreign_key => 'member_id'
   has_many :groups, :foreign_key => 'owner_id', :class_name => 'Group'
-  has_many :to_dos, :foreign_key => 'creator_id', :class_name => 'ToDo'
+  has_many :to_dos,-> {order('position ASC')}, :foreign_key => 'creator_id', :class_name => 'ToDo'
 
   has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
   
