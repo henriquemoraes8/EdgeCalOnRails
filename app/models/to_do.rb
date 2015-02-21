@@ -1,5 +1,5 @@
 class ToDo < ActiveRecord::Base
-  enum recurrence: [:no_recurrence, :always, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly]
+  enum recurrence: [:no_recurrence, :always, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly, :less_than_minute]
 
   before_update :reschedule_if_needed
   before_create :verify_next_schedule
@@ -17,10 +17,13 @@ class ToDo < ActiveRecord::Base
     return 1.week if period == ToDo.recurrences[:weekly] || period == "weekly"
     return 1.month if period == ToDo.recurrences[:monthly] || period == "monthly"
     return 1.year if period == ToDo.recurrences[:yearly] || period == "yearly"
+    return 10.seconds if period == ToDo.recurrences[:less_than_minute] || period == "less_than_minute"
     return 0.seconds
   end
 
   scope :sorted, lambda {order('to_dos.position ASC')}
+
+  private
 
   def reschedule
     todo = ToDo.new(:title => title, :duration => duration, :description => description, :position => position, :recurrence => recurrence, :creator_id=>creator_id)
@@ -54,15 +57,6 @@ class ToDo < ActiveRecord::Base
 
     end
 
-  end
-
-  def schedule
-    require 'rufus-scheduler'
-    scheduler = Rufus::Scheduler.new
-
-    scheduler.in '2s' do
-      puts "2s passed"
-    end
   end
 
 end

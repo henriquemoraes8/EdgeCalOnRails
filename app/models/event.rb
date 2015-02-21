@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+	enum type: [:regular, :to_do, :request]
 
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
