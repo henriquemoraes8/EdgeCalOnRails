@@ -38,4 +38,16 @@ class Event < ActiveRecord::Base
 		return visibility == "visible"
 	end
 
+	def humanize_type
+		case type
+			when 'regular'
+				return 'regular event'
+			when 'to_do'
+				return 'allocated for a to-do'
+			when 'request'
+				return 'requested event'
+		end
+		return ''
+	end
+
 end

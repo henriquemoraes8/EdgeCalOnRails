@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20150221144818) do
     t.datetime "updated_at",           null: false
     t.integer  "creator_id"
     t.integer  "type"
+    t.integer  "to_do_id"
+    t.integer  "request_id"
   end
 
   create_table "groups", force: :cascade do |t|
