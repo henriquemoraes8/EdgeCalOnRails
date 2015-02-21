@@ -26,7 +26,7 @@ class Event < ActiveRecord::Base
 			visibility = Visibility.create(:group_id => params_v[:group_id], :position => params_v[:position], :status => Visibility.statuses[params_v[:status]])
 			self.visibilities << visibility
 		elsif !params_v[:user_id].blank?
-			visibility = Visibility.create(:group_id => params_v[:user_id], :position => params_v[:position], :status => Visibility.statuses[params_v[:status]])
+			visibility = Visibility.create(:user_id => params_v[:user_id], :position => params_v[:position], :status => Visibility.statuses[params_v[:status]])
 			self.visibilities << visibility
 		end
 	end
