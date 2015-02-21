@@ -32,6 +32,12 @@ class Event < ActiveRecord::Base
 	end
 
 	def is_right_visibility_for_user(visibility, user_id)
+		if event_type == 'to_do'
+			return visibility == 'visible'
+		elsif event_type == 'request'
+			return visibility == 'modify'
+		end
+
 		visibilities.each do |v|
 			puts "CHECKING VISIBILITY STATUS #{v.status} WITH POSITION #{v.position}"
 			if (!v.user.nil? && v.user.id == user_id) || (!v.group.nil? && v.group.contains_user_id(user_id))
@@ -55,12 +61,19 @@ class Event < ActiveRecord::Base
 	end
 
 	def next_to_do
+		puts "TIME NOW: #{Time.now} EVENT END: #{end_time}"
 		if event_type != 'to_do'
+			return
+		elsif end_time < Time.now
+			self.title = "allocated for to-do"
+			self.description = "this event has passed and cannot be assigned a to-do"
 			return
 		end
 
+		duration = start_time > Time.now && end_time < Time.now ? end_time - Time.now : end_time - start_time
+
 		creator.to_dos.each do |t|
-			if t.duration.hour + t.duration.min < end_time - start_time
+			if t.duration.hour*3600 + t.duration.min*60 < duration
 				self.to_do_id = t.id
 				t.event_id = id
 				self.title = "allocated for to-do: #{t.title}"
@@ -68,7 +81,7 @@ class Event < ActiveRecord::Base
 				return
 			end
 		end
-
+		self.description = creator.to_dos.count == 0 ? 'there is no to-do to be assigned' : 'event too short for any to-do'
 		self.description = 'no to-do could be fit for this event'
 	end
 
@@ -77,10 +90,7 @@ class Event < ActiveRecord::Base
 	def check_to_do
 		if event_type == 'to_do' && end_time - start_time <= 15.minutes
 			errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
-			return
 		end
-
-
 	end
 
 end

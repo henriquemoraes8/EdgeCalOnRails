@@ -12,13 +12,6 @@ class EventsController < ApplicationController
     @friends = User.all
   end
 
-  # GET /events/1
-  # GET /events/1.json
-  def show
-    @event = Event.find(params[:id])
-    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
-  end
-
   # GET /events/new
   def new
     @event = Event.new
@@ -60,7 +53,7 @@ class EventsController < ApplicationController
 
         #@event.subscriptions << @subscription
 
-        format.html { redirect_to @event, notice: 'Event was successfully created.' }
+        format.html { redirect_to events_path, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
         puts "DID NOT SAVE"
@@ -82,8 +75,8 @@ class EventsController < ApplicationController
           @event.set_visibility(params[:event][:visibility])
         end
 
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
+        format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
+        format.json { render :index, status: :ok, location: @event }
       else
         format.html { render :edit }
         format.json { render json: @event.errors, status: :unprocessable_entity }
