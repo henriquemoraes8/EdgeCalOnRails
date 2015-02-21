@@ -19,8 +19,6 @@ Rails.application.routes.draw do
 
   post 'events/create'
 
-  match ':controller(/:action(/:id))', :via => [:get, :post, :patch]
-
   post 'subscription/manage'
 
   devise_for :users
@@ -35,7 +33,11 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :events
+  resources :events do
+    member do
+      get :delete
+    end
+  end
   resources :groups
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -91,4 +93,6 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  match ':controller(/:action(/:id))', :via => [:get, :post, :patch, :delete]
 end

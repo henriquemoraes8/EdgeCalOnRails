@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :delete]
 
   # GET /events
   # GET /events.json
@@ -28,7 +28,7 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
     @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
-    @groups = current_user.member_of_group
+    @groups = current_user.groups
     @visibility_count = @event.visibilities.count
   end
 
@@ -93,10 +93,11 @@ class EventsController < ApplicationController
 
   # DELETE /events/1
   # DELETE /events/1.json
-  def destroy
+  def delete
+    puts "WILL DESTROY, EVENT PARAMS: #{params}"
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
+      format.html { redirect_to events_url, notice: "Event #{@event.title} was successfully destroyed." }
       format.json { head :no_content }
     end
   end
