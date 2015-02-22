@@ -12,12 +12,14 @@ class Reminder < ActiveRecord::Base
 
   def schedule_reminder
     if recurrence == 'no_recurrence'
+      puts "NO RECURR NEXT TIME #{next_reminder_time}"
       self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
-        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver
+        puts "GONNA SEND"
+        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
       end
     else
       self.job_id = Rufus::Scheduler.singleton.every Reminder.recurrence_to_date_time(recurrence), :first_at => next_reminder_time do
-        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver
+        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
       end
     end
 
@@ -25,13 +27,15 @@ class Reminder < ActiveRecord::Base
   end
 
   def unschedule_and_save
-    Rufus::Scheduler.singleton.job(job_id).unschedule
+    unschedule
     self.job_id = nil
     save
   end
 
   def unschedule
-    Rufus::Scheduler.singleton.job(job_id).unschedule
+    if !Rufus::Scheduler.singleton.job(job_id).nil?
+      Rufus::Scheduler.singleton.job(job_id).unschedule
+    end
   end
 
   def self.recurrence_to_date_time(period)
@@ -47,7 +51,9 @@ class Reminder < ActiveRecord::Base
   private
 
   def start_time_makes_sense
-    if next_reminder_time < Time.now
+    puts "TIME MAKES SENSE REMINDER #{next_reminder_time}, NOW #{Time.now}"
+
+    if next_reminder_time.strftime("%Y-%d-%m %H:%M:%S %Z") < Time.now.strftime("%Y-%d-%m %H:%M:%S %Z")
       errors[:base] = 'the reminder notification time has already passed'
       return false
     end

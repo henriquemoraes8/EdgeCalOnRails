@@ -43,3 +43,12 @@
 
 #display { padding-left: 100px; padding-right: 100px; }
 #display h2 { width: 100%; text-align: center; }
+
+#errorExplanation { width: 400px; padding: 0; margin: 0 auto 1.5em;
+  border: 1px solid #AA0000; background-color: #FFFFFF; font-size: 12px; }
+#errorExplanation h2 { font-weight: bold; font-size: 12px;
+  padding: 5px 5px 5px 15px; margin: 0; width: 380px;
+  background-color: #AA0000; color: #FFFFFF; }
+#errorExplanation p { color: #333333; margin: 0; padding: 3px 0.5em; }
+#errorExplanation ul { margin-top: 0; }
+#errorExplanation ul li { list-style: square; }
