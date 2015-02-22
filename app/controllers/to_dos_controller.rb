@@ -61,9 +61,10 @@ class ToDosController < ApplicationController
   end
 
   def destroy
-    @todo = ToDo.find(params[:id])
+    @todo = ToDo.find_by_id(params[:id])
     @todo.destroy
     flash[:notice] = "To-do '#{@todo.title}' deleted successfully"
+
     redirect_to(to_dos_index_path)
   end
 

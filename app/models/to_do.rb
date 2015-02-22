@@ -31,7 +31,7 @@ class ToDo < ActiveRecord::Base
 
   def set_reminder(params_r)
 
-    date = DateTime.new(params_r["next_reminder_time(1i)"].to_i,
+    date = Time.new(params_r["next_reminder_time(1i)"].to_i,
                             params_r["next_reminder_time(2i)"].to_i,
                             params_r["next_reminder_time(3i)"].to_i,
                             params_r["next_reminder_time(4i)"].to_i,
