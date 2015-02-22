@@ -1,31 +1,15 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
+  before_action :set_event, only: [:show, :edit, :update, :delete]
 
   # GET /events
   # GET /events.json
   def index
-    @subscription = Subscription.where('subscriber_id = ?',current_user.id)
-
-    #Subscription.where('subscriber_id = ? or visibility IN(?)',current_user.id,[Subscription.visibilities[:busy],
-                                                                                                #Subscription.visibilities[:visible],
-                                                                                                #Subscription.visibilities[:modify]])
-    @Events_id_array = []
-    @subscription.each do |subscript|
-      @Events_id_array << subscript.subscribed_event_id
-    end
-
-    @events = Event.where('id in(?)',@Events_id_array)
-    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
-
+    @own_events = current_user.created_events
+    @visible_events = current_user.get_visible_events
+    @modifiable_events = current_user.get_modifiable_events
+    @busy_events = current_user.get_busy_events
 
     @friends = User.all
-  end
-
-  # GET /events/1
-  # GET /events/1.json
-  def show
-    @event = Event.find(params[:id])
-    @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
   end
 
   # GET /events/new
@@ -37,7 +21,7 @@ class EventsController < ApplicationController
   def edit
     @event = Event.find(params[:id])
     @subscription = Subscription.where(subscribed_event_id: params[:id]).where(subscriber_id: current_user.id).first
-    @groups = current_user.member_of_group
+    @groups = current_user.groups
     @visibility_count = @event.visibilities.count
   end
 
@@ -50,7 +34,14 @@ class EventsController < ApplicationController
     @event.creator_id = current_user.id   
     ### @brianbolze -- throws error in test 
     ### NoMethodError: undefined method `id' for nil:NilClass
-    puts "GETTIN INTO SAVING"
+
+    puts "MASS ASSIGNED EVENT IS #{@event}"
+
+    # if @event.event_type == 'to_do' && @event.end_time - @event.start_time <= 15.minutes
+    #   @event.errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+    #   render('new')
+    #   return
+    # end
 
     respond_to do |format|
       if @event.save
@@ -60,9 +51,9 @@ class EventsController < ApplicationController
         @subscription.visibility = params[:subscription_visibility].to_i
         @subscription.save
 
-        @event.subscriptions << @subscription
+        #@event.subscriptions << @subscription
 
-        format.html { redirect_to @event, notice: 'Event was successfully created.' }
+        format.html { redirect_to events_path, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
         puts "DID NOT SAVE"
@@ -76,7 +67,7 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
-
+    puts "MASS ASSIGNED EVENT FROM UPDATE IS #{@event}"
     respond_to do |format|
       if @event.update(event_params)
 
@@ -84,8 +75,8 @@ class EventsController < ApplicationController
           @event.set_visibility(params[:event][:visibility])
         end
 
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { render :show, status: :ok, location: @event }
+        format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
+        format.json { render :index, status: :ok, location: @event }
       else
         format.html { render :edit }
         format.json { render json: @event.errors, status: :unprocessable_entity }
@@ -95,10 +86,11 @@ class EventsController < ApplicationController
 
   # DELETE /events/1
   # DELETE /events/1.json
-  def destroy
+  def delete
+    puts "WILL DESTROY, EVENT PARAMS: #{params}"
     @event.destroy
     respond_to do |format|
-      format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
+      format.html { redirect_to events_url, notice: "Event #{@event.title} was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -111,6 +103,6 @@ class EventsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def event_params
-      params.require(:event).permit(:title, :description, :start_time, :end_time)
+      params.require(:event).permit(:title, :description, :start_time, :end_time, :event_type)
     end
 end

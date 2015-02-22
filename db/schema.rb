@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219051451) do
+ActiveRecord::Schema.define(version: 20150221150825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,9 +22,12 @@ ActiveRecord::Schema.define(version: 20150219051451) do
     t.datetime "start_time"
     t.datetime "end_time"
     t.integer  "repetition_scheme_id"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "creator_id"
+    t.integer  "event_type",           default: 0
+    t.integer  "to_do_id"
+    t.integer  "request_map_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -42,12 +45,32 @@ ActiveRecord::Schema.define(version: 20150219051451) do
     t.integer  "group_id"
   end
 
+  create_table "reminders", force: :cascade do |t|
+    t.integer  "recurrence",         default: 0
+    t.datetime "next_reminder_time"
+    t.integer  "to_do_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
   create_table "repetition_schemes", force: :cascade do |t|
     t.integer  "weekdays",   default: 0
     t.integer  "month_day"
     t.integer  "year_day"
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  create_table "request_maps", force: :cascade do |t|
+    t.integer  "event_id",   null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.integer  "request_map_id", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -58,6 +81,20 @@ ActiveRecord::Schema.define(version: 20150219051451) do
     t.integer  "email_notification_time_unit", default: 0
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+  end
+
+  create_table "to_dos", force: :cascade do |t|
+    t.boolean  "done",            default: false
+    t.integer  "event_id"
+    t.integer  "position",                        null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.integer  "recurrence",      default: 0
+    t.string   "title",                           null: false
+    t.string   "description"
+    t.integer  "creator_id",                      null: false
+    t.time     "duration"
+    t.datetime "next_reschedule"
   end
 
   create_table "users", force: :cascade do |t|

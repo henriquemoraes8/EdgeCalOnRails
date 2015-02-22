@@ -24,20 +24,20 @@
 			<li class="divider"></li>
 		    <li><%= link_to 'Home', events_path %></li>
 			<li class="divider"></li>
-		    <li><%= link_to 'Create Event', new_event_path%></li>
-			<li class="divider"></li>
 		    <li><%= link_to 'Groups', groups_path%></li>
             <li class="divider"></li>
             <li><%= link_to 'Subscriptions', subscription_index_path%></li>
+            <li class="divider"></li>
+            <li><%= link_to 'To-Dos', to_dos_index_path%></li>
         <%else%>
 			<li class="divider"></li>
 		    <li><%= link_to 'Home', new_user_session_path %></li>
 			<li class="divider"></li>
-		    <li><%= link_to 'Create Event', new_user_session_path%></li>
-			<li class="divider"></li>
 		    <li><%= link_to 'Groups', new_user_session_path%></li>
             <li class="divider"></li>
             <li><%= link_to 'Subscriptions', new_user_session_path%></li>
+            <li class="divider"></li>
+            <li><%= link_to 'To-Dos', new_user_session_path%></li>
 		    <%end%>
 			<li class="divider"></li>
 			<li><%= link_to "Contact Us", events_path %></li>
