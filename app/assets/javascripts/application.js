@@ -17,6 +17,7 @@
 //= require jquery-ui/datepicker
 //= require jquery.datetimepicker
 //= require jquery.datetimepicker/init
+//= require fullcalendar
 //= require_tree .
 
 $(function(){ $(document).foundation(); });

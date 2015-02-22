@@ -1,21 +1,20 @@
-
 <div id="cal">
 	<h4 id="month">
+	<%-# TODO: add JQuery functionality for changing months -%>
 	  <%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%B %Y") %>
 	  <%=h @date.strftime("%B %Y") %>
 	  <%= link_to ">", :month => (@date.end_of_month+1).strftime("%B %Y") %>
 	</h4>
-	<%= calendar_for @event do |e| %>
-  	  <%= e.head('Monday', 'Tuesday', 'Wednesday', 'Thursday', 
-	   'Friday', 'Saturday', 'Sunday') %>
-	   <% start_date = :start_time.try(:strftime, '%b %d, %Y') %>
-  	  <%= e.day(:day_method => start_date) do |date, events| %>
-    	<%= date.day %>
-		<ul>
-    	  <% events.each do |event| %>
-      	    <li><%= link_to h(event.name), event %></li>
-    	  <% end %>
-		</ul>
+	<%= calendar_for(@event, year: @date.year) do |e| %>
+  	   <%= e.head('Monday', 'Tuesday', 'Wednesday', 'Thursday', 
+	     'Friday', 'Saturday', 'Sunday') %>
+  	   <%= e.day(:day_method => :start_time.try(:to_date)) do |date, events| %>
+    	 <%= date.day %>
+		 <ul>
+    	   <% events.each do |event| %>
+      	     <li><%= link_to h(event.name), event %></li>
+    	   <% end %>
+		 </ul>
 	  <% end %>
 	<% end %>
 </div>
