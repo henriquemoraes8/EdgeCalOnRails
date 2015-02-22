@@ -7,14 +7,14 @@ class User < ActiveRecord::Base
   # Added by @brianbolze and @jeffday -- 2/2
   has_many :created_events, :foreign_key => 'creator_id', :class_name => 'Event', :dependent => :destroy
 
-  has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :delete_all
+  has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :destroy
   has_many :subscribed_events, :through => :subscriptions
 
   #model logic by @henriquemoraes
 
-  has_many :memberships, :foreign_key => 'member_id'
-  has_many :groups, :foreign_key => 'owner_id', :class_name => 'Group'
-  has_many :to_dos,-> {order('position ASC')}, :foreign_key => 'creator_id', :class_name => 'ToDo'
+  has_many :memberships, :foreign_key => 'member_id', :dependent => :delete_all
+  has_many :groups, :foreign_key => 'owner_id', :class_name => 'Group', :dependent => :delete_all
+  has_many :to_dos,-> {order('position ASC')}, :foreign_key => 'creator_id', :class_name => 'ToDo', :dependent => :destroy
 
   has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
   
@@ -54,6 +54,10 @@ class User < ActiveRecord::Base
     return get_events_for_status('modify')
   end
 
+  def get_requested_events
+    created_events.where(:event_type => 'request')
+  end
+
   private
 
   def get_events_for_status(status)
@@ -62,10 +66,6 @@ class User < ActiveRecord::Base
       events << e if e.is_right_visibility_for_user(status, self.id)
     end
     return events
-  end
-
-  def get_requested_events
-    created_events.where(:event_type => 'request')
   end
   
 end

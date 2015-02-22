@@ -23,13 +23,17 @@
 <hr>
 <h2>Participants</h2><br>
 <h3>Users</h3>
-<% User.all.each do |u| %>
-    <%= f.checkbox('users', "[#{u.id}]") %>
+<% @users.each do |u| %>
+    <%= check_box('users',"#{u.id}") %>
+    <%= u.email %>
+    <br>
 <% end %>
 <br><br>
 <h3>Groups</h3>
 <% @groups.each do |g| %>
-    <%= f.checkbox('groups', "[#{g.id}]") %>
+    <%= check_box('group_request',"#{g.id}") %>
+    <%= g.title %>
+    <br>
 <% end %>
 
 

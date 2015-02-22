@@ -6,8 +6,18 @@ class Group < ActiveRecord::Base
 
 	has_many :visibilities, -> { order("position ASC") }
 
+	validates_presence_of :title
+
 	def contains_user_id(user_id)
 		return !self.members.find_by_id(user_id).nil?
+	end
+
+	def all_user_ids
+		ids = []
+		members.each do |m|
+			ids << m.id
+		end
+		return ids
 	end
 
 end
