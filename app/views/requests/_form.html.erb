@@ -1,0 +1,38 @@
+<%= error_messages_for(@request_map) %>
+
+<h2>Event information</h2>
+<%= f.fields_for(:event) do |e_form| %>
+    <div class="field">
+      <%= e_form.label :title %><br>
+      <%= e_form.text_field :title %>
+    </div>
+    <div class="field">
+      <%= e_form.label :description %><br>
+      <%= e_form.text_area :description %>
+    </div>
+    <div class="field">
+      <%= e_form.label :start_time %><br>
+      <%= e_form.time_select :start_time, {:minute_step => 5} %>
+    </div>
+    <div class="field">
+      <%= e_form.label :end_time %><br>
+      <%= e_form.time_select :end_time, {:minute_step => 5} %>
+    </div>
+<% end %>
+
+<hr>
+<h2>Participants</h2>
+<%= f.fields_for(:reminder) do |r_form| %>
+    <div class="field">
+      <%= r_form.label :next_reminder_time, 'send reminder at' %><br>
+      <%= r_form.datetime_select :next_reminder_time, {:include_blank => true} %>
+    </div>
+    <div class="field">
+      <%= r_form.label :recurrence %><br>
+      <%= r_form.select :recurrence, Reminder.recurrences.keys.map {|r| [r.humanize, r]} %>
+    </div>
+<% end %>
+
+<div class="actions">
+  <%= f.submit %>
+</div>

@@ -1,2 +1,27 @@
-<h1>Requests#show</h1>
-<p>Find me in app/views/requests/show.html.erb</p>
+<h2>Request Information</h2>
+
+<br>
+
+<%= link_to 'back', requests_index_path %>
+
+<hr>
+
+<div class='request'>
+  <em>Request for event:</em> <%= @request_map.event.title %><br>
+  <em>Description:</em> <%= @request_map.event.description %><br>
+  <em>Start Time:</em> <%= @request_map.event.start_time.strftime("%-d %b - %H:%M") %><br>
+  <em>End Time:</em> <%= @request_map.event.end_time.strftime("%-d %b - %H:%M") %><br>
+  <%= link_to('Delete', {:action => :destroy, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
+  <%= link_to('Edit', {:action => :edit, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
+</div>
+<hr>
+<br>
+<h2>Participants</h2>
+<div class="users">
+  <% @request_map.requests.each do |r| %>
+    <div class="user">
+      User: <%= r.user %><br>
+      Status: <%= r.status.humanize %><br>
+    </div>
+  <% end %>
+</div>

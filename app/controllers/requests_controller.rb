@@ -11,6 +11,10 @@ class RequestsController < ApplicationController
     @request_map = RequestMap.find(params[:id])
   end
 
+  def new
+    @request_map = RequestMap.new
+  end
+
   def create
 
   end
