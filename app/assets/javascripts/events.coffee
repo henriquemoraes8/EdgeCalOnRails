@@ -19,7 +19,7 @@ $(document).on 'ready page:load', ->
     }],
 
     timeFormat: 'h:mm t{ - h:mm t} ',
-    dragOpacity: "0.5"
+    dragOpacity: "0.5",
 
     eventDrop: (event, dayDelta, minuteDelta, allDay, revertFunc) ->
       updateEvent(event);
@@ -31,8 +31,8 @@ $(document).on 'ready page:load', ->
 updateEvent = (the_event) ->
   $.update "/events/" + the_event.id,
     event:
-      nama: the_event.nama,
-      starts_at: "" + the_event.start,
-      ends_at: "" + the_event.end,
-      keterangan: the_event.keterangan
+      title: the_event.title,
+      start_time: "" + the_event.start_time,
+      end_time: "" + the_event.end_time,
+      description: the_event.description
 
