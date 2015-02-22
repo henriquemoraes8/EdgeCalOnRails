@@ -63,5 +63,9 @@ class User < ActiveRecord::Base
     end
     return events
   end
+
+  def get_requested_events
+    created_events.where(:event_type => 'request')
+  end
   
 end
