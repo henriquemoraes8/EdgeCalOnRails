@@ -29,6 +29,23 @@ class ToDo < ActiveRecord::Base
     return event_id.nil? && !done
   end
 
+  def set_reminder(params_r)
+
+    date = DateTime.new(params_r["next_reminder_time(1i)"].to_i,
+                            params_r["next_reminder_time(2i)"].to_i,
+                            params_r["next_reminder_time(3i)"].to_i,
+                            params_r["next_reminder_time(4i)"].to_i,
+                            params_r["next_reminder_time(5i)"].to_i)
+    reminder = Reminder.create(:recurrence => params_r[:recurrence], :next_reminder_time => date)
+    if reminder.save
+      self.reminder = reminder
+      return true
+    end
+
+    errors[:base] = "The reminder could not not be saved: #{reminder.errors[:base]}"
+    return false
+  end
+
   private
 
   def reschedule

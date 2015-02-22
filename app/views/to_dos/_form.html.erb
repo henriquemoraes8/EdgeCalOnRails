@@ -25,7 +25,7 @@
    <%= f.fields_for(:reminder) do |r_form| %>
     <div class="field">
       <%= r_form.label :next_reminder_time, 'send reminder at' %><br>
-      <%= r_form.datetime_select :next_reminder_time, {:minute_step => 5} %>
+      <%= r_form.datetime_select :next_reminder_time, {:minute_step => 5, :include_blank => true} %>
     </div>
     <div class="field">
         <%= r_form.label :recurrence %><br>

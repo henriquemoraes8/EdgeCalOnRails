@@ -4,10 +4,11 @@ class Reminder < ActiveRecord::Base
 
   belongs_to :to_do
 
-  validates_presence_of :to_do, :next_reminder_time
+  #validates_presence_of :to_do, :next_reminder_time
 
   after_create :schedule_reminder
   before_destroy :unschedule
+  before_create :start_time_makes_sense
 
   def schedule_reminder
     if recurrence == 'no_recurrence'
@@ -41,6 +42,16 @@ class Reminder < ActiveRecord::Base
     return 1.month if period == Reminder.recurrences[:monthly] || period == "monthly"
     return 1.year if period == Reminder.recurrences[:yearly] || period == "yearly"
     return 10.seconds if period == Reminder.recurrences[:less_than_minute] || period == "less_than_minute"
+  end
+
+  private
+
+  def start_time_makes_sense
+    if next_reminder_time < Time.now
+      errors[:base] = 'the reminder notification time has already passed'
+      return false
+    end
+    true
   end
 
 end
