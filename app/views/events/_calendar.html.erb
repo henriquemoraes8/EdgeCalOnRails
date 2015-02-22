@@ -7,8 +7,9 @@
 	</h4>
 	<%= calendar_for @event do |e| %>
   	  <%= e.head('Monday', 'Tuesday', 'Wednesday', 'Thursday', 
-	  'Friday', 'Saturday', 'Sunday') %>
-  	  <%= e.day(:day_method => :start_time) do |date, events| %>
+	   'Friday', 'Saturday', 'Sunday') %>
+	   <% start_date = :start_time.try(:strftime, '%b %d, %Y') %>
+  	  <%= e.day(:day_method => start_date) do |date, events| %>
     	<%= date.day %>
 		<ul>
     	  <% events.each do |event| %>
