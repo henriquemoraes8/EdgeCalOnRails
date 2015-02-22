@@ -14,6 +14,13 @@
 //= require jquery_ujs
 //= require foundation
 //= require turbolinks
-//= require fullcalendar
+//= require jquery-ui/datepicker
+//= require jquery.datetimepicker
+//= require jquery.datetimepicker/init
 //= require_tree .
+
 $(function(){ $(document).foundation(); });
+
+$(function() {
+	$(".datetimepicker").datetimepicker();
+});
