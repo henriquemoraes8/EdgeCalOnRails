@@ -6,6 +6,7 @@ class ToDo < ActiveRecord::Base
 
   belongs_to :event
   belongs_to :creator, :class_name => "User"
+  has_one :reminder, :dependent => :destroy
 
   acts_as_list scope: :creator
 
@@ -26,6 +27,23 @@ class ToDo < ActiveRecord::Base
   def can_be_allocated
     puts "SEE IF #{title} CAN BE ALLOCATED, EVENTNIL #{event_id.nil?}, DONE #{done}"
     return event_id.nil? && !done
+  end
+
+  def set_reminder(params_r)
+
+    date = DateTime.new(params_r["next_reminder_time(1i)"].to_i,
+                            params_r["next_reminder_time(2i)"].to_i,
+                            params_r["next_reminder_time(3i)"].to_i,
+                            params_r["next_reminder_time(4i)"].to_i,
+                            params_r["next_reminder_time(5i)"].to_i)
+    reminder = Reminder.create(:recurrence => params_r[:recurrence], :next_reminder_time => date)
+    if reminder.save
+      self.reminder = reminder
+      return true
+    end
+
+    errors[:base] = "The reminder could not not be saved: #{reminder.errors[:base]}"
+    return false
   end
 
   private

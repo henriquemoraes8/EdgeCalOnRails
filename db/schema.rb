@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150221150825) do
+ActiveRecord::Schema.define(version: 20150221194838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 20150221150825) do
     t.integer  "to_do_id"
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.string   "job_id"
   end
 
   create_table "repetition_schemes", force: :cascade do |t|
@@ -118,6 +119,7 @@ ActiveRecord::Schema.define(version: 20150221150825) do
     t.integer  "creator_id",                      null: false
     t.time     "duration"
     t.datetime "next_reschedule"
+    t.integer  "reminder_id"
   end
 
   create_table "users", force: :cascade do |t|

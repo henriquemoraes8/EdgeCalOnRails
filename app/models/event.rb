@@ -4,12 +4,12 @@ class Event < ActiveRecord::Base
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
 
-	has_many :subscriptions, :foreign_key => 'subscribed_event_id', :dependent => :delete_all
+	has_many :subscriptions, :foreign_key => 'subscribed_event_id', :dependent => :destroy
 	has_many :subscribers, :through => :subscriptions
 
 	has_one :repetition_scheme
 	has_one :request_map
-	has_one :to_do
+	has_one :to_do, :dependent => :destroy
 
 	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
 
