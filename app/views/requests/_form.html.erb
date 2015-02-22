@@ -21,17 +21,17 @@
 <% end %>
 
 <hr>
-<h2>Participants</h2>
-<%= f.fields_for(:reminder) do |r_form| %>
-    <div class="field">
-      <%= r_form.label :next_reminder_time, 'send reminder at' %><br>
-      <%= r_form.datetime_select :next_reminder_time, {:include_blank => true} %>
-    </div>
-    <div class="field">
-      <%= r_form.label :recurrence %><br>
-      <%= r_form.select :recurrence, Reminder.recurrences.keys.map {|r| [r.humanize, r]} %>
-    </div>
+<h2>Participants</h2><br>
+<h3>Users</h3>
+<% User.all.each do |u| %>
+    <%= f.checkbox('users', "[#{u.id}]") %>
 <% end %>
+<br><br>
+<h3>Groups</h3>
+<% @groups.each do |g| %>
+    <%= f.checkbox('groups', "[#{g.id}]") %>
+<% end %>
+
 
 <div class="actions">
   <%= f.submit %>
