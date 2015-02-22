@@ -25,8 +25,20 @@ class ToDosController < ApplicationController
     @todo = ToDo.new(todo_params)
     @todo.creator_id = current_user.id
 
+    puts "*** GOT TO TO DO CREATE ***"
+
     if @todo.save
       flash[:notice] = "To-do '#{@todo.title}' created successfully"
+
+      if !params[:to_do][:reminder]['next_reminder_time(3i)'].nil?
+        puts "WILL CREATE REMINDER"
+        if !@todo.set_reminder(params[:to_do][:reminder])
+          @todo_count = current_user.to_dos.count + 1
+          render('new')
+          return
+        end
+      end
+
       redirect_to(:action => 'index')
     else
       @todo = ToDo.new

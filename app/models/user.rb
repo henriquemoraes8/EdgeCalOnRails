@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Added by @brianbolze and @jeffday -- 2/2
-  has_many :created_events, :foreign_key => 'creator_id', :class_name => 'Event', :dependent => :delete_all
+  has_many :created_events, :foreign_key => 'creator_id', :class_name => 'Event', :dependent => :destroy
 
   has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :delete_all
   has_many :subscribed_events, :through => :subscriptions
