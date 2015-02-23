@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def get_requested_events
-    created_events.where(:event_type => 'request')
+    created_events.where(:event_type => Event.event_types[:request])
   end
 
   private

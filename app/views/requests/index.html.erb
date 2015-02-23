@@ -6,6 +6,7 @@
 
 <% @request_maps.each do |request| %>
     <hr>
+        <% puts "R ITERATION: #{request} R ID: #{request.id} AND REQUEST MAP #{request.request_map} AND EVENT #{request.request_map.event}" %>
     <div class='request'>
       <em>Request for event:</em> <%= request.event.title %><br>
       <em>Description:</em> <%= request.event.description %><br>
