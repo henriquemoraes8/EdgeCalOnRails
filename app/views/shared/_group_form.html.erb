@@ -1,0 +1,27 @@
+<%=form_for @group do |f|%>
+
+	<div class = "title">
+		<%=f.label :title%>
+		<%=f.text_field :title%>
+	</div>
+
+	<div class = "description">
+		<%=f.label :description%>
+		<%=f.text_field :description%>
+	</div>
+
+	<div class = "members">
+		<h5>Choose Members</h5>
+		<%for user in @users%>
+			<%#= label_tag user.email%>
+			<%#= check_box('members', "[#{user.id}]") %>
+			<%=f.label :members, user.email%>
+			<%= f.check_box :members%>
+		<% end %>
+	</div>
+
+	<div class="actions">
+		<%= f.submit 'Submit', class: "button radius"%>
+	</div>
+
+<%end%>

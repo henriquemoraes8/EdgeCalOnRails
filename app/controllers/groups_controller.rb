@@ -5,6 +5,7 @@ class GroupsController < ApplicationController
     else
         @groups = Group.where(owner_id: params[:user_id])
     end
+
     #@users = Users.all
   end
 
@@ -45,12 +46,16 @@ class GroupsController < ApplicationController
 
   end
 
+  helper_method :delete
+
   def delete
     @group = Group.find(params[:id])
   end
 
+  helper_method :destroy
+
   def destroy
-    Group.destroy(params[:id]).destroy
+    @group=Group.find(params[:id]).destroy
     redirect_to(:action => 'index')
   end
 
