@@ -12,6 +12,7 @@ class Reminder < ActiveRecord::Base
   before_create :start_time_makes_sense
 
   def schedule_reminder
+    puts "GOT TO SCHEDULE REMINDER, TODO: #{to_do_id}, SUBSCRIPTION #{subscription_id}"
     if !to_do_id.nil?
       to_do_reminder
     elsif !subscription_id.nil?
@@ -44,8 +45,8 @@ class Reminder < ActiveRecord::Base
   private
 
   def start_time_makes_sense
-    puts "TIME MAKES SENSE REMINDER #{next_reminder_time}, NOW #{Time.now}"
-
+    puts "TIME MAKES SENSE REMINDER #{next_reminder_time.in_time_zone("Eastern Time (US & Canada)")}, NOW #{Time.now}"
+    self.next_reminder_time = next_reminder_time.in_time_zone("Eastern Time (US & Canada)")
     if next_reminder_time.strftime("%Y-%d-%m %H:%M:%S %Z") < Time.now.strftime("%Y-%d-%m %H:%M:%S %Z")
       errors[:base] = 'the reminder notification time has already passed'
       return false
@@ -69,7 +70,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def subscription_reminder
-    puts "SUBSCRIPTION REMINDER NEXT TIME #{next_reminder_time}"
+    puts "SUBSCRIPTION REMINDER NEXT TIME #{next_reminder_time.in_time_zone("Central Time (US & Canada)")}"
     self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
       puts "GONNA SEND"
       NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
