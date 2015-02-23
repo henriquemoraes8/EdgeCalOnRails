@@ -5,7 +5,6 @@ class GroupsController < ApplicationController
     else
         @groups = Group.where(owner_id: params[:user_id])
     end
-
     #@users = Users.all
   end
 
@@ -13,11 +12,17 @@ class GroupsController < ApplicationController
     @group = Group.find(params[:id])
   end
 
+  helper_method :new
+
   def new
     @group = Group.new
+
     #Why is the line below commented out? -jeffday
     #@group.owner_id = current_user.id
     @users = User.where.not(id: current_user.id)
+    #render('delete')
+    #@membership = Membership.new()
+    return @group, @users
   end
 
   def create
