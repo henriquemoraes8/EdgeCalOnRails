@@ -3,6 +3,7 @@ class Reminder < ActiveRecord::Base
   enum recurrence: [:no_recurrence, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly]
 
   belongs_to :to_do
+  belongs_to :subscription
 
   #validates_presence_of :to_do, :next_reminder_time
 
@@ -11,19 +12,11 @@ class Reminder < ActiveRecord::Base
   before_create :start_time_makes_sense
 
   def schedule_reminder
-    if recurrence == 'no_recurrence'
-      puts "NO RECURR NEXT TIME #{next_reminder_time}"
-      self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
-        puts "GONNA SEND"
-        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
-      end
-    else
-      self.job_id = Rufus::Scheduler.singleton.every Reminder.recurrence_to_date_time(recurrence), :first_at => next_reminder_time do
-        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
-      end
+    if !to_do_id.nil?
+      to_do_reminder
+    elsif !subscription_id.nil?
+      subscription_reminder
     end
-
-    save
   end
 
   def unschedule_and_save
@@ -58,6 +51,29 @@ class Reminder < ActiveRecord::Base
       return false
     end
     true
+  end
+
+  def to_do_reminder
+    if recurrence == 'no_recurrence'
+      puts "NO RECURR NEXT TIME #{next_reminder_time}"
+      self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
+        puts "GONNA SEND"
+        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
+      end
+    else
+      self.job_id = Rufus::Scheduler.singleton.every Reminder.recurrence_to_date_time(recurrence), :first_at => next_reminder_time do
+        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
+      end
+    end
+    save
+  end
+
+  def subscription_reminder
+    puts "SUBSCRIPTION REMINDER NEXT TIME #{next_reminder_time}"
+    self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
+      puts "GONNA SEND"
+      NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
+    end
   end
 
 end
