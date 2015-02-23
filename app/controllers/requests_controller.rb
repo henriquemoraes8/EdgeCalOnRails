@@ -5,7 +5,20 @@ class RequestsController < ApplicationController
     puts "\n\nEVENTS #{current_user.get_requested_events} MAP: #{@request_map}"
 
     @pending_requests = current_user.requests.where(:status => Request.statuses[:pending])
-    @confirmed_requests = current_user.requests.where(:status => Request.statuses[:confirmed])
+    @confirmed_requests = current_user.requests.where('status = ? OR status = ?', Request.statuses[:confirmed], Request.statuses[:modify])
+    @pending_modifications = current_user.requests.where(:status => Request.statuses[:modify])
+
+    @modification_requests = []
+    @request_maps.each do |m|
+      puts "LOOKING INTO REQUEST MAP ID #{m.id}"
+      puts "RESULT OF MOD QUERY #{m.requests.where(:status => Request.statuses[:modify])}"
+
+      m.requests.where(:status => Request.statuses[:modify]).map {|r| @modification_requests << r}
+    end
+
+    @modification_requests.flatten
+    puts "MODIFICATION SIZE #{@modification_requests.size} LOOK #{@modification_requests}"
+
   end
 
   def show
@@ -25,9 +38,9 @@ class RequestsController < ApplicationController
   end
 
   def create
-    params[:request_map][:event][:status] = 'request'
-    event = Event.new(event_params(params[:request_map]))
+    params[:request_map][:event][:event_type] = 'request'
 
+    event = Event.new(event_params(params[:request_map]))
 
     if event.save
       request_map = RequestMap.create(:event_id => event.id)
@@ -53,6 +66,7 @@ class RequestsController < ApplicationController
 
       event.request_map = request_map
       event.save
+      puts "NEW EVENT ID: #{event.id}"
       current_user.created_events << event
 
       redirect_to(requests_index_path)
@@ -106,6 +120,31 @@ class RequestsController < ApplicationController
     @request.assign_attributes(request_params)
     @request.status = Request.statuses[:modify]
     @request.save
+    redirect_to requests_index_path
+  end
+
+  def accept_modification
+    @request = Request.find(params[:id])
+    event = @request.request_map.event
+    event.title = @request.title
+    event.description = @request.description
+    event.start_time = @request.start_time
+    event.end_time = @request.end_time
+
+    if event.save
+      @request.status = Request.statuses[:confirmed]
+      @request.save
+      flash[:notice] = "Event '#{event.title}' modified by #{@request.user.email}"
+      redirect_to requests_index_path
+    else
+      render 'modify'
+    end
+  end
+
+  def decline_modification
+    request = Request.find(params[:id])
+    request.status = Request.statuses[:confirmed]
+    request.save
     redirect_to requests_index_path
   end
 

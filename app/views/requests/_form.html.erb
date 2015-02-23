@@ -12,11 +12,11 @@
     </div>
     <div class="field">
       <%= e_form.label :start_time %><br>
-      <%= e_form.time_select :start_time, {:minute_step => 5} %>
+      <%= e_form.datetime_select :start_time, {:minute_step => 5} %>
     </div>
     <div class="field">
       <%= e_form.label :end_time %><br>
-      <%= e_form.time_select :end_time, {:minute_step => 5} %>
+      <%= e_form.datetime_select :end_time, {:minute_step => 5} %>
     </div>
 <% end %>
 

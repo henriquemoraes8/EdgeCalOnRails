@@ -6,7 +6,7 @@
 
 <% @request_maps.each do |request| %>
     <hr>
-        <% puts "R ITERATION: #{request} R ID: #{request.id} AND REQUEST MAP #{request.request_map} AND EVENT #{request.request_map.event}" %>
+        <% puts "R ITERATION: #{request} R ID: #{request.id} AND EVENT #{request.event}" %>
     <div class='request'>
       <em>Request for event:</em> <%= request.event.title %><br>
       <em>Description:</em> <%= request.event.description %><br>
@@ -22,6 +22,31 @@
 <% end %>
 <hr>
 
+<% end %>
+
+<% if @modification_requests.count > 0 %>
+
+    <h2>Modification Requests</h2>
+    <% @modification_requests.each do |r| %>
+        <% puts "R ITERATION: #{r} R ID: #{r.id} AND EVENT #{r.request_map}" %>
+        <% event = r.request_map.event %>
+        <hr>
+        <div class="request">
+          <em>Event:</em> <%= event.title %><br>
+          <em>Description:</em> <%= event.description %><br>
+          <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+          <div>
+            <h3>change to</h3>
+            <em>Title:</em> <%= r.title %><br>
+            <em>Description:</em> <%= r.description %><br>
+            <em>Start Time:</em> <%= r.start_time.strftime("%-d %b - %H:%M") %><br>
+            <em>End Time:</em> <%= r.end_time.strftime("%-d %b - %H:%M") %><br>
+          </div>
+          <%= link_to('Accept', {:action => :accept_modification, :id => r.id, :class => 'action request'}) %>&nbsp;&nbsp;
+          <%= link_to('Decline', {:action => :decline_modification, :id => r.id, :class => 'action request'}) %>
+        </div>
+    <% end %>
 <% end %>
 
 <% if @pending_requests.count > 0 %>
@@ -62,4 +87,27 @@
     </div>
 <% end %>
 
+<% end %>
+
+<% if @pending_modifications.count > 0 %>
+
+    <h2>Pending Modifications</h2>
+    <% @pending_modifications.each do |r| %>
+        <% puts "MODIFY ITERATION: #{r} R ID: #{r.id} TITLE #{r.title} DESC #{r.description} START #{r.start_time}" %>
+        <% event = r.request_map.event %>
+        <hr>
+        <div class="request">
+          <em>Event:</em> <%= event.title %><br>
+          <em>Description:</em> <%= event.description %><br>
+          <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+          <div>
+          <h3>change to</h3>
+          <em>Title:</em> <%= r.title %><br>
+          <em>Description:</em> <%= r.description %><br>
+          <em>Start Time:</em> <%= r.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>End Time:</em> <%= r.end_time.strftime("%-d %b - %H:%M") %><br>
+          </div>
+        </div>
+    <% end %>
 <% end %>
