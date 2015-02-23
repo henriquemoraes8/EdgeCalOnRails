@@ -132,8 +132,7 @@ class RequestsController < ApplicationController
     event.end_time = @request.end_time
 
     if event.save
-      @request.status = Request.statuses[:confirmed]
-      @request.save
+      @request.request_map.requests.map {|r| r.status = Request.statuses[:pending]; r.save}
       flash[:notice] = "Event '#{event.title}' modified by #{@request.user.email}"
       redirect_to requests_index_path
     else
