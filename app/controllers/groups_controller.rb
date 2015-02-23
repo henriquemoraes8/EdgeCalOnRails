@@ -5,6 +5,7 @@ class GroupsController < ApplicationController
     else
         @groups = Group.where(owner_id: params[:user_id])
     end
+
     #@users = Users.all
   end
 
@@ -14,6 +15,7 @@ class GroupsController < ApplicationController
 
   def new
     @group = Group.new
+    #Why is the line below commented out? -jeffday
     #@group.owner_id = current_user.id
     @users = User.where.not(id: current_user.id)
   end
@@ -44,7 +46,17 @@ class GroupsController < ApplicationController
 
   end
 
+  helper_method :delete
+
   def delete
+    @group = Group.find(params[:id])
+  end
+
+  helper_method :destroy
+
+  def destroy
+    @group=Group.find(params[:id]).destroy
+    redirect_to(:action => 'index')
   end
 
   private

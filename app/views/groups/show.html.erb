@@ -1,9 +1,11 @@
-<p>
-  <strong>Group name:</strong>
+<strong>Group name:</strong>
 	<%= @group.title%>
-</p>
-
-<p>
-  <strong>Description:</strong>
+	<br>
+ <strong>Description:</strong>
 	<%= @group.description%>
-</p>
+<br>
+<strong>Group Members:</strong>
+<%@group.members.each do |member|%>
+	<%=member%>
+	<br>
+<%end%>
