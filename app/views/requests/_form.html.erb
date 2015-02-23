@@ -24,7 +24,7 @@
 <h2>Participants</h2><br>
 <h3>Users</h3>
 <% @users.each do |u| %>
-    <%= check_box('users',"#{u.id}") %>
+    <%= check_box('user_request',"#{u.id}") %>
     <%= u.email %>
     <br>
 <% end %>

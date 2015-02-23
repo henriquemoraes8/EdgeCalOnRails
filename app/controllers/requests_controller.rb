@@ -1,6 +1,10 @@
 class RequestsController < ApplicationController
   def index
-    @request_maps = current_user.get_requested_events
+    @request_maps = []
+    current_user.get_requested_events.map {|e| @request_maps << e.request_map}
+    puts "\n\nEVENTS #{current_user.get_requested_events} MAP: #{@request_map}"
+
+    @pending_requests = current_user.requests.where(:status => Request.statuses[:pending])
   end
 
   def show
@@ -20,26 +24,40 @@ class RequestsController < ApplicationController
   end
 
   def create
-    puts "GOT TO CREATE, PARAMS: #{params}"
+    params[:request_map][:event][:status] = 'request'
+    event = Event.new(event_params(params[:request_map]))
 
-    all_users = []
-    params[:users].keys.each do |u|
-      if params[:users][u] == "1"
-        all_users << u.to_i
-      end
-    end
-    params[:group_request].keys.each do |g|
-      if params[:group_request][g] == "1"
-        all_users << Group.find(g.to_i).all_user_ids
-      end
-    end
-    puts "RAW ARRAY: #{all_users}"
-    all_users.flatten
-    puts "FLATTENED #{all_users}"
-    all_users.uniq
-    puts "UNIQ #{all_users}"
 
-    redirect_to(requests_index_path)
+    if event.save
+      request_map = RequestMap.create(:event_id => event.id)
+      puts "**** CREATED REQUEST MAP ****"
+
+      all_users = []
+      params[:user_request].keys.each do |u|
+        if params[:user_request][u] == "1"
+          all_users << u.to_i
+        end
+      end
+      params[:group_request].keys.each do |g|
+        if params[:group_request][g] == "1"
+          all_users << Group.find(g.to_i).all_user_ids
+        end
+      end
+      all_users = all_users.flatten
+      all_users = all_users.uniq
+
+      puts "WILL GENERATE REQUESTS FOR IDS: #{all_users}"
+
+      request_map.generate_requests_for_ids(all_users)
+
+      event.request_map = request_map
+      event.save
+      current_user.created_events << event
+
+      redirect_to(requests_index_path)
+    else
+      render(requests_new_path)
+    end
   end
 
   def update
@@ -48,10 +66,27 @@ class RequestsController < ApplicationController
 
   def destroy
     @request_map = RequestMap.find(params[:id])
-    @request_map
+    @request_map.event.destroy
     flash[:notice] = "Request for Event '#{@request_map.event.title}' deleted successfully"
 
     redirect_to(requests_index_path)
+  end
+
+  def accept
+    request = Request.find(params[:id])
+  end
+
+  def decline
+    request = Request.find(params[:id])
+    request.status = Request.statuses[:declined]
+    request.save
+    redirect_to(requests_index_path)
+  end
+
+  private
+
+  def event_params(e_params)
+    e_params.require(:event).permit(:title, :description, :start_time, :end_time, :event_type)
   end
 
 end

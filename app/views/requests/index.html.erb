@@ -1,8 +1,6 @@
+<%= link_to 'New Request', requests_new_path %><br><br>
+
 <h2>My Requests</h2>
-
-<br>
-
-<%= link_to 'New Request', requests_new_path %>
 
 <hr>
 
@@ -13,11 +11,38 @@
       <em>Start Time:</em> <%= request.event.start_time.strftime("%-d %b - %H:%M") %><br>
       <em>End Time:</em> <%= request.event.end_time.strftime("%-d %b - %H:%M") %><br>
       Pending Users: <%= request.pending_requests.count %> | Confirmed Users: <%= request.confirmed_requests.count %> |
-      Declined Users: <%= request.declined_requests.count %> | Removed Users: <%= request.removed_requests.count %>
+      Declined Users: <%= request.declined_requests.count %> | Removed Users: <%= request.removed_requests.count %><br>
       <%= link_to('Delete', {:action => :destroy, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
       <%= link_to('Edit', {:action => :edit, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
       <%= link_to('Details', {:action => :show, :id => request.id, :class => 'action request'}) %>
     </div>
     <hr>
     <br>
+<% end %>
+<hr>
+
+<h2>Pending Requests</h2>
+<% @requests.each do |r| %>
+    <div class="request">
+      <em>Event requested:</em> <%= r.request_map.event.title %><br>
+      <em>Description:</em> <%= request.event.description %><br>
+      <em>Start Time:</em> <%= request.event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= request.event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <%= link_to('Accept', {:action => :accept, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Decline', {:action => :decline, :id => request.id, :class => 'action request'}) %>
+    </div>
+<% end %>
+
+<hr>
+
+<h2>Requested Events</h2>
+<% @requests.each do |r| %>
+    <div class="request">
+      <em>Event requested:</em> <%= r.request_map.event.title %><br>
+      <em>Description:</em> <%= request.event.description %><br>
+      <em>Start Time:</em> <%= request.event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= request.event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <%= link_to('Accept', {:action => :accept, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Decline', {:action => :decline, :id => request.id, :class => 'action request'}) %>
+    </div>
 <% end %>

@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :to_dos,-> {order('position ASC')}, :foreign_key => 'creator_id', :class_name => 'ToDo', :dependent => :destroy
 
   has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
+  has_many :requests, :dependent => :destroy
   
   validates_presence_of :name, :email, :encrypted_password
 
