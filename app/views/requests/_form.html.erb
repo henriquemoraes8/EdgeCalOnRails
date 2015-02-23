@@ -1,0 +1,42 @@
+<%= error_messages_for(@request_map) %>
+
+<h2>Event information</h2>
+<%= f.fields_for(:event) do |e_form| %>
+    <div class="field">
+      <%= e_form.label :title %><br>
+      <%= e_form.text_field :title %>
+    </div>
+    <div class="field">
+      <%= e_form.label :description %><br>
+      <%= e_form.text_area :description %>
+    </div>
+    <div class="field">
+      <%= e_form.label :start_time %><br>
+      <%= e_form.time_select :start_time, {:minute_step => 5} %>
+    </div>
+    <div class="field">
+      <%= e_form.label :end_time %><br>
+      <%= e_form.time_select :end_time, {:minute_step => 5} %>
+    </div>
+<% end %>
+
+<hr>
+<h2>Participants</h2><br>
+<h3>Users</h3>
+<% @users.each do |u| %>
+    <%= check_box('user_request',"#{u.id}") %>
+    <%= u.email %>
+    <br>
+<% end %>
+<br><br>
+<h3>Groups</h3>
+<% @groups.each do |g| %>
+    <%= check_box('group_request',"#{g.id}") %>
+    <%= g.title %>
+    <br>
+<% end %>
+
+
+<div class="actions">
+  <%= f.submit %>
+</div>

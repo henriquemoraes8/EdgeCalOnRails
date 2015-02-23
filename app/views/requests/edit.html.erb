@@ -1,0 +1,7 @@
+<h1>Edit Request</h1>
+
+<%= form_for(@request_map, :url => {:action => 'update', :id => @request_map.id}) do |f| %>
+    <%= render :partial => 'form', :locals => {:f => f} %>
+<% end %>
+
+<%= link_to 'Back', {:action => 'index'} %>

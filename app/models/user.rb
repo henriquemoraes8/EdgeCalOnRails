@@ -5,18 +5,19 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Added by @brianbolze and @jeffday -- 2/2
-  has_many :created_events, :foreign_key => 'creator_id', :class_name => 'Event', :dependent => :delete_all
+  has_many :created_events, :foreign_key => 'creator_id', :class_name => 'Event', :dependent => :destroy
 
-  has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :delete_all
+  has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :destroy
   has_many :subscribed_events, :through => :subscriptions
 
   #model logic by @henriquemoraes
 
-  has_many :memberships, :foreign_key => 'member_id'
-  has_many :groups, :foreign_key => 'owner_id', :class_name => 'Group'
-  has_many :to_dos, :foreign_key => 'creator_id', :class_name => 'ToDo'
+  has_many :memberships, :foreign_key => 'member_id', :dependent => :delete_all
+  has_many :groups, :foreign_key => 'owner_id', :class_name => 'Group', :dependent => :delete_all
+  has_many :to_dos,-> {order('position ASC')}, :foreign_key => 'creator_id', :class_name => 'ToDo', :dependent => :destroy
 
   has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
+  has_many :requests, :dependent => :destroy
   
   validates_presence_of :name, :email, :encrypted_password
 
@@ -52,6 +53,10 @@ class User < ActiveRecord::Base
 
   def get_modifiable_events
     return get_events_for_status('modify')
+  end
+
+  def get_requested_events
+    created_events.where(:event_type => Event.event_types[:request])
   end
 
   private

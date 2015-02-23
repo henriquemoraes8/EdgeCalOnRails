@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  get 'requests/index'
+
+  get 'requests/new'
+
+  get 'requests/show'
+
+  get 'requests/edit'
+
+  get 'index/show'
+
+  get 'index/edit'
+
   get 'to_dos/index'
 
   get 'to_dos/edit'
@@ -17,7 +29,7 @@ Rails.application.routes.draw do
 
   get 'groups/delete'
 
-  match ':controller(/:action(/:id))', :via => [:get, :post, :patch]
+  post 'events/create'
 
   post 'subscription/manage'
 
@@ -33,7 +45,11 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :events
+  resources :events do
+    member do
+      get :delete
+    end
+  end
   resources :groups
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -89,4 +105,6 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  match ':controller(/:action(/:id))', :via => [:get, :post, :patch, :delete]
 end
