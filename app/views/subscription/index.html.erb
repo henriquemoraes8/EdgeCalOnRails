@@ -26,7 +26,7 @@
             <%= check_box("events[#{event.id}]","subscribe", {:checked => current_user.has_subscription_to_event(event.id)}) %>
           </td>
           <td class="actions">
-             <%= datetime_select("events[#{event.id}]","next_reminder_time", {:include_blank => true}) %>
+             <%= datetime_select("events[#{event.id}]","next_reminder_time", {:include_blank => true, :minute_step => 5}) %>
            </td>
           <% end %>
         </tr>

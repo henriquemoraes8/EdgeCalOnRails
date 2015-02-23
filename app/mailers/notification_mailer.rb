@@ -15,7 +15,7 @@ class NotificationMailer < ApplicationMailer
 
   def subscription_reminder_email(user, subscription)
     @user = user
-    @event = subscription.event
+    @event = subscription.subscribed_event
     mail(to: 'hrm8@duke.edu', subject: 'Event Notification Email')
   end
   

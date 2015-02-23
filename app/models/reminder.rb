@@ -70,10 +70,10 @@ class Reminder < ActiveRecord::Base
   end
 
   def subscription_reminder
-    puts "SUBSCRIPTION REMINDER NEXT TIME #{next_reminder_time.in_time_zone("Central Time (US & Canada)")}"
+    puts "SUBSCRIPTION REMINDER NEXT TIME #{next_reminder_time}"
     self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
       puts "GONNA SEND"
-      NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
+      NotificationMailer.subscription_reminder_email(subscription.subscriber, subscription).deliver_now
     end
   end
 

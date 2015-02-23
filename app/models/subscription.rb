@@ -20,7 +20,7 @@ class Subscription < ActiveRecord::Base
                     params_r["next_reminder_time(4i)"].to_i,
                     params_r["next_reminder_time(5i)"].to_i)
     puts "DATE IS #{date}"
-    reminder = Reminder.new(:next_reminder_time => date)
+    reminder = Reminder.new(:next_reminder_time => date, :subscription_id => id)
     if reminder.save
       self.reminder = reminder
       return true

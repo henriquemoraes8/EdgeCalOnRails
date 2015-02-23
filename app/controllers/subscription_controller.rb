@@ -25,7 +25,7 @@ class SubscriptionController < ApplicationController
         if !params[:events][event_id]['next_reminder_time(3i)'].blank?
           subscription.set_reminder(params[:events][event_id])
         end
-      elsif params[:events][event_id] == "0"
+      elsif params[:events][event_id][:subscribe] == "0"
         puts "REMOVE SUBS TO EVENT #{event.id}"
         current_user.unsubscribe_to_event(event)
       end
