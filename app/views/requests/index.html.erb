@@ -1,0 +1,113 @@
+<%= link_to 'New Request', requests_new_path %><br><br>
+
+<% if @request_maps.count > 0 %>
+
+<h2>My Requests</h2>
+
+<% @request_maps.each do |request| %>
+    <hr>
+        <% puts "R ITERATION: #{request} R ID: #{request.id} AND EVENT #{request.event}" %>
+    <div class='request'>
+      <em>Request for event:</em> <%= request.event.title %><br>
+      <em>Description:</em> <%= request.event.description %><br>
+      <em>Start Time:</em> <%= request.event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= request.event.end_time.strftime("%-d %b - %H:%M") %><br>
+      Pending Users: <%= request.pending_requests.count %> | Confirmed Users: <%= request.confirmed_requests.count %> |
+      Declined Users: <%= request.declined_requests.count %> | Removed Users: <%= request.removed_requests.count %><br>
+      <%= link_to('Delete', {:action => :destroy, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Edit', {:action => :edit, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Details', {:action => :show, :id => request.id, :class => 'action request'}) %>
+    </div>
+    <br>
+<% end %>
+<hr>
+
+<% end %>
+
+<% if @modification_requests.count > 0 %>
+
+    <h2>Modification Requests</h2>
+    <% @modification_requests.each do |r| %>
+        <% puts "R ITERATION: #{r} R ID: #{r.id} AND EVENT #{r.request_map}" %>
+        <% event = r.request_map.event %>
+        <hr>
+        <div class="request">
+          <em>Event:</em> <%= event.title %><br>
+          <em>Description:</em> <%= event.description %><br>
+          <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+          <div>
+            <h3>change to</h3>
+            <em>Title:</em> <%= r.title %><br>
+            <em>Description:</em> <%= r.description %><br>
+            <em>Start Time:</em> <%= r.start_time.strftime("%-d %b - %H:%M") %><br>
+            <em>End Time:</em> <%= r.end_time.strftime("%-d %b - %H:%M") %><br>
+          </div>
+          <%= link_to('Accept', {:action => :accept_modification, :id => r.id, :class => 'action request'}) %>&nbsp;&nbsp;
+          <%= link_to('Decline', {:action => :decline_modification, :id => r.id, :class => 'action request'}) %>
+        </div>
+    <% end %>
+<% end %>
+
+<% if @pending_requests.count > 0 %>
+
+<h2>Pending Requests</h2>
+    <% puts "PENDING REQUESTS: #{@pending_requests}" %>
+<% @pending_requests.each do |r| %>
+    <% event = r.request_map.event %>
+        <% puts "R ITERATION: #{r} R ID: #{r.id} AND REQUEST MAP #{r.request_map} AND EVENT #{r.request_map.event}" %>
+    <hr>
+    <div class="request">
+      <em>Event requested:</em> <%= event.title %><br>
+      <em>Description:</em> <%= event.description %><br>
+      <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <%= link_to('Accept', {:action => :accept, :id => r.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Decline', {:action => :decline, :id => r.id, :class => 'action request'}) %>
+    </div>
+<% end %>
+
+<hr>
+
+<% end %>
+
+<% if @confirmed_requests.count > 0 %>
+
+<h2>Participating Events</h2>
+<% @confirmed_requests.each do |r| %>
+    <% event = r.request_map.event %>
+    <hr>
+    <div class="request">
+      <em>Event:</em> <%= event.title %><br>
+      <em>Description:</em> <%= event.description %><br>
+      <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <%= link_to('Remove', {:action => :remove, :id => r.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Modify', {:action => :modify, :id => r.id, :class => 'action request'}) %>
+    </div>
+<% end %>
+
+<% end %>
+
+<% if @pending_modifications.count > 0 %>
+
+    <h2>Pending Modifications</h2>
+    <% @pending_modifications.each do |r| %>
+        <% puts "MODIFY ITERATION: #{r} R ID: #{r.id} TITLE #{r.title} DESC #{r.description} START #{r.start_time}" %>
+        <% event = r.request_map.event %>
+        <hr>
+        <div class="request">
+          <em>Event:</em> <%= event.title %><br>
+          <em>Description:</em> <%= event.description %><br>
+          <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+          <div>
+          <h3>change to</h3>
+          <em>Title:</em> <%= r.title %><br>
+          <em>Description:</em> <%= r.description %><br>
+          <em>Start Time:</em> <%= r.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>End Time:</em> <%= r.end_time.strftime("%-d %b - %H:%M") %><br>
+          </div>
+        </div>
+    <% end %>
+<% end %>

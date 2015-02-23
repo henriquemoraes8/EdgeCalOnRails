@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
 	has_many :subscribers, :through => :subscriptions
 
 	has_one :repetition_scheme
-	has_one :request_map
+	has_one :request_map, :dependent => :destroy
 	has_one :to_do, :dependent => :destroy
 
 	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all

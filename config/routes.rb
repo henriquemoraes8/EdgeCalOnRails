@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  get 'requests/index'
+
+  get 'requests/new'
+
+  get 'requests/show'
+
+  get 'requests/edit'
+
+  get 'index/show'
+
+  get 'index/edit'
+
   get 'to_dos/index'
 
   get 'to_dos/edit'
