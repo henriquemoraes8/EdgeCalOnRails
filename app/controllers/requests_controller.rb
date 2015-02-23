@@ -98,13 +98,25 @@ class RequestsController < ApplicationController
   end
 
   def modify
+    @request = Request.find(params[:id])
+  end
 
+  def send_modification_request
+    @request = Request.find(params[:id])
+    @request.assign_attributes(request_params)
+    @request.status = Request.statuses[:modify]
+    @request.save
+    redirect_to requests_index_path
   end
 
   private
 
   def event_params(e_params)
     e_params.require(:event).permit(:title, :description, :start_time, :end_time, :event_type)
+  end
+
+  def request_params
+    params.require(:request).permit(:title, :description, :start_time, :end_time)
   end
 
 end
