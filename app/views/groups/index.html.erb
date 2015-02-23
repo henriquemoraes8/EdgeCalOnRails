@@ -12,10 +12,11 @@
 <body>
 	<a href="#" class="button" data-reveal-id="new_group">New Group</a>
 	<div class="reveal-modal" id="new_group" data-reveal>
-		<%@group = Group.new%>
-    	<%@users = User.where.not(id: current_user.id)%>
+		<%new_attributes = controller.new%>	
+		<%@group=new_attributes[0]%>
+		<%@users = new_attributes[1]%>
 		<%= render 'shared/group_form'%>
-  		<a class="close-reveal-modal">x</a>
+  		<a class="close-reveal-modal"></a>
   		<!--%= render 'form' %-->
 	</div>
 	<script>
