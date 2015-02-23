@@ -4,7 +4,8 @@ class EventsController < ApplicationController
   # GET /events
   # GET /events.json
   def index
-    @events = Event.between(params['start'], params['end']) if (params['start'] && params['end']) 
+    # @events = Event.between(params['start'], params['end']) if (params['start'] && params['end']) 
+    @events = current_user.get_visible_events
     
     @own_events = current_user.created_events
     @visible_events = current_user.get_visible_events
