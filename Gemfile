@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 ## gem 'fullcalendar_engine'
 gem 'fullcalendar-rails'
 
+gem "watu_table_builder", :require => "table_builder"
+
 # Authentication framework
 gem 'devise'
 
@@ -12,6 +14,10 @@ gem 'devise'
 gem "foundation-rails"
 
 gem 'simple_form'
+
+gem 'jquery-ui-rails'
+
+gem 'jquery-datetimepicker-rails'
 
 # Puma webserver for hosting (better performance)
 gem 'puma'

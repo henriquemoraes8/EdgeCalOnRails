@@ -12,3 +12,4 @@
 !/log/.keep
 /tmp
 .bash_profile.env
+.env

@@ -88,6 +88,17 @@ class Event < ActiveRecord::Base
 		self.description = 'no to-do could be fit for this event'
 		save
 	end
+  
+  def self.between(start_time, end_time)
+      where('start_at > :lo and start_at < :up',
+        :lo => Event.format_date(start_time),
+        :up => Event.format_date(end_time)
+      )
+    end
+
+  def self.format_date(date_time)
+     Time.at(date_time.to_i).to_formatted_s(:db)
+  end
 
 	private
 

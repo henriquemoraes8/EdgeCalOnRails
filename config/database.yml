@@ -81,5 +81,3 @@ test:
 production:
   <<: *default
   database: edgecal_production
-  username: edgecal
-  password: <%= ENV['EDGECAL_DATABASE_PASSWORD'] %>
