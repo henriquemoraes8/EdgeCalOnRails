@@ -1,6 +1,6 @@
 class RequestMap < ActiveRecord::Base
   belongs_to :event
-  has_many :requests, :dependent => :delete_all
+  has_many :requests, :dependent => :destroy
 
   def pending_requests
     requests.where(:status => Request.statuses[:pending])

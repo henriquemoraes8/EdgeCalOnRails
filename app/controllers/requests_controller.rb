@@ -5,6 +5,7 @@ class RequestsController < ApplicationController
     puts "\n\nEVENTS #{current_user.get_requested_events} MAP: #{@request_map}"
 
     @pending_requests = current_user.requests.where(:status => Request.statuses[:pending])
+    @confirmed_requests = current_user.requests.where(:status => Request.statuses[:confirmed])
   end
 
   def show
@@ -74,13 +75,30 @@ class RequestsController < ApplicationController
 
   def accept
     request = Request.find(params[:id])
+    request.status = Request.statuses[:confirmed]
+    request.save
+    flash[:notice] = "Event '#{request.request_map.event.title}' confirmed"
+    redirect_to(requests_index_path)
   end
 
   def decline
     request = Request.find(params[:id])
     request.status = Request.statuses[:declined]
     request.save
+    flash[:notice] = "Event '#{request.request_map.event.title}' was declined"
     redirect_to(requests_index_path)
+  end
+
+  def remove
+    request = Request.find(params[:id])
+    request.status = Request.statuses[:modify]
+    request.save
+    flash[:notice] = "Event '#{request.request_map.event.title}' was removed"
+    redirect_to(requests_index_path)
+  end
+
+  def modify
+
   end
 
   private

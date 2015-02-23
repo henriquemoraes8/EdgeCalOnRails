@@ -1,10 +1,11 @@
 <%= link_to 'New Request', requests_new_path %><br><br>
 
+<% if @request_maps.count > 0 %>
+
 <h2>My Requests</h2>
 
-<hr>
-
 <% @request_maps.each do |request| %>
+    <hr>
     <div class='request'>
       <em>Request for event:</em> <%= request.event.title %><br>
       <em>Description:</em> <%= request.event.description %><br>
@@ -16,33 +17,48 @@
       <%= link_to('Edit', {:action => :edit, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
       <%= link_to('Details', {:action => :show, :id => request.id, :class => 'action request'}) %>
     </div>
-    <hr>
     <br>
 <% end %>
 <hr>
 
+<% end %>
+
+<% if @pending_requests.count > 0 %>
+
 <h2>Pending Requests</h2>
-<% @requests.each do |r| %>
+    <% puts "PENDING REQUESTS: #{@pending_requests}" %>
+<% @pending_requests.each do |r| %>
+    <% event = r.request_map.event %>
+        <% puts "R ITERATION: #{r} R ID: #{r.id} AND REQUEST MAP #{r.request_map} AND EVENT #{r.request_map.event}" %>
+    <hr>
     <div class="request">
-      <em>Event requested:</em> <%= r.request_map.event.title %><br>
-      <em>Description:</em> <%= request.event.description %><br>
-      <em>Start Time:</em> <%= request.event.start_time.strftime("%-d %b - %H:%M") %><br>
-      <em>End Time:</em> <%= request.event.end_time.strftime("%-d %b - %H:%M") %><br>
-      <%= link_to('Accept', {:action => :accept, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
-      <%= link_to('Decline', {:action => :decline, :id => request.id, :class => 'action request'}) %>
+      <em>Event requested:</em> <%= event.title %><br>
+      <em>Description:</em> <%= event.description %><br>
+      <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <%= link_to('Accept', {:action => :accept, :id => r.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Decline', {:action => :decline, :id => r.id, :class => 'action request'}) %>
     </div>
 <% end %>
 
 <hr>
 
-<h2>Requested Events</h2>
-<% @requests.each do |r| %>
+<% end %>
+
+<% if @confirmed_requests.count > 0 %>
+
+<h2>Participating Events</h2>
+<% @confirmed_requests.each do |r| %>
+    <% event = r.request_map.event %>
+    <hr>
     <div class="request">
-      <em>Event requested:</em> <%= r.request_map.event.title %><br>
-      <em>Description:</em> <%= request.event.description %><br>
-      <em>Start Time:</em> <%= request.event.start_time.strftime("%-d %b - %H:%M") %><br>
-      <em>End Time:</em> <%= request.event.end_time.strftime("%-d %b - %H:%M") %><br>
-      <%= link_to('Accept', {:action => :accept, :id => request.id, :class => 'action request'}) %>&nbsp;&nbsp;
-      <%= link_to('Decline', {:action => :decline, :id => request.id, :class => 'action request'}) %>
+      <em>Event:</em> <%= event.title %><br>
+      <em>Description:</em> <%= event.description %><br>
+      <em>Start Time:</em> <%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End Time:</em> <%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <%= link_to('Remove', {:action => :remove, :id => r.id, :class => 'action request'}) %>&nbsp;&nbsp;
+      <%= link_to('Modify', {:action => :modify, :id => r.id, :class => 'action request'}) %>
     </div>
+<% end %>
+
 <% end %>
