@@ -31,11 +31,9 @@ class ToDo < ActiveRecord::Base
 
   def set_reminder(params_r)
 
-    date = Time.new(params_r["next_reminder_time(1i)"].to_i,
-                            params_r["next_reminder_time(2i)"].to_i,
-                            params_r["next_reminder_time(3i)"].to_i,
-                            params_r["next_reminder_time(4i)"].to_i,
-                            params_r["next_reminder_time(5i)"].to_i)
+    date = DateTime.parse("#{params_r[:next_reminder_time]} Eastern Time (US & Canada)")
+    puts "REMINDER TIME #{date}"
+
     reminder = Reminder.new(:recurrence => params_r[:recurrence], :next_reminder_time => date)
     if reminder.save
       self.reminder = reminder

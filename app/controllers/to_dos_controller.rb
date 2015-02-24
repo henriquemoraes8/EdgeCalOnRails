@@ -30,7 +30,7 @@ class ToDosController < ApplicationController
     if @todo.save
       flash[:notice] = "To-do '#{@todo.title}' created successfully"
 
-      if !params[:to_do][:reminder]['next_reminder_time(3i)'].blank?
+      if !params[:to_do][:reminder][:next_reminder_time].blank?
         puts "WILL CREATE REMINDER"
         if !@todo.set_reminder(params[:to_do][:reminder])
           @todo_count = current_user.to_dos.count + 1
