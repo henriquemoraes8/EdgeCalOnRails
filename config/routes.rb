@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   
   get 'events/busy_events.json' => 'events#busy_events'
   
-  get 'events/:id' => 'events#edit'
+  get 'events/~:id' => 'events#edit'
 
   devise_for :users
   
