@@ -1,10 +1,11 @@
+<% content_for :calendar do %>
+	<%= link_to image_tag("add.png"), new_event_path, id: "new_event_button" %>
+	<br>
+	<br>
+	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
+<% end %>
+
 <h1>My Events</h1>
-
-<br>
-
-<%= link_to 'New Event', new_event_path %>
-
-<br>
 
 <% if @own_events.count > 0 %>
     <div class="events own">
@@ -30,17 +31,6 @@
       <%= render(:partial => 'table_index', :locals => {:events => @busy_events, :status => "busy"}) %>
     </div>
 <% end %>
-
-<% content_for :calendar do %>
-	<% render 'calendar' %>
-	<div id="calendar"></div>
-<% end %>
-
-<%= content_tag "div", id: "visible_events", data: @visible_events do %>
-  
-<% end %>
-
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script>
 
 <!-- <div>
   <% @friends.each do |friend| %>

@@ -19,6 +19,7 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    return @event
   end
 
   # GET /events/1/edit
@@ -49,7 +50,6 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-
         puts "SUCCESSFUL SAVE"
         @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
         @subscription.visibility = params[:subscription_visibility].to_i
@@ -74,6 +74,7 @@ class EventsController < ApplicationController
     puts "MASS ASSIGNED EVENT FROM UPDATE IS #{@event}"
     respond_to do |format|
       if @event.update(event_params)
+require "events_controller"
 
         if !params[:event][:visibility][:status].blank?
           @event.set_visibility(params[:event][:visibility])
