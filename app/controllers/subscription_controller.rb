@@ -1,6 +1,6 @@
 class SubscriptionController < ApplicationController
 
-
+  # TODO: Need nil check here
   def index
     @users = User.where.not(id: current_user.id)
     puts "**** PARAMS: #{params}"

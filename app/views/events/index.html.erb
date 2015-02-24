@@ -36,8 +36,11 @@
 	<div id="calendar"></div>
 <% end %>
 
+<%= content_tag "div", id: "visible_events", data: @visible_events do %>
+  
+<% end %>
+
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script>
-    <link rel="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.css">
 
 <!-- <div>
   <% @friends.each do |friend| %>

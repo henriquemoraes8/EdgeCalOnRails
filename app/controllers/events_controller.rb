@@ -98,6 +98,13 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  # GET /busy_events.json
+  def busy_events
+    # render json: current_user.get_busy_events
+    @events = current_user.get_busy_events
+    render 'busy.json.jbuilder'
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
