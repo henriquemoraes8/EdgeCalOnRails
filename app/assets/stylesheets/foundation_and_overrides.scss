@@ -95,25 +95,25 @@ $column-gutter: rem-calc(60);
 // $font-weight-normal: normal !default;
 // $font-weight-bold: bold !default;
 
-// $white       : #FFFFFF;
-// $ghost       : #FAFAFA;
-// $snow        : #F9F9F9;
-// $vapor       : #F6F6F6;
-// $white-smoke : #F5F5F5;
-// $silver      : #EFEFEF;
-// $smoke       : #EEEEEE;
-// $gainsboro   : #DDDDDD;
-// $iron        : #CCCCCC;
-// $base        : #AAAAAA;
-// $aluminum    : #999999;
-// $jumbo       : #888888;
-// $monsoon     : #777777;
-// $steel       : #666666;
-// $charcoal    : #555555;
-// $tuatara     : #444444;
-// $oil         : #333333;
-// $jet         : #222222;
-// $black       : #000000;
+ $white       : #FFFFFF;
+ $ghost       : #FAFAFA;
+ $snow        : #F9F9F9;
+ $vapor       : #F6F6F6;
+ $white-smoke : #F5F5F5;
+ $silver      : #EFEFEF;
+ $smoke       : #EEEEEE;
+ $gainsboro   : #DDDDDD;
+ $iron        : #CCCCCC;
+ $base        : #AAAAAA;
+ $aluminum    : #999999;
+ $jumbo       : #888888;
+ $monsoon     : #777777;
+ $steel       : #666666;
+ $charcoal    : #555555;
+ $tuatara     : #444444;
+ $oil         : #333333;
+ $jet         : #222222;
+ $black       : #000000;
 
 // We use these as default colors throughout
 // $primary-color: #008CBA;
@@ -1270,12 +1270,12 @@ $alert-transition-ease: ease-out;
 // $include-html-table-classes: $include-html-classes;
 
 // These control the background color for the table and even rows
-// $table-bg: $white;
+// $table-bg: #000000;
 // $table-even-row-bg: $snow;
 
 // These control the table cell border style
 // $table-border-style: solid;
-// $table-border-size: 1px;
+// $table-border-size: 5px;
 // $table-border-color: $gainsboro;
 
 // These control the table head styles
@@ -1445,3 +1445,66 @@ $topbar-divider-border-top: solid 1px #FFFFFF;
 // $include-accessibility-classes: true;
 
 @import 'foundation';
+
+#cal table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#cal td,
+#cal th {
+  font-family: "Lucida Grande",arial,helvetica,sans-serif;
+  font-size: 10px;
+  padding: 6px;
+  border: 1px solid #999;
+}
+
+#cal th {
+  background: #DDD;
+  color: #666;
+  text-align: center;
+  width: 14.2857142857143%;
+}
+
+#cal td {
+  background: #FFF;
+  color: #777;
+  height: 80px;
+  vertical-align: top;
+  font-size: 16px;
+}
+
+#cal .notmonth {
+  color: #CCC;
+}
+
+#cal #month {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+#cal #month a, #cal #month a:hover {
+  text-decoration: none;
+  padding: 0 10px;
+  color: #999;
+}
+
+#cal .today {
+  background-color: #D7F2FF;
+}
+
+#cal ul {
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  list-style: none;
+}
+
+#cal li {
+  margin: 0;
+  padding: 0;
+  font-size: 11px;
+  text-align: center;
+}

@@ -1,8 +1,10 @@
 source 'https://rubygems.org'
 
 
-###############
-# Added by @brianbolze
+## gem 'fullcalendar_engine'
+gem 'fullcalendar-rails'
+
+gem "watu_table_builder", :require => "table_builder"
 
 # Authentication framework
 gem 'devise'
@@ -12,6 +14,12 @@ gem 'devise'
 gem "foundation-rails"
 
 gem 'simple_form'
+
+gem 'jquery-ui-rails'
+
+gem 'jquery-datetimepicker-rails'
+
+gem 'jquery-timepicker-rails'
 
 # Puma webserver for hosting (better performance)
 gem 'puma'
@@ -46,8 +54,6 @@ gem 'acts_as_list'
 gem 'rufus-scheduler', '~> 3.0.9'
 
 gem 'rails_12factor', group: :production
-
-gem 'fullcalendar-rails'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
