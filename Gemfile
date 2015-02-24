@@ -28,6 +28,9 @@ gem 'heroku'
 
 gem 'heroku-api'
 
+#########################################
+gem 'rest-client'
+
 # Basic HTML layout template
 group :development do
   gem 'rails_layout'
