@@ -24,6 +24,10 @@ gem 'jquery-timepicker-rails'
 # Puma webserver for hosting (better performance)
 gem 'puma'
 
+gem 'heroku'
+
+gem 'heroku-api'
+
 #########################################
 gem 'rest-client'
 
@@ -87,4 +91,4 @@ group :development, :test do
   gem 'spring'
 end
 
-# ruby '2.0.0'
+ruby '2.2.0'
