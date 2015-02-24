@@ -16,6 +16,9 @@ gem 'simple_form'
 # Puma webserver for hosting (better performance)
 gem 'puma'
 
+#########################################
+gem 'rest-client'
+
 # Basic HTML layout template
 group :development do
   gem 'rails_layout'
