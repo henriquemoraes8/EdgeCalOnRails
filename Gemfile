@@ -24,6 +24,10 @@ gem 'jquery-timepicker-rails'
 # Puma webserver for hosting (better performance)
 # gem 'puma'
 
+gem 'heroku'
+
+gem 'heroku-api'
+
 # Basic HTML layout template
 group :development do
   gem 'rails_layout'
