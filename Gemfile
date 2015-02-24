@@ -22,7 +22,7 @@ gem 'jquery-datetimepicker-rails'
 gem 'jquery-timepicker-rails'
 
 # Puma webserver for hosting (better performance)
-gem 'puma'
+# gem 'puma'
 
 # Basic HTML layout template
 group :development do
