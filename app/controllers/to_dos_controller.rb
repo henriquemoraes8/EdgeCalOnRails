@@ -1,6 +1,9 @@
 class ToDosController < ApplicationController
   def index
     @todos = current_user.to_dos.sorted
+    # puts "GOT TO LINE BEFORE EMAIL NOTIFICATION"
+    # NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
+    # NotificationMailer.send_notification_email.deliver_now
   end
 
   def edit
@@ -30,7 +33,7 @@ class ToDosController < ApplicationController
     if @todo.save
       flash[:notice] = "To-do '#{@todo.title}' created successfully"
 
-      if !params[:to_do][:reminder]['next_reminder_time(3i)'].blank?
+      if !params[:to_do][:reminder][:next_reminder_time].blank?
         puts "WILL CREATE REMINDER"
         if !@todo.set_reminder(params[:to_do][:reminder])
           @todo_count = current_user.to_dos.count + 1

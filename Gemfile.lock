@@ -107,6 +107,9 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    mailgun-ruby (1.0.3)
+      json (~> 1.8)
+      rest-client (~> 1.6)
     mime-types (2.4.3)
     mini_portile (0.6.2)
     minitest (5.5.1)
@@ -159,10 +162,7 @@ GEM
       railties (>= 4.2.0, < 5)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-<<<<<<< HEAD
     rubyzip (0.9.9)
-=======
->>>>>>> 966845ed269f6c167e246ecfce0a2f5d6f7ea61b
     rufus-scheduler (3.0.9)
       tzinfo
     sass (3.4.12)
@@ -225,6 +225,7 @@ DEPENDENCIES
   jquery-rails
   jquery-timepicker-rails
   jquery-ui-rails
+  mailgun-ruby
   pg
   puma
   rails (= 4.2.0)

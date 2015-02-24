@@ -14,11 +14,7 @@ class Subscription < ActiveRecord::Base
 
   def set_reminder(params_r)
     puts "*** WILL CREATE REMINDER WITH PARAMS: #{params_r}"
-    date = Time.new(params_r["next_reminder_time(1i)"].to_i,
-                    params_r["next_reminder_time(2i)"].to_i,
-                    params_r["next_reminder_time(3i)"].to_i,
-                    params_r["next_reminder_time(4i)"].to_i,
-                    params_r["next_reminder_time(5i)"].to_i)
+    date = DateTime.parse("#{params_r[:next_reminder_time]} Eastern Time (US & Canada)")
     puts "DATE IS #{date}"
     reminder = Reminder.new(:next_reminder_time => date, :subscription_id => id)
     if reminder.save

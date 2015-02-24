@@ -31,6 +31,9 @@ gem 'heroku-api'
 #########################################
 gem 'rest-client'
 
+gem 'mailgun-ruby'
+#########################################
+
 # Basic HTML layout template
 group :development do
   gem 'rails_layout'
