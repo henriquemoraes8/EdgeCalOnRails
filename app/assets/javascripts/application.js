@@ -18,8 +18,8 @@
 // require jquery-ui/datepicker
 //= require jquery.datetimepicker
 //= require jquery.datetimepicker/init
-// require jquery.timepicker.js
-// require_tree .
+//= require jquery.timepicker.js
+//= require_tree .
 
 $(function(){ $(document).foundation(); });
 
