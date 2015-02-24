@@ -28,18 +28,19 @@ class User < ActiveRecord::Base
 
   def subscribe_to_event(event)
     if Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).empty?
-      Subscription.create(subscribed_event_id: event.id,subscriber_id: self.id)
+      return Subscription.create(subscribed_event_id: event.id,subscriber_id: self.id)
     end
+    Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).first
   end
 
   def unsubscribe_to_event(event)
     if !Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).empty?
-      Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).first.destroy
+      return Subscription.where(subscribed_event_id: event.id,subscriber_id: self.id).first.destroy
     end
   end
 
   def get_visible_events
-    return get_events_for_status('visible')
+    get_events_for_status('visible')
   end
 
   def get_busy_events

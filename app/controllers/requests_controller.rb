@@ -91,6 +91,7 @@ class RequestsController < ApplicationController
     request = Request.find(params[:id])
     request.status = Request.statuses[:confirmed]
     request.save
+    current_user.subscribe_to_event(request.request_map.event)
     flash[:notice] = "Event '#{request.request_map.event.title}' confirmed"
     redirect_to(requests_index_path)
   end
@@ -105,8 +106,9 @@ class RequestsController < ApplicationController
 
   def remove
     request = Request.find(params[:id])
-    request.status = Request.statuses[:modify]
+    request.status = Request.statuses[:removed]
     request.save
+    current_user.unsubscribe_to_event(request.request_map.event)
     flash[:notice] = "Event '#{request.request_map.event.title}' was removed"
     redirect_to(requests_index_path)
   end
@@ -132,7 +134,9 @@ class RequestsController < ApplicationController
     event.end_time = @request.end_time
 
     if event.save
-      @request.request_map.requests.map {|r| r.status = Request.statuses[:pending]; r.save}
+      @request.request_map.requests.map { |r| r.status = Request.statuses[:pending];
+        r.save;
+        r.user.unsubscribe_to_event(r.request_map.event)}
       flash[:notice] = "Event '#{event.title}' modified by #{@request.user.email}"
       redirect_to requests_index_path
     else

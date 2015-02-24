@@ -36,7 +36,7 @@ class ToDo < ActiveRecord::Base
                             params_r["next_reminder_time(3i)"].to_i,
                             params_r["next_reminder_time(4i)"].to_i,
                             params_r["next_reminder_time(5i)"].to_i)
-    reminder = Reminder.create(:recurrence => params_r[:recurrence], :next_reminder_time => date)
+    reminder = Reminder.new(:recurrence => params_r[:recurrence], :next_reminder_time => date)
     if reminder.save
       self.reminder = reminder
       return true
