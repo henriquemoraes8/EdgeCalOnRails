@@ -10,16 +10,16 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require jquery
-//= require jquery_ujs
+// require jquery
+// require jquery_ujs
 //= require foundation
-//= require turbolinks
-//= require fullcalendar
-//= require jquery-ui/datepicker
-//= require jquery.datetimepicker
-//= require jquery.datetimepicker/init
-//= require jquery.timepicker.js
-//= require_tree .
+// require turbolinks
+// require fullcalendar
+// require jquery-ui/datepicker
+// require jquery.datetimepicker
+// require jquery.datetimepicker/init
+// require jquery.timepicker.js
+// require_tree .
 
 $(function(){ $(document).foundation(); });
 
