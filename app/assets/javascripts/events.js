@@ -40,4 +40,4 @@ $(document).on("ready page:load", function(){
 	],
 	
   })
-}).call(this)
+}).call(this);
