@@ -1,4 +1,4 @@
-$(document).on("ready page:load", function(){
+$(function(){
   $('#calendar').fullCalendar({
 	  
 	editable: true,
@@ -30,7 +30,9 @@ $(document).on("ready page:load", function(){
 		        start  : '2015-02-09T12:30:00',
 		        allDay : false // will make the time show
 		    }
-		]},
+		  ],
+		  color: 'grey'
+		},
 		
 		{
 			url: '/events',
@@ -40,4 +42,4 @@ $(document).on("ready page:load", function(){
 	],
 	
   })
-}).call(this);
+});
