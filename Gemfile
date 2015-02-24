@@ -19,6 +19,8 @@ gem 'jquery-ui-rails'
 
 gem 'jquery-datetimepicker-rails'
 
+gem 'jquery-timepicker-rails'
+
 # Puma webserver for hosting (better performance)
 gem 'puma'
 

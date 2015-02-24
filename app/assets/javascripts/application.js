@@ -17,6 +17,7 @@
 //= require jquery-ui/datepicker
 //= require jquery.datetimepicker
 //= require jquery.datetimepicker/init
+//= require jquery.timepicker.js
 //= require fullcalendar
 //= require_tree .
 
@@ -24,4 +25,8 @@ $(function(){ $(document).foundation(); });
 
 $(function() {
 	$(".datetimepicker").datetimepicker();
+});
+
+$(function() {
+	$(".timepicker").timepicker({ 'step': 15 });
 });
