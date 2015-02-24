@@ -32,6 +32,10 @@ Rails.application.routes.draw do
   post 'events/create'
 
   post 'subscription/manage'
+  
+  get 'events/busy_events.json' => 'events#busy_events'
+  
+  get 'events/:id' => 'events#edit'
 
   devise_for :users
   

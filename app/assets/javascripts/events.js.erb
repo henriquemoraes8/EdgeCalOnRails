@@ -1,7 +1,9 @@
+<% if true %>
+
 $(function(){
   $('#calendar').fullCalendar({
 	  
-	editable: true,
+	editable: false,
 	header: {
       left: 'prev today next',
       center: 'title',
@@ -9,6 +11,7 @@ $(function(){
 	},
 	height: 500,
 	defaultView: 'month',
+	theme: true,
 	buttonIcons: {
 		prev: 'left-single-arrow',
      	next: 'right-single-arrow'
@@ -36,6 +39,10 @@ $(function(){
 		
 		{
 			url: '/events',
+		},
+		
+		{
+			url: '/events/busy_events.json',
 			color: 'red'
 		},
 		
@@ -43,3 +50,5 @@ $(function(){
 	
   })
 });
+
+<% end %>
