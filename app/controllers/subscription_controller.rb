@@ -22,7 +22,7 @@ class SubscriptionController < ApplicationController
       if params[:events][event_id][:subscribe] == "1"
         puts "ADD SUBS TO EVENT #{event.id}"
         subscription = current_user.subscribe_to_event(event)
-        if !params[:events][event_id]['next_reminder_time(3i)'].blank?
+        if !params[:events][event_id][:next_reminder_time].blank?
           subscription.set_reminder(params[:events][event_id])
         end
       elsif params[:events][event_id][:subscribe] == "0"
