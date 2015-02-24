@@ -15,7 +15,6 @@ $(document).on("ready page:load", function(){
 	},
 	  
 	eventSources: [
-		<%# Placeholder events %>
 		{events: [
 		    {
 		        title  : 'event1',
@@ -33,7 +32,6 @@ $(document).on("ready page:load", function(){
 		    }
 		]},
 		
-		<%# Load all events from events model %>
 		{
 			url: '/events',
 			color: 'red'
