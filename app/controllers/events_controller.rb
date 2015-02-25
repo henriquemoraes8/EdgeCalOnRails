@@ -42,12 +42,6 @@ class EventsController < ApplicationController
 
     puts "MASS ASSIGNED EVENT IS #{@event}"
 
-    # if @event.event_type == 'to_do' && @event.end_time - @event.start_time <= 15.minutes
-    #   @event.errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
-    #   render('new')
-    #   return
-    # end
-
     respond_to do |format|
       if @event.save
         puts "SUCCESSFUL SAVE"
@@ -55,7 +49,13 @@ class EventsController < ApplicationController
         @subscription.visibility = params[:subscription_visibility].to_i
         @subscription.save
 
-        #@event.subscriptions << @subscription
+        if !params[:event][:reminder][:next_reminder_time].blank?
+          puts "WILL CREATE EVENT REMINDER"
+          if !@subscription.set_reminder(params[:event][:reminder])
+            render('new')
+            return
+          end
+        end
 
         format.html { redirect_to events_path, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
@@ -74,7 +74,7 @@ class EventsController < ApplicationController
     puts "MASS ASSIGNED EVENT FROM UPDATE IS #{@event}"
     respond_to do |format|
       if @event.update(event_params)
-require "events_controller"
+        require "events_controller"
 
         if !params[:event][:visibility][:status].blank?
           @event.set_visibility(params[:event][:visibility])
