@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	enum event_type: [:regular, :to_do, :request]
+	enum event_type: [:regular, :to_do, :request, :recurrent]
 
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
@@ -7,7 +7,7 @@ class Event < ActiveRecord::Base
 	has_many :subscriptions, :foreign_key => 'subscribed_event_id', :dependent => :destroy
 	has_many :subscribers, :through => :subscriptions
 
-	has_one :repetition_scheme
+	belongs_to :repetition_scheme
 	has_one :request_map, :dependent => :destroy
 	has_one :to_do
 
@@ -18,6 +18,10 @@ class Event < ActiveRecord::Base
 
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
+
+	def duration
+		end_time - start_time
+	end
 
 	def set_visibility(params_v)
 		puts "*** SAVING IN EVENT ****"

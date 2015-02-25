@@ -1,0 +1,13 @@
+\contentsline {section}{\numberline {1}Previous Design Analysis}{2}
+\contentsline {section}{\numberline {2}Current Design Evaluation}{2}
+\contentsline {subsection}{\numberline {2.1}Views}{2}
+\contentsline {subsection}{\numberline {2.2}Controllers}{3}
+\contentsline {subsection}{\numberline {2.3}Models}{3}
+\contentsline {subsection}{\numberline {2.4}Database}{4}
+\contentsline {section}{\numberline {3}Future Design Needs}{6}
+\contentsline {section}{\numberline {4}Design Process Notes}{6}
+\contentsline {subsection}{\numberline {4.1}Designed and Conducted Experiment}{6}
+\contentsline {subsection}{\numberline {4.2}Analyzed and Interpreted Data}{7}
+\contentsline {subsection}{\numberline {4.3}Designed System Component to Meet Desired Needs}{7}
+\contentsline {subsection}{\numberline {4.4}Deal with Realistic Constraints}{7}
+\contentsline {subsection}{\numberline {4.5}Contributed to Team Work and Interacted with Team Members}{8}

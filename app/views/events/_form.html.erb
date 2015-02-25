@@ -45,6 +45,17 @@
       </div>
     <% end %>
 
+    <%= f.fields_for(:repetition) do |r_form| %>
+        <div class="field">
+          <%= r_form.label :recurrence, 'repeat' %><br>
+          <%= r_form.select :recurrence, RepetitionScheme.recurrences.keys.map {|r| [r.humanize, r]} %>
+        </div>
+        <div class="field">
+          <%= r_form.label :until, 'until' %><br>
+          <%= r_form.text_field :until,  class: 'datetimepicker' %>
+        </div>
+    <% end %>
+
 
   <div class="actions">
     <%= f.submit 'Submit', class: "button radius"%>
