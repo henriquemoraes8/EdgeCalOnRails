@@ -10,7 +10,7 @@
 
 <% if @own_events.count > 0 %>
     <div class="events own">
-      <h3>Own Events</h3>
+      <h3>Owned Events</h3>
       <%= render(:partial => 'table_index', :locals => {:events => @own_events, :status => nil}) %>
     </div>
 <% end %>

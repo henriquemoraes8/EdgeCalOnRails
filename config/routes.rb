@@ -34,8 +34,9 @@ Rails.application.routes.draw do
   post 'subscription/manage'
   
   get 'events/busy_events.json' => 'events#busy_events'
-  
-  get 'events/~:id' => 'events#edit'
+    
+  # GET /events/1/get_subscribers
+  get 'events/:id/get_subscribers' => 'events#get_subscribers'
 
   devise_for :users
   
