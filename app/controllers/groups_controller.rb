@@ -23,19 +23,27 @@ class GroupsController < ApplicationController
     #render('delete')
     #@membership = Membership.new()
     return @group, @users
+    #render 'shared/group_form', :locals => {:group => @group, :users=@users}
   end
 
   def create
     puts "PARAMS IS :#{params}"
     @group = Group.new(group_params)
     @group.owner_id = current_user.id
+    #@users = User.where.not(id: current_user.id)
 
-    if @group.save
+    save_item(@group)
+  end
+
+  def save_item(group)
+    if group.save
       if params[:members]
         params[:members].keys.each do |u_id|
-          if params[:members][u_id] == '1'
+          if params[:members][u_id] == '1' && !@group.members.exists?(u_id.to_i)
             puts "ADDING MEMBER ID: #{u_id}"
-            @group.members << User.find(u_id)
+            @group.members << User.find(u_id.to_i)
+          elsif params[:members][u_id] == '0' && @group.members.exists?(u_id.to_i)
+            @membership=@group.memberships.where(:member_id => u_id).delete_all
           end
         end
       end
@@ -48,7 +56,18 @@ class GroupsController < ApplicationController
   end
 
   def edit
+    @group= Group.find(params[:id])
+    @users = User.where.not(id: current_user.id)
+  end
 
+  def update
+    @group = Group.find(params[:id])
+    if @group.update_attributes(group_params)
+      save_item(@group)
+      #redirect_to(:action => 'index')
+    else
+      render('index')
+    end
   end
 
   helper_method :delete
