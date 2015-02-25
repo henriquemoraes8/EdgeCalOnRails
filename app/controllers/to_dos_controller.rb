@@ -1,4 +1,13 @@
 class ToDosController < ApplicationController
+
+  ################################################################
+  # The To-Dos controller deals with Present Until Done events,
+  # which we call To-Dos in our project.  Each To-Do can have its
+  # own reminder, which will send an email reminder to the user
+  # about their to-do.  To-Dos will remain on the user's calendar
+  # until they're done.
+  ################################################################
+
   def index
     @todos = current_user.to_dos.sorted
     # puts "GOT TO LINE BEFORE EMAIL NOTIFICATION"
