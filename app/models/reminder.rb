@@ -59,15 +59,14 @@ class Reminder < ActiveRecord::Base
       puts "NO RECURR NEXT TIME #{next_reminder_time}"
       puts "NOW ACCORDING TO RUFUS: #{Rufus::Scheduler.parse(Time.now)}"
       self.job_id = Rufus::Scheduler.singleton.at next_reminder_time.in_time_zone("Eastern Time (US & Canada)") do
-        puts "GONNA SEND"
-        puts "SCHEDULER WOKE UP HERE"
+        puts "TO-DO SCHEDULER WOKE UP"
         # NotificationMailer.send_notification_email
         NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
         # NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
       end
     else
       self.job_id = Rufus::Scheduler.singleton.every Reminder.recurrence_to_date_time(recurrence), :first_at => next_reminder_time.in_time_zone("Eastern Time (US & Canada)") do
-        puts "SCHEDULER WOKE UP HERE"
+        puts "TO-DO SCHEDULER WOKE UP"
         # NotificationMailer.send_notification_email
         NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
         # NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
@@ -78,10 +77,20 @@ class Reminder < ActiveRecord::Base
 
   def subscription_reminder
     puts "SUBSCRIPTION REMINDER NEXT TIME #{next_reminder_time}"
-    self.job_id = Rufus::Scheduler.singleton.at next_reminder_time do
-      puts "GONNA SEND"
-      # NotificationMailer.send_notification_email
-      NotificationMailer.subscription_reminder_email(subscription.subscriber, subscription).deliver_now
+    puts recurrence
+    if recurrence == 'no_recurrence'
+      puts "NO RECURR NEXT TIME #{next_reminder_time}"
+      puts "NOW ACCORDING TO RUFUS: #{Rufus::Scheduler.parse(Time.now)}"
+      self.job_id = Rufus::Scheduler.singleton.at next_reminder_time.in_time_zone("Eastern Time (US & Canada)") do
+        puts "SUBSCRIPTION SCHEDULER WOKE UP HERE"
+        NotificationMailer.subscription_reminder_email(subscription.subscriber, subscription).deliver_now
+      end
+    else
+      puts "THIS THING IS RECURRING"
+      self.job_id = Rufus::Scheduler.singleton.every Reminder.recurrence_to_date_time(recurrence), :first_at => next_reminder_time.in_time_zone("Eastern Time (US & Canada)") do
+        puts "SUBSCRIPTION SCHEDULER WOKE UP HERE"
+        NotificationMailer.subscription_reminder_email(subscription.subscriber, subscription).deliver_now
+      end
     end
   end
 

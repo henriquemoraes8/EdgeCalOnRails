@@ -51,7 +51,9 @@ class EventsController < ApplicationController
 
         if !params[:event][:reminder][:next_reminder_time].blank?
           puts "WILL CREATE EVENT REMINDER"
+          puts "WHAT AM I DOING HERE EXACTLY?"
           if !@subscription.set_reminder(params[:event][:reminder])
+            puts "WHAT AM I DOING HERE EXACTLY?"
             render('new')
             return
           end
