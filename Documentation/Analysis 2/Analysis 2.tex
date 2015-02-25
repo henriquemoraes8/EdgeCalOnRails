@@ -3,6 +3,9 @@
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{color}
+\usepackage{graphicx}
+
+
 
 \renewcommand{\baselinestretch}{1.4}
 \setlength{\parskip}{0.8em}
@@ -98,6 +101,12 @@ Last important point of ActiveRecords are dependencies. We are able to specify t
 
 The design of the database changed drastically since evolution 1. It got much more complex and with the help of active records callbacks and dependencies, it becomes self-maintainable in many points. Each ActiveRecord has its corresponding table and relations. Those are:
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{erd.png}
+\caption{Database ERD Diagram}
+\end{figure}
+
 \begin{itemize}
 
   \item User: holds user general information along with the current session. A user has many created events and subscriptions to other user created events. It holds many memberships to groups defined by other users and many self-created to-dos. It also has many visibilities applied to him specifically regarding someone else’s event and several requests made by another person to him. A user model is responsible for retrieving any type of event with a certain characteristic related to him. Also, it creates and removes its own subscription.
@@ -147,7 +156,7 @@ Therefore, the Rails Console allowed me to experiment with the database, refacto
 
 \textit{Brian's Contribution}
 
-I'm a huge gypo
+One of the vital components of Web applications is the passing and handling of data. To do this you need to understand the basic RESTful HTTP methods, how routing works (specific to your framework), and some useful data formats like JSON. In this evolution I ended up working heavily with passing data to components beyond the basic CRUD methods in the controllers that Rails sets up for you. After learning all about this, I was able to structure custom RESTful calls to pass JSON data to the front-end calendar UI as well as pass different data and parameters to pop-up Modals and other non-standard views. This would not have been possible without significant testing. By logging all of the server calls and parsing through the HTML requests I was able to identify exactly how and where requests were being sent and was able to diagnose issues much more quickly. 
 
 \textit{Jeff's Contribution}
 
@@ -165,8 +174,13 @@ A view example would be when checking a combination of user and group boxes to p
 
 \subsection{Designed System Component to Meet Desired Needs}
 
+\textit{Brian's Contribution}
+
+
+
 \textit{Jeff's Contribution}
 
+One key component that is necessary for Rails to function effectively is well designed controllers.  That is where a majority of my development had come into play throughout Evolution 2.  For example, I had to customize methods for saving members to groups that involved checking to see if they already existed in the group or not and if they need to be deleted.  This save item method was essential for allowing easy editing of groups in our calendar app.  I also put extensive work into our events controller.  Similar checks had to be performed within the save method of the events controller in order to check if reminders and repetitions had been created for the event.  Without these key controller checks, our views for events and groups would not render correct information.
 \textit{Wes's Contribution}
 
 In designing the mailer, I had to interact a lot with the models and controllers that deal with PUDs and subscriptions.  In our model, a “subscription” is any relationship between a user and an event.  For example, a user may have an owner subscription to an event, meaning he/she created that event and has full permission to edit/delete it.  A user may also only have a visible subscription to an event, meaning they can see an event, but cannot change it.  This subscription model made it much easier to handle the email reminder process, since each subscription only relates one user to one event, and can therefore have a reminder email embedded in it if a user wants to be reminded of something.  The reminder model is where the rufus-scheduler is run, so we can effectively schedule any kind of reminder we want as soon as a subscription is made.  We can also leave the reminder form blank, in which case there will be no email notification for a subscription.  By creating our email reminders in this way, it should be easy to further customize email notifications in our project.
