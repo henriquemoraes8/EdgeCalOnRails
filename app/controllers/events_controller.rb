@@ -100,11 +100,21 @@ require "events_controller"
     end
   end
   
-  # GET /busy_events.json
+  # GET /events/busy_events.json
   def busy_events
     # render json: current_user.get_busy_events
     @events = current_user.get_busy_events
     render 'busy.json.jbuilder'
+  end
+  
+  
+  # GET /events/1/get_subscribers
+  def get_subscribers
+    @event = Event.find(params[:id])
+    @subscribers = 'Brian'
+    respond_to do |format|
+      format.js { render json: @event}
+    end
   end
 
   private

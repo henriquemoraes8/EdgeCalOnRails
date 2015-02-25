@@ -1,0 +1,16 @@
+<h5>Subscriptions for <%=@event.title %></h5>
+
+<div id="subscribers">
+	<ul>
+	<% for s in @event.subscriptions do %>
+		<li>
+			<% if s.subscriber == current_user %>
+				<b><%=  s.subscriber.name %> -- Owner</b>
+			<% else %>	
+				<%=  s.subscriber.name %>
+			<% end %>
+			
+		</li>
+	<% end %>
+	</ul>
+</div>
