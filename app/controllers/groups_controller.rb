@@ -1,11 +1,17 @@
 class GroupsController < ApplicationController
+
+  ################################################################
+  # The groups controller handles all user interaction with groups,
+  # which help simplify the process of adding large groups of users
+  # to different events and changing visibilities.
+  ################################################################
+
   def index
     if(params[:user_id].nil?)
-        @groups = Group.where(owner_id: current_user.id)    
+      @groups = Group.where(owner_id: current_user.id)    
     else
-        @groups = Group.where(owner_id: params[:user_id])
+      @groups = Group.where(owner_id: params[:user_id])
     end
-    #@users = Users.all
   end
 
   def show

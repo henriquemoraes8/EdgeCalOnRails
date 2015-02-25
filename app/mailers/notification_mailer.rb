@@ -27,10 +27,9 @@ class NotificationMailer < ApplicationMailer
   end
 
   def subscription_reminder_email(user, subscription)
-    puts user
-    puts subscription
-    #@user = user
-    #@event = subscription.subscribed_event
+    @user = user
+    @event = subscription.subscribed_event
+    puts "USER EMAIL IS: " + user.email
 
     mg_client = Mailgun::Client.new "key-345efdd486ec59509f9161b99b78d333"
 

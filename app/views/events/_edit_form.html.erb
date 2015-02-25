@@ -29,17 +29,40 @@
     </div>
     <h3>Visibility Settings</h3>
     <%= f.fields_for(:visibility) do |v_form| %>
+	
+	<a href="#" data-reveal-id="view_subscribers">View Subscribers</a>
+	<div class="reveal-modal" id="view_subscribers" data-reveal>
+		<%= render partial: 'shared/subscribers', locals: { event: @event } %>
+  		<a class="close-reveal-modal">X</a>
+	</div>
+	<script>
+  		$(document).foundation();
+	</script>
+	<br>
+	<br>
+		
+	<div id="visibility_list">
+		<ol>
+		<% for v in @event.visibilities do %>
+			<li>
+				<%= v.user ? v.user.name : v.group.name %> -- <%=v.status%>
+			</li>
+		<% end %>
+		</ol>
+	</div>
+		
+	<br>
         <div class="field">
-          <%= v_form.label(:position,"priority") %><br>
-          <%= v_form.select(:position, 1..(@visibility_count == 0 ? 1 : @visibility_count)) %>
+        <%= v_form.label(:user_id, "User for rule") %><br>
+        <%= v_form.select(:user_id, User.all.map {|u| [u.email, u.id]}, {:include_blank => true}) %>
         </div>
         <div class="field">
         <%= v_form.label(:group_id, "Group for rule") %><br>
         <%= v_form.select(:group_id, @groups.map {|g| [g.title, g.id]}, {:include_blank => true}) %>
         </div>
         <div class="field">
-        <%= v_form.label(:user_id, "User for rule") %><br>
-        <%= v_form.select(:user_id, User.all.map {|u| [u.email, u.id]}, {:include_blank => true}) %>
+          <%= v_form.label(:position,"Priority") %><br>
+          <%= v_form.select(:position, 1..(@visibility_count == 0 ? 1 : @visibility_count)) %>
         </div>
         <div class="field">
         <%= v_form.label(:status) %><br>
@@ -51,4 +74,11 @@
     <div class="actions">
       <%= f.submit class: "button radius"%>
     </div>
+<% end %>
+
+
+<% if false %>
+<!-- <% content_for :right_column do %>
+ <%= render partial: "visibilities", locals: { event: @event } %>
+<% end %> -->
 <% end %>

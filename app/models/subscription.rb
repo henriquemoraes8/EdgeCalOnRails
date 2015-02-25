@@ -11,12 +11,16 @@ class Subscription < ActiveRecord::Base
 
   validates :subscriber, presence: true
   validates :subscribed_event, presence: true
+  
+  def get_visibility
+    return subscribed_event.get_visibility_for_user(subscriber)
+  end
 
   def set_reminder(params_r)
     puts "*** WILL CREATE REMINDER WITH PARAMS: #{params_r}"
     date = DateTime.parse("#{params_r[:next_reminder_time]} Eastern Time (US & Canada)")
     puts "DATE IS #{date}"
-    reminder = Reminder.new(:next_reminder_time => date, :subscription_id => id)
+    reminder = Reminder.new(:recurrence => params_r[:recurrence], :next_reminder_time => date, :subscription_id => id)
     if reminder.save
       self.reminder = reminder
       return true

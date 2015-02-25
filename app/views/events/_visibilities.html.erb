@@ -1,0 +1,12 @@
+<h5>Visibilities</h5>
+<hr>
+
+<div id="visibility_list">
+	<ol>
+	<% for v in @event.visibilities do %>
+		<li>
+			<%= v.user ? v.user.name : v.group.name %> -- <%=v.status%>
+		</li>
+	<% end %>
+	</ol>
+</div>

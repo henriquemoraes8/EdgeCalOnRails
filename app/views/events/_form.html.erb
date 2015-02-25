@@ -33,6 +33,18 @@
       <%= f.check_box :event_type, {}, 'to_do', 'regular' %>
     </div>
 
+    <h2>Set Reminder</h2>
+    <%= f.fields_for(:reminder) do |r_form| %>
+      <div class="field">
+        <%= r_form.label :next_reminder_time, 'send reminder at' %><br>
+        <%= r_form.text_field :next_reminder_time,  class: 'datetimepicker' %>
+      </div>
+      <div class="field">
+        <%= r_form.label :recurrence %><br>
+        <%= r_form.select :recurrence, Reminder.recurrences.keys.map {|r| [r.humanize, r]} %>
+      </div>
+    <% end %>
+
 
   <div class="actions">
     <%= f.submit 'Submit', class: "button radius"%>

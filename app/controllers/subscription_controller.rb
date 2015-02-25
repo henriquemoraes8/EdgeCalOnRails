@@ -1,5 +1,13 @@
 class SubscriptionController < ApplicationController
 
+  ################################################################
+  # The subscription controller handles all interaction between
+  # users and their events, since they need to be subscribed to 
+  # an event in order to see it on their calendar.  The parameters
+  # surrounding this subscription determine visibility and ability
+  # to edit.
+  ################################################################
+
   # TODO: Need nil check here
   def index
     @users = User.where.not(id: current_user.id)

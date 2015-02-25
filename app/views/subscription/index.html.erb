@@ -27,7 +27,7 @@
           </td>
           <td class="actions">
             <%= text_field("events[#{event.id}]","next_reminder_time", class: 'datetimepicker') %>
-            <%= #datetime_select("events[#{event.id}]","next_reminder_time", {:include_blank => true, :minute_step => 5}, class: 'datetimepicker') %>
+            <%#= datetime_select("events[#{event.id}]","next_reminder_time", {:include_blank => true, :minute_step => 5}, class: 'datetimepicker') %>
            </td>
           <% end %>
         </tr>
