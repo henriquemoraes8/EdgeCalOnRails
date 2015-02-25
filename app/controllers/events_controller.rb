@@ -42,6 +42,10 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
+    if params[:event][:repetition][:recurrence] != 'no_recurrence'
+      params[:event][:event_type] = params[:event][:repetition][:recurrence]
+    end
+
     @event = Event.new(event_params)
 
     ##### fails
@@ -67,6 +71,16 @@ class EventsController < ApplicationController
           if !@subscription.set_reminder(params[:event][:reminder])
             render('new')
             return
+          end
+        end
+
+        if @event.event_type == Event.event_types[:recurrent]
+          repetition = RepetitionScheme.new
+          date = DateTime.parse("#{params[:event][:repetition][:until]} Eastern Time (US & Canada)")
+          #TODO: throw error otherwise
+          if date > @event.end_time
+            repetition = RepetitionScheme.create
+
           end
         end
 
