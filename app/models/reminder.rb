@@ -33,7 +33,7 @@ class Reminder < ActiveRecord::Base
   end
 
   def self.recurrence_to_date_time(period)
-    return 10.seconds if period == Reminder.recurrences[:hourly] || period == "hourly"
+    return 1.hour if period == Reminder.recurrences[:hourly] || period == "hourly"
     return 1.day if period == Reminder.recurrences[:daily] || period == "daily"
     return 2.days if period == Reminder.recurrences[:every_other_day] || period == "every_other_day"
     return 1.week if period == Reminder.recurrences[:weekly] || period == "weekly"
