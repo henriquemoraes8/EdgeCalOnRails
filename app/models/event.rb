@@ -19,6 +19,10 @@ class Event < ActiveRecord::Base
 	validates_presence_of :title, :start_time, :end_time
 	# validates_presence_of :creator
 
+	def duration
+		end_time - start_time
+	end
+
 	def set_visibility(params_v)
 		puts "*** SAVING IN EVENT ****"
 		puts params_v
