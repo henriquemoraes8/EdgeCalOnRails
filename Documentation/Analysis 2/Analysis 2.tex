@@ -60,6 +60,10 @@ Brian Bolze, Jeff Day, Henrique Rusca, Wes Koorbusch
 
 \section{Previous Design Analysis}
 
+Considering our groups general inexperience with Rails, we as a group were generally very happy with how our previous design choices impacted our ability to fulfill Evolution 2 requirements.  One key design feature that we created in our model that made some things very simple for us in this evolution was the idea of a subscription.  At the time, we believed that having a user subscribe to a specific event would make notifications, requests, and updates easier to add in the future.  This particularly helped with things like email reminders.  A second design decision that we unfortunately unable to implement in Evolution 1 but had always planned to include was a visibility model object.  There was a significant discussion over whether or not visibility should simply be an aspect of the event field or whether it should have its own entire definition.  The fact that we planned to have it as a distinct definition in our design made it easier to incorporate the ability to see events or not depending on user choices to requests and invites.
+
+One specific area where our design was poor was with repeating events.  We thought the implementation would be relatively simple: make copies of a single event at some defined period.  However, there are a lot of adjustments that need to be made when editing a repeating event.  Initially, we attempted to make a simple encoding of a single number to the days of a week that an event could be repeated and also the period that it would be repeated.  We then realized, it was very difficult to do math with regards to a calendar with integers that represent days of the week.  As is clear in our Evolution 2 implementation, we refactored our design with regards to repeating events in order to make it more robust and flexible.
+
 \section{Current Design Evaluation}
 
 \section{Future Design Needs}
