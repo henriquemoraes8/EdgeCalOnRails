@@ -10,14 +10,16 @@ class NotificationMailer < ApplicationMailer
   def to_do_reminder_email(user, to_do)
     @user = user
     @to_do = to_do
+    puts "USER EMAIL IS: " + user.email
 
     mg_client = Mailgun::Client.new "key-345efdd486ec59509f9161b99b78d333"
 
     # Define your message parameters
     message_params = {:from => 'notifications@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org',  
-      :to      => 'wes.koorbusch@gmail.com',
+      :to      => user.email, #'wes.koorbusch@gmail.com',
       :subject => 'To-Do Reminder!',
-      :text    => 'This is a to-do reminder for you!'}
+      :text    => 'This is a reminder to check your to-do list!',
+    }
 
     mg_client.send_message "sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org", message_params
 
@@ -34,9 +36,9 @@ class NotificationMailer < ApplicationMailer
 
     # Define your message parameters
     message_params = {:from => 'notifications@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org',  
-      :to      => 'wes.koorbusch@gmail.com',
+      :to      => user.email, #'wes.koorbusch@gmail.com',
       :subject => 'Subscription Reminder!',
-      :text    => 'This is a subscription reminder for you!'}
+      :text    => 'This is a reminder to check your subscriptions!'}
 
     mg_client.send_message "sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org", message_params
 
