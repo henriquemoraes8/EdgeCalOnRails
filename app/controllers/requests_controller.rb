@@ -1,4 +1,12 @@
 class RequestsController < ApplicationController
+  
+  ################################################################
+  # The requests controller deals with event creation requests,
+  # which can be sent by users to either other users or groups of
+  # users.  The event requests can be confirmed, declined, or a 
+  # user can request to be removed from an event.
+  ################################################################
+
   def index
     @request_maps = []
     current_user.get_requested_events.map {|e| @request_maps << e.request_map}

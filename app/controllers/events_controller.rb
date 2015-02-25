@@ -1,4 +1,13 @@
 class EventsController < ApplicationController
+
+  ################################################################
+  # The events controller is also the home page of our webpage,
+  # and contains the calendar in its view, with all visible events
+  # displayed.  It also contains the calls that determine what
+  # events look like in the calendar view, and has a form that
+  # allows the user to create a new event.
+  ################################################################
+
   before_action :set_event, only: [:show, :edit, :update, :delete]
 
   # GET /events
@@ -44,24 +53,28 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
+        # Save was successful
         puts "SUCCESSFUL SAVE"
         @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
         @subscription.visibility = params[:subscription_visibility].to_i
         @subscription.save
 
+        # Reminder creation logic here.  If the form at the bottom of the page
+        # is not empty, the reminder will be set, and emails will be sent to
+        # the user based on the times set.
         if !params[:event][:reminder][:next_reminder_time].blank?
           puts "WILL CREATE EVENT REMINDER"
-          puts "WHAT AM I DOING HERE EXACTLY?"
           if !@subscription.set_reminder(params[:event][:reminder])
-            puts "WHAT AM I DOING HERE EXACTLY?"
             render('new')
             return
           end
         end
 
+        # For JavaScript, JQuery, etc
         format.html { redirect_to events_path, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
+        # Save was not successful, send erros
         puts "DID NOT SAVE"
         puts @event.errors.full_messages
         format.html { render :new }
@@ -70,15 +83,16 @@ class EventsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /events/1
-  # PATCH/PUT /events/1.json
   def update
     puts "MASS ASSIGNED EVENT FROM UPDATE IS #{@event}"
+
     respond_to do |format|
       if @event.update(event_params)
         require "events_controller"
 
         if !params[:event][:visibility][:status].blank?
+          # If visibility is something other than the default value,
+          # set it to the new type of visibility.
           @event.set_visibility(params[:event][:visibility])
         end
 
