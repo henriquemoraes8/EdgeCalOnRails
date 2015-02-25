@@ -74,5 +74,21 @@ This section of the document describes experiences regarding the design and test
 
 One key front end aspect that we wanted to add to our web application in Evolution 2 was popup forms and views.  As a team, we agreed that these types of views would not only would to a more fluid user experience, but generally look more modern.  In order to implement these popup forms (along with other various UI features), we added a Rails Gemfile called Foundation.  This Gemfile allows for easy inclusion of many jQuery elements in the views files of our Rails app.  Using an aspect of Foundation called reveal-modal, I attempted to implement the form to create a new group into a popup window that would allow the user to create a new group without leaving the index page.  I created the form and could submit without error, however the users were not being added to the group in the actual database.  After, attempting to modifying aspects of the reveal-modal, I instead tried implementing my new group form in a simple rails view page instead of attempting to add dynamic popup views.  When trying a normal form and realizing that the database was successfully populated with that form, it was obvious that the issue was with submitting data using reveal-modal.  After more research, it became obvious that to do form submittal in a popup view, we need to utilize AJAX with dynamic page loading.
 
+\subsection{Analyzed and Interpreted Data}
+
+\textit{Jeff's Contribution}
+
+Throughout our teams development in the Rails framework, the ability to read and understand messages outputted from the rails server has become incredibly important, specifically with debugging.  My previously mentioned bug involved not only designing an experiment, but also interpreting specific terminal data in order to successfully debug.  The specific issue was that the checkboxes associated with the form were not being properly read by Rails as a result of being in the reveal-modal window.  With functioning checkboxes, the successful creation of a group results in the terminal outputting a visualization of a map associating the id of each user with a one or zero (representing whether they were added to the group or not).  Originally I did not realize that this was the desired terminal output; I only new that the terminal was outputting that the addition of users to the groups members column was forbidden.  However, after reviewing the output of a similar form that Henrique had implemented, I was able to see what the correct output should look like and deduce that the issue was with Foundation, not my implementation of the form.  Only through the ability to understand and analyze this sort of server data was I able to completely debug this issue.
+
+\subsection{Designed System Component to Meet Desired Needs}
+
+\textit{Jeff's Contribution}
+
+\subsection{Deal with Realistic Constraints}
+
+\subsection{Contributed to Team Work and Interacted with Team Members}
+
+\textit{Jeff' Contribution}
+
 
 \end{document}
