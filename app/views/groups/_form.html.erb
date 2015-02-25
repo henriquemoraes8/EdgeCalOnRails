@@ -13,8 +13,8 @@
 	<div class = "members">
 		<h5>Choose Members</h5>
 		<%@users.each do |user|%>
-			<%= check_box('members', "#{user.id}") %>
-			<%= user.email%>
+			<li><%= check_box('members', "#{user.id}") %>
+			<%= user.email%></li>
 			<%#=f.label :members, user.email%>
 			<%#= f.check_box :members%>
 		<% end %>

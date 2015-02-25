@@ -42,6 +42,12 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
+    if params[:event][:repetition][:recurrence] != 'no_recurrence'
+      params[:event][:event_type] = Event.event_types[:recurrent]
+    end
+
+    params[:event][:start_time] = "#{params[:event][:start_time]} Eastern Time (US & Canada)"
+    params[:event][:end_time] = "#{params[:event][:end_time]} Eastern Time (US & Canada)"
     @event = Event.new(event_params)
 
     ##### fails
@@ -55,9 +61,7 @@ class EventsController < ApplicationController
       if @event.save
         # Save was successful
         puts "SUCCESSFUL SAVE"
-        @subscription = Subscription.new(subscribed_event_id: @event.id,subscriber_id: current_user.id)
-        @subscription.visibility = params[:subscription_visibility].to_i
-        @subscription.save
+        @subscription = Subscription.create(subscribed_event_id: @event.id,subscriber_id: current_user.id)
 
         # Reminder creation logic here.  If the form at the bottom of the page
         # is not empty, the reminder will be set, and emails will be sent to
@@ -67,6 +71,18 @@ class EventsController < ApplicationController
           if !@subscription.set_reminder(params[:event][:reminder])
             render('new')
             return
+          end
+        end
+
+        puts "EVENT TYPE #{@event.event_type} REPRESENTATION: #{Event.event_types[:recurrent]}"
+        if @event.event_type == 'recurrent' && !params[:event][:repetition][:until].blank?
+          repetition = RepetitionScheme.new
+          date = Time.parse("#{params[:event][:repetition][:until]} Eastern Time (US & Canada)")
+          #TODO: throw error otherwise
+          puts "RECURRENT EVENT WILL TRY TO CREATE REPETITION UNTIL #{date}, EVENT END #{@event.end_time} RESULT #{date > @event.end_time}"
+          if date > @event.end_time
+            repetition = RepetitionScheme.create
+            repetition.create_events_with_recurrence(@event, date, params[:event][:repetition][:recurrence])
           end
         end
 
@@ -94,6 +110,11 @@ class EventsController < ApplicationController
           # If visibility is something other than the default value,
           # set it to the new type of visibility.
           @event.set_visibility(params[:event][:visibility])
+        end
+
+        puts "CHECK IF RECURRENT #{@event.event_type} AND EQUALITY #{@event.event_type == 'recurrent'}"
+        if @event.event_type == 'recurrent'
+          @event.repetition_scheme.update_events_based_on_event(@event)
         end
 
         format.html { redirect_to events_path, notice: 'Event was successfully updated.' }
