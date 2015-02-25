@@ -7,7 +7,7 @@
 \contentsline {section}{\numberline {3}Future Design Needs}{6}
 \contentsline {section}{\numberline {4}Design Process Notes}{6}
 \contentsline {subsection}{\numberline {4.1}Designed and Conducted Experiment}{6}
-\contentsline {subsection}{\numberline {4.2}Analyzed and Interpreted Data}{7}
-\contentsline {subsection}{\numberline {4.3}Designed System Component to Meet Desired Needs}{7}
-\contentsline {subsection}{\numberline {4.4}Deal with Realistic Constraints}{8}
-\contentsline {subsection}{\numberline {4.5}Contributed to Team Work and Interacted with Team Members}{8}
+\contentsline {subsection}{\numberline {4.2}Analyzed and Interpreted Data}{8}
+\contentsline {subsection}{\numberline {4.3}Designed System Component to Meet Desired Needs}{9}
+\contentsline {subsection}{\numberline {4.4}Deal with Realistic Constraints}{10}
+\contentsline {subsection}{\numberline {4.5}Contributed to Team Work and Interacted with Team Members}{11}
