@@ -11,6 +11,10 @@ class Subscription < ActiveRecord::Base
 
   validates :subscriber, presence: true
   validates :subscribed_event, presence: true
+  
+  def get_visibility
+    return subscribed_event.get_visibility_for_user(subscriber)
+  end
 
   def set_reminder(params_r)
     puts "*** WILL CREATE REMINDER WITH PARAMS: #{params_r}"

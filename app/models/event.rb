@@ -30,6 +30,14 @@ class Event < ActiveRecord::Base
 			self.visibilities << visibility
 		end
 	end
+  
+  def get_visibility_for_user(user)
+		visibilities.each do |v|
+			if (!v.user.nil? && v.user.id == user.id) || (!v.group.nil? && v.group.contains_user_id(user.id))
+				return v.status
+			end
+		end
+  end
 
 	def is_right_visibility_for_user(visibility, user_id)
 		if event_type == 'to_do'

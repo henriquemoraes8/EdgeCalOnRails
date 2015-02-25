@@ -1,16 +1,17 @@
 <h5>Subscriptions for <%=@event.title %></h5>
+<hr>
 
 <div id="subscribers">
 	<ul>
 	<% for s in @event.subscriptions do %>
 		<li>
 			<% if s.subscriber == current_user %>
-				<b><%=  s.subscriber.name %> -- Owner</b>
+				<b><%=s.subscriber.name%> -- Owner</b>
 			<% else %>	
-				<%=  s.subscriber.name %>
+				<%=s.subscriber.name%> -- <%=s.get_visibility%>
 			<% end %>
-			
 		</li>
 	<% end %>
 	</ul>
 </div>
+

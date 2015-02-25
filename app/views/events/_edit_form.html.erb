@@ -38,8 +38,19 @@
 	<script>
   		$(document).foundation();
 	</script>
-		
 	<br>
+	<br>
+		
+	<div id="visibility_list">
+		<ol>
+		<% for v in @event.visibilities do %>
+			<li>
+				<%= v.user ? v.user.name : v.group.name %> -- <%=v.status%>
+			</li>
+		<% end %>
+		</ol>
+	</div>
+		
 	<br>
         <div class="field">
         <%= v_form.label(:user_id, "User for rule") %><br>
@@ -63,4 +74,11 @@
     <div class="actions">
       <%= f.submit class: "button radius"%>
     </div>
+<% end %>
+
+
+<% if false %>
+<!-- <% content_for :right_column do %>
+ <%= render partial: "visibilities", locals: { event: @event } %>
+<% end %> -->
 <% end %>
