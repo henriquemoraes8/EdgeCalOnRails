@@ -62,11 +62,17 @@ Brian Bolze, Jeff Day, Henrique Rusca, Wes Koorbusch
 
 \section{Current Design Evaluation}
 
+\section{Future Design Needs}
+
 \section{Design Process Notes}
 
-
+This section of the document describes experiences regarding the design and testing process for each member of the team.  These experiences include analyzing data, design processes, and team management.
 
 \subsection{Designed and Conducted Experiment}
+
+\textit{Jeff's Contribution}
+
+One key front end aspect that we wanted to add to our web application in Evolution 2 was popup forms and views.  As a team, we agreed that these types of views would not only would to a more fluid user experience, but generally look more modern.  In order to implement these popup forms (along with other various UI features), we added a Rails Gemfile called Foundation.  This Gemfile allows for easy inclusion of many jQuery elements in the views files of our Rails app.  Using an aspect of Foundation called reveal-modal, I attempted to implement the form to create a new group into a popup window that would allow the user to create a new group without leaving the index page.  I created the form and could submit without error, however the users were not being added to the group in the actual database.  After, attempting to modifying aspects of the reveal-modal, I instead tried implementing my new group form in a simple rails view page instead of attempting to add dynamic popup views.  When trying a normal form and realizing that the database was successfully populated with that form, it was obvious that the issue was with submitting data using reveal-modal.  After more research, it became obvious that to do form submittal in a popup view, we need to utilize AJAX with dynamic page loading.
 
 
 \end{document}
