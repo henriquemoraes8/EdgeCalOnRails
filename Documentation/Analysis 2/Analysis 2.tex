@@ -1,0 +1,94 @@
+\documentclass[11pt]{article}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{color}
+
+\renewcommand{\baselinestretch}{1.4}
+\setlength{\parskip}{0.8em}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+	language=Java,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=codestyle}
+
+\newcommand{\quotes}[1]{``#1"}
+
+\begin{document}
+
+\begin{center}
+\textbf{ECE 458: Engineering Software For Maintainability \\
+Senior Design Course\\
+Spring 2015\\[0.2in]}
+Evolution 2 Analysis\\
+Brian Bolze, Jeff Day, Henrique Rusca, Wes Koorbusch
+\end{center}
+
+\singlespacing
+\tableofcontents
+
+% Writen Analysis (25%) Along with every software deliverable, you will turn in a written docu- ment which will cover two main points:
+
+% 1. A retrospective on how your previous design choices impacted your work to meet the current set of requirements. This section should analyze not only where your good design choices made things easy, but also where your bad design choices made things hard. For both of these points, you should analyze how/why these design choices helped or hindered you. For bad design choices, you should discuss what you might have done differently in the past to avoid the problem this time around.
+
+% 2. An evaluation of your current design, with an analysis of its strengths and weaknesses going forwards. This section should justify your current design choices, explaining why you think they will be beneficial to you in the long run. If you recognize weaknesses in your current design, you should discuss them—including an explanation of why they are there, and how you plan to fix them in future submissions.
+
+% These documents should not only deep analysis of the strengths and weaknesses of your design choice, but also be well written. Ideally, the retrospective section of submission N would connect back to the forward-looking analysis of submission N-1 (i.e., Did things you think would be beneficial actually end up helping you? Did the weaknesses you identified come back to bite you? Did you fix your weaknesses this time around?).
+
+\pagebreak
+
+\section{Previous Design Analysis}
+
+\section{Current Design Evaluation}
+
+\section{Future Design Needs}
+
+\section{Design Process Notes}
+
+This section of the document describes experiences regarding the design and testing process for each member of the team.  These experiences include analyzing data, design processes, and team management.
+
+\subsection{Designed and Conducted Experiment}
+
+\textit{Jeff's Contribution}
+
+One key front end aspect that we wanted to add to our web application in Evolution 2 was popup forms and views.  As a team, we agreed that these types of views would not only would to a more fluid user experience, but generally look more modern.  In order to implement these popup forms (along with other various UI features), we added a Rails Gemfile called Foundation.  This Gemfile allows for easy inclusion of many jQuery elements in the views files of our Rails app.  Using an aspect of Foundation called reveal-modal, I attempted to implement the form to create a new group into a popup window that would allow the user to create a new group without leaving the index page.  I created the form and could submit without error, however the users were not being added to the group in the actual database.  After, attempting to modifying aspects of the reveal-modal, I instead tried implementing my new group form in a simple rails view page instead of attempting to add dynamic popup views.  When trying a normal form and realizing that the database was successfully populated with that form, it was obvious that the issue was with submitting data using reveal-modal.  After more research, it became obvious that to do form submittal in a popup view, we need to utilize AJAX with dynamic page loading.
+
+\subsection{Analyzed and Interpreted Data}
+
+\textit{Jeff's Contribution}
+
+Throughout our teams development in the Rails framework, the ability to read and understand messages outputted from the rails server has become incredibly important, specifically with debugging.  My previously mentioned bug involved not only designing an experiment, but also interpreting specific terminal data in order to successfully debug.  The specific issue was that the checkboxes associated with the form were not being properly read by Rails as a result of being in the reveal-modal window.  With functioning checkboxes, the successful creation of a group results in the terminal outputting a visualization of a map associating the id of each user with a one or zero (representing whether they were added to the group or not).  Originally I did not realize that this was the desired terminal output; I only new that the terminal was outputting that the addition of users to the groups members column was forbidden.  However, after reviewing the output of a similar form that Henrique had implemented, I was able to see what the correct output should look like and deduce that the issue was with Foundation, not my implementation of the form.  Only through the ability to understand and analyze this sort of server data was I able to completely debug this issue.
+
+\subsection{Designed System Component to Meet Desired Needs}
+
+\textit{Jeff's Contribution}
+
+\subsection{Deal with Realistic Constraints}
+
+\subsection{Contributed to Team Work and Interacted with Team Members}
+
+\textit{Jeff' Contribution}
+
+
+\end{document}

@@ -55,14 +55,20 @@ class RequestsController < ApplicationController
       puts "**** CREATED REQUEST MAP ****"
 
       all_users = []
-      params[:user_request].keys.each do |u|
-        if params[:user_request][u] == "1"
-          all_users << u.to_i
+
+      if !params[:user_request].blank?
+        params[:user_request].keys.each do |u|
+          if params[:user_request][u] == "1"
+            all_users << u.to_i
+          end
         end
       end
-      params[:group_request].keys.each do |g|
-        if params[:group_request][g] == "1"
-          all_users << Group.find(g.to_i).all_user_ids
+
+      if !params[:group_request].blank?
+        params[:group_request].keys.each do |g|
+          if params[:group_request][g] == "1"
+            all_users << Group.find(g.to_i).all_user_ids
+          end
         end
       end
       all_users = all_users.flatten

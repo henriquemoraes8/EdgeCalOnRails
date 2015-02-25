@@ -47,7 +47,8 @@ class Event < ActiveRecord::Base
 		if event_type == 'to_do'
 			return visibility == 'visible'
 		elsif event_type == 'request'
-			return visibility == 'modify'
+			# TODO: Need to fix this potentially?
+			return visibility == 'visible'
 		end
 
 		visibilities.each do |v|
