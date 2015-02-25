@@ -3,6 +3,9 @@
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{color}
+\usepackage{graphicx}
+
+
 
 \renewcommand{\baselinestretch}{1.4}
 \setlength{\parskip}{0.8em}
@@ -98,6 +101,12 @@ Last important point of ActiveRecords are dependencies. We are able to specify t
 
 The design of the database changed drastically since evolution 1. It got much more complex and with the help of active records callbacks and dependencies, it becomes self-maintainable in many points. Each ActiveRecord has its corresponding table and relations. Those are:
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{erd.png}
+\caption{Database ERD Diagram}
+\end{figure}
+
 \begin{itemize}
 
   \item User: holds user general information along with the current session. A user has many created events and subscriptions to other user created events. It holds many memberships to groups defined by other users and many self-created to-dos. It also has many visibilities applied to him specifically regarding someone else’s event and several requests made by another person to him. A user model is responsible for retrieving any type of event with a certain characteristic related to him. Also, it creates and removes its own subscription.
@@ -135,13 +144,17 @@ One key front end aspect that we wanted to add to our web application in Evoluti
 
 \textit{Brian's Contribution}
 
-I'm a huge gypo
+One of the vital components of Web applications is the passing and handling of data. To do this you need to understand the basic RESTful HTTP methods, how routing works (specific to your framework), and some useful data formats like JSON. In this evolution I ended up working heavily with passing data to components beyond the basic CRUD methods in the controllers that Rails sets up for you. After learning all about this, I was able to structure custom RESTful calls to pass JSON data to the front-end calendar UI as well as pass different data and parameters to pop-up Modals and other non-standard views. This would not have been possible without significant testing. By logging all of the server calls and parsing through the HTML requests I was able to identify exactly how and where requests were being sent and was able to diagnose issues much more quickly. 
 
 \textit{Jeff's Contribution}
 
 Throughout our teams development in the Rails framework, the ability to read and understand messages outputted from the rails server has become incredibly important, specifically with debugging.  My previously mentioned bug involved not only designing an experiment, but also interpreting specific terminal data in order to successfully debug.  The specific issue was that the checkboxes associated with the form were not being properly read by Rails as a result of being in the reveal-modal window.  With functioning checkboxes, the successful creation of a group results in the terminal outputting a visualization of a map associating the id of each user with a one or zero (representing whether they were added to the group or not).  Originally I did not realize that this was the desired terminal output; I only new that the terminal was outputting that the addition of users to the groups members column was forbidden.  However, after reviewing the output of a similar form that Henrique had implemented, I was able to see what the correct output should look like and deduce that the issue was with Foundation, not my implementation of the form.  Only through the ability to understand and analyze this sort of server data was I able to completely debug this issue.
 
 \subsection{Designed System Component to Meet Desired Needs}
+
+\textit{Brian's Contribution}
+
+
 
 \textit{Jeff's Contribution}
 
