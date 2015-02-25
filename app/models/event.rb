@@ -97,7 +97,7 @@ class Event < ActiveRecord::Base
 				return
 			end
 		end
-		self.description = creator.to_dos.count == 0 ? 'there is no to-do to be assigned' : 'event too short for any to-do'
+		self.title = creator.to_dos.count == 0 ? 'there is no to-do to be assigned' : 'event too short for any to-do'
 		self.description = 'no to-do could be fit for this event'
 		save
 	end
