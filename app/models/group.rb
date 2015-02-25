@@ -20,4 +20,6 @@ class Group < ActiveRecord::Base
 		return ids
 	end
 
+	
+
 end
