@@ -62,15 +62,15 @@ class Reminder < ActiveRecord::Base
         puts "GONNA SEND"
         puts "SCHEDULER WOKE UP HERE"
         # NotificationMailer.send_notification_email
-        # NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
-        NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
+        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
+        # NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
       end
     else
       self.job_id = Rufus::Scheduler.singleton.every Reminder.recurrence_to_date_time(recurrence), :first_at => next_reminder_time.in_time_zone("Eastern Time (US & Canada)") do
         puts "SCHEDULER WOKE UP HERE"
         # NotificationMailer.send_notification_email
-        # NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
-        NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
+        NotificationMailer.to_do_reminder_email(to_do.creator, to_do).deliver_now
+        # NotificationMailer.to_do_reminder_email('guy', 'guy2').deliver_now
       end
     end
     save
