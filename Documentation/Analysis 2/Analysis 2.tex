@@ -144,6 +144,14 @@ One key front end aspect that we wanted to add to our web application in Evoluti
 
 After creating the mailers folder and configuring an email message that I wanted to have sent to users, I needed to figure out exactly how the email was going to be sent, and whether it would be sent at the right time.  Our group installed a rails gem called rufus-scheduler that makes it easy to schedule tasks for certain times, and then as long as the server and database is still running, it will wake up and run those tasks.  However, when I first configured the mailers, no emails were being sent.  Since we are using an app called Mailgun for our email domain, I was able to look at the logs and see that the scheduler wasn’t waking up at all, and therefore wasn’t running the method that sent emails.  I placed “puts” statements in the few methods that were most related to the mailers, and tried to see where the code was going wrong.  After narrowing it down to the method that creates our Rufus scheduler, I determined that even though the “puts” statement right before our email method was run with the proper information, there was a typo in the line that actually ran the method which did not give us an error when run.  This entire process took a long time to debug, and the typo was not a trivial typo to pick up on unless you had written the method, which I had not.  However, I was able to eventually figure it out, and correct the error.
 
+\textit{Henrique's Contribution}
+
+Over the course of evolution 2 I have realized how useful the Rails Console can be. Basically it is an environment that you can activate through the terminal that allows you to access, query and modify the database in whichever way you want. It is perfect for modularizing steps and validating models behavior without the need to put up whole interfaces. The initial step was to comprehend and verify the current state of our database. Indeed, the current models were cohesive enough: groups created memberships when adding members, events could access their subscribers through subscriptions. However, I have noticed some inconsistencies over the overall design of the database. For instance there were several classes with a many relationship that also contained a column id for such relation, which does not make sense. One example of that would be a subscriptions_id column for a single event. Rails only requires a foreign key on the table that belongs to a many relation to function properly. Therefore, those columns could be dropped to avoid confusion. Another aspect that could lead to confusion was naming. I noticed through this process the existence of a column member_of_group_id on membership. If there was not a member_id column, I would be slightly confused that member_of_group_id actually represented a group_id column.
+
+Also, the console was crucial to test callbacks of models. The callbacks are methods that can be activated before/after an update/create/delete/validate action to ensure data validation and proper behavior of an ActiveRecord. Again, testing such callbacks directly on the console provided me a good way of troubleshooting model behavior and confidence to chain model behavior over the application.
+
+Therefore, the Rails Console allowed me to experiment with the database, refactor it, and ensure that the database would still be cohesive once we start manipulating ActiveRecords over on the controllers.
+
 \subsection{Analyzed and Interpreted Data}
 
 \textit{Brian's Contribution}
@@ -158,6 +166,12 @@ Throughout our teams development in the Rails framework, the ability to read and
 
 When our group was implementing the rufus-scheduler in our project, we needed to be sure that the time zone of the user was taken account of when they set reminders for themselves.  Since our database stores all information in UTC time, reminders were stored five hours ahead of when they would actually be woken up for Eastern Time.  To ensure this, we wrote a method called start_time_makes_sense in the reminder model, which uses “puts” to print the current time next to the time being stored, and then makes sure that the reminder is not before the current time (in which case it would never happen).  We also compared this data to the data being stored in our database, which made sure that the time was being properly converted to UTC time, which should be five hours ahead of Eastern Time.
 
+\textit{Henrique's Contribution}
+
+Again, the best tool to analyze and interpret data would be the Rails Console itself. However, even though models may work perfectly according to expectations over the command line, sometimes the parsing of parameters done by the view or order of methods called on the controller may break this harmony. Therefore, debugging the server prompt with console inputs was also essential for understanding the format in which data comes in. Many times, a view might build a hash of parameters wrongly or the controller might parse such parameters incorrectly. Also some logic on the controller might not be setting up a new model correctly, which prevents it to use its full potential to work with its relations on the database.
+
+A view example would be when checking a combination of user and group boxes to parse to the controller upon a request creation. It took some parameter analysis to get to a hash request=>{users=>{user_id=>checked},groups=>{group_id=>{checked}}} and it also took  some more time for the controller to interpret it properly. Also, on the creation of reminders, I simply forgot to relate a reminder to a to-do and had to undergo a step-by-step analysis to understand where the reminder was failing to fire off a message.
+
 \subsection{Designed System Component to Meet Desired Needs}
 
 \textit{Brian's Contribution}
@@ -166,9 +180,18 @@ When our group was implementing the rufus-scheduler in our project, we needed to
 
 \textit{Jeff's Contribution}
 
+One key component that is necessary for Rails to function effectively is well designed controllers.  That is where a majority of my development had come into play throughout Evolution 2.  For example, I had to customize methods for saving members to groups that involved checking to see if they already existed in the group or not and if they need to be deleted.  This save item method was essential for allowing easy editing of groups in our calendar app.  I also put extensive work into our events controller.  Similar checks had to be performed within the save method of the events controller in order to check if reminders and repetitions had been created for the event.  Without these key controller checks, our views for events and groups would not render correct information.
 \textit{Wes's Contribution}
 
 In designing the mailer, I had to interact a lot with the models and controllers that deal with PUDs and subscriptions.  In our model, a “subscription” is any relationship between a user and an event.  For example, a user may have an owner subscription to an event, meaning he/she created that event and has full permission to edit/delete it.  A user may also only have a visible subscription to an event, meaning they can see an event, but cannot change it.  This subscription model made it much easier to handle the email reminder process, since each subscription only relates one user to one event, and can therefore have a reminder email embedded in it if a user wants to be reminded of something.  The reminder model is where the rufus-scheduler is run, so we can effectively schedule any kind of reminder we want as soon as a subscription is made.  We can also leave the reminder form blank, in which case there will be no email notification for a subscription.  By creating our email reminders in this way, it should be easy to further customize email notifications in our project.
+
+\textit{Henrique's Contribution}
+
+In terms of the views, I have not spent enormous amounts of time developing them. Since I was designing the whole backend, I wanted to make a basic CRUD cycle interaction for all models so my teammates could elaborate on presentation from that. Therefore I setup, fixed, or edited the whole lifecycle of the models in the application to allow for basic functionality. Every view is included on this statement: groups was fixed, events was edited for extended functionality and the rest were created from scratch. I can say that I have developed views to meet basic needs but not desired presentation.
+
+The controllers that interact with the view was also not the focus of my code design. Although many times the design would work by itself because I have tried to move most of the logic to the models and helpers. Therefore, many times the controller has light-weight obligations as expected and need only to retrieve a couple of variables or make specific calls on ActiveRecords.
+
+My greatest focus on Evolution two was designing a model network that would do most of the work by itself and ensure consistency of the database. Indeed, by crafting models with more careful, the design allowed controllers to be better written and not deal with constraints that did not pertain to its scope. For instance, a repetition_scheme handles the creation of all other repeated events, whereas a to-do (newly named PUD) event takes care of fetching the next to-do on the list in case the current one gets done. By placing my focus on the design of the backend, I was able to transfer that logic to the simplicity of putting up basic CRUD cycles easily that would meet evolution 2’s requirements.
 
 \subsection{Deal with Realistic Constraints}
 
@@ -184,6 +207,12 @@ As always with large scale CS projects as an undergraduate, my team was constrai
 
 Our team really wanted to try and incorporate more dynamic content into our website for this evolution; things like modals forms, popup alerts, color coordinated alert messages, etc.  However, these additions require a decent amount of knowledge of JavaScript, JQuery, or AJAX, to name a few of the possibilities.  As we continued to progress on our project, these embellishments took a back seat to functionality, and we actually found out that many of the forms that were very intuitive in the Rails framework were much more complicated to implement in some form of JavaScript.  In light of this, we decided to scrap many of our ideas for dynamic content and work more on ensuring our static content worked the way it should.  I think this is something we can definitely work on for the next evolution as we seek to streamline the user experience on our website. 
 
+\textit{Henrique's Contribution}
+
+In general, debugging server messages and using the rails console provided a good mean to not stay stuck in the same task. Some requirements could have taken longer but development was constantly progressive. One real constraint that we faced was allocating enough time to learn Rails and correct requirements from evolution 1 that were not working. As stated on evolution 1, I have distributed Rails tutorials to my teammates and I have studied the complete course before touching any line of code again. Even though it took from one to two weeks of learning, it definitely paid off. With one week and a half left for evolution 2 presentation, I started coding the requirements one by one. I am glad to say  that we have a working application that meets virtually any requirement on evolution 2 document (with small bugs discussed on the next paragraph) except for optional ones. Therefore, time was a great obstacle as we had to learn Rails and patch up evolution 1.
+
+Another real constraint that I am still studying a solution is time zones. Whenever a time object is generated on the application, it is or needs to be converted to US Eastern Time. However, when models get saved to the database, these times get converted to UTC. They are still correct, but upon retrieval, the time extracted from models is in UTC and need to be converted back to Eastern Time zone again. Interestingly, when dealing with a calendar application there are a lot of time occurrences. I mean a lot. And finding all the entry and exit points of a model to the database is cumbersome. Right now, on most models, this conversion is done manually every time an object is fetched to the server, or updated to it. However, I cannot guarantee that I have covered every case. Therefore, on evolution 3 I intend to bring a better, more elegant solution that again will bring consistency to the overall design of the application. Maybe the model does the conversion automatically, maybe I write a global helper for time zone conversion. I will test which one is more convenient.
+
 \subsection{Contributed to Team Work and Interacted with Team Members}
 
 \textit{Brian's Contribution}
@@ -198,5 +227,31 @@ There were two primary tracks for interacting with my team members: through proj
 
 Our group was experiencing some very persistent errors when trying to migrate our more recent work to our production server run on Heroku.  For whatever reason, the dynamic content that used JavaScript was not running at all, which crippled some functionality we had spent a lot of time creating.  Brian spent a HUGE chunk of time testing our app to see where this error could be occurring, but for two days had not had much success.  He and I decided to do some work next to each other one night, and as I was working on my part of the project, I would randomly come up with a few reasons why I thought the production server wasn’t running.  One of these reasons, that our version of Ruby or Rails was not consistent in our development and production environments, ended up being the actual bug.  I suggested this to Brian, and we were elated that it ended up working after forcing Ruby to run version 2.2.0 in our production server.  Brian and I spent the better part of a night trying to find this bug, and we were obviously frustrated that it was something so simple, but also happy that we had figured it out.
 
+\textit{Henrique's Contribution}
+
+I have started coding about one week and a half into evolution 2 due to insecurity with Rails. I have decided to learn it for as long as I deemed necessary. Taking that time risk allowed me to perform the following contributions:
+
+\begin{itemize}
+
+\item Fix the group creation form to actually assign members to groups
+\item Allow for ordered lists of visibilities, allow to fetch events based on visibility rules for a user either tied directly to him or through a group
+\item Allow for the right actions to be taken in events depending on the visibility
+\item Creation of recurring events. Edition of title or description of a recurring event changes all other events
+\item Creation of request and sending to users with any given unique combination of users or groups.
+\item Confirmation, decline, removal, modification of events
+\item Allowing the creator to track the amount of users for each status (I might add their names on evolution 3)
+\item Discern pending events
+\item Modification requests are sent for creator’s approval
+\item Right now, users are unsubscribed to a modified request and need to confirm again for their subscription. I might add a friendly note so users know they need to confirm again to the event.
+\item Email notification reminders (not setting up the mail server, only application code)
+\item PUD events (called to-dos in the app) with duration and priority ordering
+\item Recurrence on to-dos
+\item Assign a to-do to an event. If a to-do allocated to an event gets done before the event ends, the event immediately fetches the next to-do on the priority list that is neither done or already has an event. Event displays that its duration is too short or that there are no to-dos to fetch depending on the situation
+\item Email reminders for to-dos with a relative time after creation and a recurrence period
+\item Wrote design implementation section of Evolution 2 analysis
+
+\end{itemize}
 
 \end{document}
+
+In terms of group work, I have not been present in all meetings but I made myself available to all groups members whenever they needed to troubleshoot their code. 

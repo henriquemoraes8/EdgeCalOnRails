@@ -30,8 +30,10 @@
 
 <!--<p>Find me in app/views/groups/index.html.erb</p>-->
 <tbody>
+<hr>
 <% grps = @groups.all %>
 <% grps.each do |group|%>
+
 <tr>
 	<td><strong>Group Title: </strong><%=group.title %></td><br>
 	<td><strong>Group Description: </strong><%=group.description %></td><br>
@@ -61,7 +63,7 @@
   		<a class="close-reveal-modal"></a>
   		<!--%= render 'form' %-->
 	</div>
-
+	<hr>
 	<br>
 	<br>
 </tr>
