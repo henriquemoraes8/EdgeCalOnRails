@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	enum event_type: [:regular, :to_do, :request, :recurrent]
+	enum event_type: [:regular, :to_do, :request, :recurrent, :time_slot]
 
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
@@ -12,6 +12,8 @@ class Event < ActiveRecord::Base
 	has_one :to_do
 
 	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
+
+	has_many :time_slots, :dependent => :delete_all
 
 	before_validation :check_to_do
 	after_create :next_to_do
