@@ -45,4 +45,13 @@ class RepetitionScheme < ActiveRecord::Base
 		end
 	end
 
+	def time_slot_start_time_allowed_for_event(event, start_time)
+
+	end
+
+	def time_slot_duration_allowed(duration)
+		max_duration = max_time_slot_duration - min_time_slot_duration
+		duration.hour*3600 + duration.min*60 <= max_duration
+	end
+
 end

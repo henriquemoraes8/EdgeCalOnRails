@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225084057) do
+ActiveRecord::Schema.define(version: 20150315215037) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,8 +64,10 @@ ActiveRecord::Schema.define(version: 20150225084057) do
   end
 
   create_table "repetition_schemes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+    t.datetime "min_time_slot_duration"
+    t.datetime "max_time_slot_duration"
   end
 
   create_table "request_maps", force: :cascade do |t|
@@ -95,6 +97,15 @@ ActiveRecord::Schema.define(version: 20150225084057) do
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
     t.integer  "reminder_id"
+  end
+
+  create_table "time_slots", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "event_id",   null: false
+    t.datetime "start_time"
+    t.datetime "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "to_dos", force: :cascade do |t|
