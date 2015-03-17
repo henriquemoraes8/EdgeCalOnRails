@@ -46,7 +46,17 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def time_slot_start_time_allowed_for_event(event, start_time)
-
+		start_allowed = event.start_time
+		if start_time < event.start_time || start_time > event.end_time
+			return false
+		end
+		while start_allowed < event.end_time
+			if start_time.hour == start_allowed.hour && start_time.min == start_allowed.min
+				return true
+			end
+			start_allowed += min_time_slot_duration.hour*3600 + min_time_slot_duration.min*60
+		end
+		return false
 	end
 
 	def time_slot_duration_allowed(duration)

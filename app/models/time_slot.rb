@@ -19,6 +19,9 @@ class TimeSlot < ActiveRecord::Base
     elsif !event.repetition_scheme.time_slot_duration_allowed(duration)
       errors[:base] = "duration is too big for time slot"
       return false
+    elsif event.end_time < start_time + duration.hour*3600 + duration.min*60
+      errors[:base] = "time slot exceeds event end time"
+      return false
     end
     
     true
