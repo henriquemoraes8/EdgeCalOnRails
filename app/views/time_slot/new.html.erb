@@ -1,72 +1,29 @@
 <h1>New Time Slot Event</h1>
 
 <div class="event block">
+  <%= form_for('event_blocks', :url => {:controller => 'time_slot', :action => 'create'}) do |f| %>
+      <%= f.fields_for :repetition_scheme do |r| %>
+          <div class="field">
+            <%= r.label 'minimum slot duration' %><br>
+            <%= r.time_select :min_duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and ", :start_hour => 0, :end_hour => 2} %> minutes
+          </div>
+          <div class="field">
+            <%= r.label 'maximum slot duration' %><br>
+            <%= r.time_select :max_duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and ", :start_hour => 0, :end_hour => 2} %> minutes
+          </div>
+      <% end %>
+      <% @events.each do |e| %>
+          <div class="partial">
+            <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
+          </div>
+      <% end %>
+
+      <div class="actions">
+        <%= f.submit 'Create Time Slots', class: "button radius"%>
+      </div>
+  <% end %>
 
 
 </div>
-<%= form_for(@event, :url => {:controller => 'events', :action => 'create', :id => @event.id}) do |f| %>
-    <%= error_messages_for(@event) %>
-    <% if @event.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
-
-          <ul>
-            <% @event.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-    <% end %>
-
-    <div class="field">
-      <%= f.label :title %><br>
-      <%= f.text_field :title %>
-    </div>
-    <div class="field">
-      <%= f.label :description %><br>
-      <%= f.text_area :description %>
-    </div>
-    <div class="field">
-      <%= f.label :start_time %><br>
-      <%= f.text_field :start_time, class: 'datetimepicker' %>
-    </div>
-    <div class="field">
-      <%= f.label :end_time %><br>
-      <%= f.text_field :end_time, class: 'datetimepicker' %>
-    </div>
-    <div class="field">
-      <%= f.label :event_type, 'allocate for to-do' %>
-      <%= f.check_box :event_type, {}, 'to_do', 'regular' %>
-    </div>
-
-    <h2>Set Reminder</h2>
-    <%= f.fields_for(:reminder) do |r_form| %>
-        <div class="field">
-          <%= r_form.label :next_reminder_time, 'send reminder at' %><br>
-          <%= r_form.text_field :next_reminder_time,  class: 'datetimepicker' %>
-        </div>
-        <div class="field">
-          <%= r_form.label :recurrence %><br>
-          <%= r_form.select :recurrence, Reminder.recurrences.keys.map {|r| [r.humanize, r]} %>
-        </div>
-    <% end %>
-
-    <%= f.fields_for(:repetition) do |r_form| %>
-        <div class="field">
-          <%= r_form.label :recurrence, 'repeat' %><br>
-          <%= r_form.select :recurrence, RepetitionScheme.recurrences.keys.map {|r| [r.humanize, r]} %>
-        </div>
-        <div class="field">
-          <%= r_form.label :until, 'until' %><br>
-          <%= r_form.text_field :until,  class: 'datetimepicker' %>
-        </div>
-    <% end %>
-
-
-    <div class="actions">
-      <%= f.submit 'Submit', class: "button radius"%>
-    </div>
-
-<% end %>
 
 

@@ -3,5 +3,5 @@ $(function() {
 });
 
 $(function() {
-	$(".timepicker").timepicker({ 'step': 15 });
+	$(".timepicker").timepicker({ 'step': 5 });
 });

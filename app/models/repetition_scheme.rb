@@ -1,5 +1,6 @@
 class RepetitionScheme < ActiveRecord::Base
 	enum recurrence: [:no_recurrence, :daily, :every_other_day, :weekly, :monthly, :yearly]
+	validate :max_min_duration
 
 	has_many :events
 
@@ -61,11 +62,22 @@ class RepetitionScheme < ActiveRecord::Base
 		return false
 	end
 
-	include ApplicationHelper
-
 	def time_slot_duration_allowed(duration)
 		puts "** REP DURATION ALLOWED **"
 		duration <= max_time_slot_duration
+	end
+
+	private
+
+	def max_min_duration
+		puts "VALIDATION MIN #{min_time_slot_duration} MAX #{max_time_slot_duration}"
+		if min_time_slot_duration > 0 || max_time_slot_duration > 0
+			if min_time_slot_duration >= max_time_slot_duration || min_time_slot_duration % 5 != 0 || max_time_slot_duration % 5 != 0
+				errors[:base] = "minimum and maximum durations are incompatible"
+				return false
+			end
+		end
+		true
 	end
 
 end

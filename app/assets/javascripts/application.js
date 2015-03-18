@@ -12,9 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery.js
+//= require jquery2.js
 //= require foundation
 //= require turbolinks
-// require jquery-ui/datepicker
+//= require jquery-ui/datepicker
 //= require jquery.datetimepicker
 //= require jquery.datetimepicker/init
 //= require jquery.timepicker.js

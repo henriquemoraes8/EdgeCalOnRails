@@ -1,0 +1,19 @@
+<%= f.fields_for "events[]", event do |ef| %>
+    <div class="field">
+      <%= ef.label :title %><br>
+      <%= ef.text_field :title %>
+    </div>
+    <div class="field">
+      <%= ef.label :description %><br>
+      <%= ef.text_area :description %>
+    </div>
+    <div class="field">
+      <%= ef.label :start_time %><br>
+      <%= ef.text_field :start_time, class: 'datetimepicker' %>
+    </div>
+    <div class="field">
+      <%= ef.label :end_time %><br>
+      <%= ef.text_field :end_time, class: 'datetimepicker' %>
+    </div>
+
+<% end %>
