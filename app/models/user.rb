@@ -18,6 +18,8 @@ class User < ActiveRecord::Base
 
   has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
   has_many :requests, :dependent => :destroy
+
+  has_many :time_slots, :dependent => :delete_all
   
   validates_presence_of :name, :email, :encrypted_password
 
@@ -58,6 +60,10 @@ class User < ActiveRecord::Base
 
   def get_requested_events
     created_events.where(:event_type => Event.event_types[:request])
+  end
+
+  def get_time_slot_created_events
+    created_events.where(:event_type => Event.event_types[:time_slot])
   end
 
   private

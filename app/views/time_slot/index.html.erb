@@ -1,2 +1,46 @@
-<h1>TimeSlot#index</h1>
-<p>Find me in app/views/time_slot/index.html.erb</p>
+<h1>My Time Slot Events</h1> <br>
+
+<%= link_to 'New Time Slot Event', time_slot_new_path %>
+
+<hr>
+
+<% if @events.count > 0 %>
+    <h3>Created time slots</h3>
+<% @events.each do |e| %>
+    <div class="event time slot">
+      <em>Title:</em> <%= e.title %><br>
+      <em>Description:</em> <%= e.description %><br>
+      <em>Start of block:</em><%= event.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End of block:</em><%= event.end_time.strftime("%-d %b - %H:%M") %><br>
+      <em>Duration:</em> <%= "#{pluralize(todo.duration.hour, 'hour') if todo.duration.hour > 0} #{pluralize(todo.duration.min, 'minute') if todo.duration.min > 0}" %><br>
+      <%= link_to('Delete', {:action => :destroy, :id => e.id, :class => 'action event'}) %>&nbsp;&nbsp;
+
+      <% e.time_slots.each do |t| %>
+          <div class="time slot">
+            <em>Asignee:</em> <%= t.user.email %><br>
+            <em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
+            <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %>
+          </div>
+      <% end %>
+    </div>
+    <hr>
+    <br>
+<% end %>
+
+    <hr>
+
+<% end %>
+
+<% if @assigned_time_slots.count > 0 %>
+    <h3>Assigned time slots</h3>
+    <% @assigned_time_slots.each do |t| %>
+        <div class="time slot">
+          <em>Event Title:</em> <%= t.event.title %><br>
+          <em>Event Description:</em> <%= t.event.description %><br>
+          <em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
+          <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %>
+        </div>
+    <% end %>
+<% end %>
+
+

@@ -31,6 +31,8 @@
             <li><%= link_to 'Requests', requests_index_path%></li>
             <li class="divider"></li>
             <li><%= link_to 'To-Dos', to_dos_index_path%></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Time Slots', time_slot_index_path%></li>
             <%else%>
 			<li class="divider"></li>
 		    <li><%= link_to 'Home', new_user_session_path %></li>
@@ -42,6 +44,8 @@
             <li><%= link_to 'Requests', new_user_session_path%></li>
             <li class="divider"></li>
             <li><%= link_to 'To-Dos', new_user_session_path%></li>
+            <li class="divider"></li>
+            <li><%= link_to 'Time Slots', new_user_session_path%></li>
 		    <%end%>
 			<li class="divider"></li>
 			<li><%= link_to "Contact Us", events_path %></li>

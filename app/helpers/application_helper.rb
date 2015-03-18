@@ -23,22 +23,4 @@ module ApplicationHelper
     render(:partial => 'application/error_messages', :locals => {:object => object})
   end
 
-  def times_overlap(start_1, end_1, start_2, end_2)
-    (start_1-end_2)*(start_2-end_1) > 0
-  end
-
-  def events_overlap(event_1, event_2)
-    times_overlap(event_1.start_time, event_1.end_time, event_2.start_time, event_2.end_time)
-  end
-
-  def slots_overlap(slot_1, slot_2)
-    puts "** check over slot1 #{slot_1.id} start #{slot_1.start_time} duration #{slot_1.duration}"
-    puts "** check over slot2 #{slot_2.id} start #{slot_2.start_time} duration #{slot_2.duration}"
-    times_overlap(slot_1.start_time, slot_1.start_time + slot_1.duration, slot_2.start_time, slot_2.start_time + slot_2.duration)
-  end
-
-  def time_in_seconds(time)
-    time.hour*3600 + time.min*60
-  end
-
 end
