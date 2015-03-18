@@ -113,7 +113,22 @@ class Event < ActiveRecord::Base
 
   def self.format_date(date_time)
      Time.at(date_time.to_i).to_formatted_s(:db)
-  end
+	end
+
+	def time_slot_overlaps(time_slot)
+		if event_type != 'time_slot'
+			return false
+		end
+		time_slots.each do |t|
+			if t.id != time_slot.id
+				if ApplicationHelper.slots_overlap(t, time_slot)
+					return true
+				end
+			end
+		end
+
+		false
+	end
 
 	private
 
