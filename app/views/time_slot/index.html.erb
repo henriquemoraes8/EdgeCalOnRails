@@ -10,9 +10,8 @@
     <div class="event time slot">
       <em>Title:</em> <%= e.title %><br>
       <em>Description:</em> <%= e.description %><br>
-      <em>Start of block:</em><%= event.start_time.strftime("%-d %b - %H:%M") %><br>
-      <em>End of block:</em><%= event.end_time.strftime("%-d %b - %H:%M") %><br>
-      <em>Duration:</em> <%= "#{pluralize(todo.duration.hour, 'hour') if todo.duration.hour > 0} #{pluralize(todo.duration.min, 'minute') if todo.duration.min > 0}" %><br>
+      <em>Start of block:</em><%= e.start_time.strftime("%-d %b - %H:%M") %><br>
+      <em>End of block:</em><%= e.end_time.strftime("%-d %b - %H:%M") %><br>
       <%= link_to('Delete', {:action => :destroy, :id => e.id, :class => 'action event'}) %>&nbsp;&nbsp;
 
       <% e.time_slots.each do |t| %>
@@ -23,7 +22,7 @@
           </div>
       <% end %>
     </div>
-    <hr>
+    <br>
     <br>
 <% end %>
 

@@ -29,7 +29,13 @@ class TimeSlotController < ApplicationController
     params[:event_blocks][:events].each do |e_param|
       event = Event.new(event_params(e_param))
       event.event_type = Event.event_types[:time_slot]
-      puts "event title #{event.title} desc #{event.description} time #{event.start_time}"
+      event.creator_id = current_user.id
+      if event.save
+        repetition.events << event
+      else
+        @event = event
+        redirect_to time_slot_new_path
+      end
     end
 
     redirect_to(time_slot_index_path)
