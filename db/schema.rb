@@ -66,8 +66,8 @@ ActiveRecord::Schema.define(version: 20150315215037) do
   create_table "repetition_schemes", force: :cascade do |t|
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.time     "min_time_slot_duration"
-    t.time     "max_time_slot_duration"
+    t.integer  "min_time_slot_duration"
+    t.integer  "max_time_slot_duration"
   end
 
   create_table "request_maps", force: :cascade do |t|
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 20150315215037) do
     t.integer  "user_id"
     t.integer  "event_id",   null: false
     t.datetime "start_time"
-    t.time     "duration"
+    t.integer  "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

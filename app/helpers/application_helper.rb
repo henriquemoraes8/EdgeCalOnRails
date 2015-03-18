@@ -32,7 +32,9 @@ module ApplicationHelper
   end
 
   def slots_overlap(slot_1, slot_2)
-    times_overlap(slot_1.start_time, slot_1.end_time, slot_2.start_time, slot_2.end_time)
+    puts "** check over slot1 #{slot_1.id} start #{slot_1.start_time} duration #{slot_1.duration}"
+    puts "** check over slot2 #{slot_2.id} start #{slot_2.start_time} duration #{slot_2.duration}"
+    times_overlap(slot_1.start_time, slot_1.start_time + slot_1.duration, slot_2.start_time, slot_2.start_time + slot_2.duration)
   end
 
   def time_in_seconds(time)

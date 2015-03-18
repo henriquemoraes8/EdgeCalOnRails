@@ -4,7 +4,7 @@ class CreateTimeSlots < ActiveRecord::Migration
       t.integer :user_id
       t.integer :event_id, null: false
       t.datetime :start_time
-      t.time :duration
+      t.integer :duration
       t.timestamps null: false
     end
   end

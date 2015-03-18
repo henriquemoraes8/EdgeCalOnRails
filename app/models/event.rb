@@ -116,12 +116,23 @@ class Event < ActiveRecord::Base
 	end
 
 	def time_slot_overlaps(time_slot)
+		puts "** check time slot overlap event type #{event_type} relation #{event_type != 'time_slot'} **"
 		if event_type != 'time_slot'
 			return false
 		end
+
+		puts "** iteration over time slots **"
+		time_slot_end = time_slot.start_time + time_slot.duration
 		time_slots.each do |t|
 			if t.id != time_slot.id
-				if ApplicationHelper.slots_overlap(t, time_slot)
+				t_end = t.start_time + t.duration
+				factor_1 = t.start_time - time_slot_end
+				factor_2 = time_slot.start_time - t_end
+
+				exact_overlap_1 = time_slot.start_time.hour == t_end.hour && time_slot.start_time.min == t_end.min
+				exact_overlap_2 = t.start_time.hour == time_slot_end.hour && t.start_time.min == time_slot_end.min
+
+				if factor_1*factor_2 > 0 && !(exact_overlap_1 || exact_overlap_2)
 					return true
 				end
 			end
