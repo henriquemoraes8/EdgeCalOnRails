@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'time_slot/new'
+
+  get 'time_slot/index'
+
   get 'requests/index'
 
   get 'requests/new'
