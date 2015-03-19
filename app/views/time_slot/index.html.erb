@@ -40,6 +40,16 @@
           <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %>
         </div>
     <% end %>
+    <hr>
+<% end %>
+
+<% if @users.count > 0 %>
+    <h3>Sign Up</h3>
+    <% @users.each do |u| %>
+        <div class="sign up">
+          <%= link_to u.email, {:action => :signup, :id => request.id, :class => 'action request'} %><br>
+        </div>
+    <% end %>
 <% end %>
 
 

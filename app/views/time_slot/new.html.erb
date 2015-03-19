@@ -12,11 +12,14 @@
             <%= r.time_select :max_duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and ", :start_hour => 0, :end_hour => 2} %> minutes
           </div>
       <% end %>
+      <div id="time_slot_events">
       <% @events.each do |e| %>
           <div class="partial">
             <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
           </div>
       <% end %>
+      </div>
+      <%= f.button 'add event block', id: 'add_button', :type => 'button' %>
 
       <div class="actions">
         <%= f.submit 'Create Time Slots', class: "button radius"%>

@@ -5,3 +5,4 @@ $(function() {
 $(function() {
 	$(".timepicker").timepicker({ 'step': 5 });
 });
+

@@ -1,0 +1,13 @@
+<h1>Sign up for a time slot with <%= @user.email %></h1>
+<hr>
+
+<% if @events.count == 0 %>
+    <h3>No time slot schedules available</h3>
+<% else %>
+    <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'create'}) do |f| %>
+    <% @events.each do |e| %>
+        <em>Title:</em> <%= e.title %><br>
+        <em>Description:</em> <%= e.description %><br>
+
+    <% end %>
+<% end %>

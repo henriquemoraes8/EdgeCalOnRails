@@ -3,7 +3,7 @@ class TimeSlotController < ApplicationController
   def index
     @events = current_user.get_time_slot_created_events
     @assigned_time_slots = current_user.time_slots
-
+    @users = User.all.where.not(:id => current_user.id)
   end
 
   def new
@@ -39,6 +39,16 @@ class TimeSlotController < ApplicationController
     end
 
     redirect_to(time_slot_index_path)
+  end
+
+  def signup
+    @user = User.find(params[:id])
+    @events = @user.get_time_slot_created_events
+  end
+
+  def assign_time_slots
+    
+    redirect_to time_slot_index_path
   end
 
   def destroy
