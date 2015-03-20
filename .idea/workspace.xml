@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0dd890b-3a3f-4343-aea3-8c6c2d685bcf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/event.rb" afterPath="$PROJECT_DIR$/app/models/event.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/time_slot/index.html.erb" afterPath="$PROJECT_DIR$/app/views/time_slot/index.html.erb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/time_slot/signup.html.erb" afterPath="$PROJECT_DIR$/app/views/time_slot/signup.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/time_slot_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/time_slot_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="EdgeCalOnRails.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,11 +48,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="time_slot_controller.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="time_slot_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/time_slot_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="1470">
-              <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.41015625" vertical-offset="735" max-vertical-offset="1575">
+              <caret line="63" column="22" selection-start-line="63" selection-start-column="22" selection-end-line="63" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -72,10 +68,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.html.erb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html.erb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/time_slot/index.html.erb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.69473684" vertical-offset="255" max-vertical-offset="945">
+            <state vertical-scroll-proportion="-13.75" vertical-offset="255" max-vertical-offset="945">
               <caret line="39" column="172" selection-start-line="39" selection-start-column="172" selection-end-line="39" selection-end-column="172" />
               <folding />
             </state>
@@ -153,8 +149,8 @@
         <option value="$PROJECT_DIR$/app/assets/javascripts/forms.js" />
         <option value="$PROJECT_DIR$/app/models/event.rb" />
         <option value="$PROJECT_DIR$/app/views/time_slot/signup.html.erb" />
-        <option value="$PROJECT_DIR$/app/controllers/time_slot_controller.rb" />
         <option value="$PROJECT_DIR$/app/views/time_slot/index.html.erb" />
+        <option value="$PROJECT_DIR$/app/controllers/time_slot_controller.rb" />
       </list>
     </option>
   </component>
@@ -1120,14 +1116,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/time_slot_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="450" max-vertical-offset="1470">
-          <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/time_slot/signup.html.erb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-9.708333" vertical-offset="22" max-vertical-offset="585">
@@ -1138,8 +1126,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/time_slot/index.html.erb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.69473684" vertical-offset="255" max-vertical-offset="945">
+        <state vertical-scroll-proportion="-13.75" vertical-offset="255" max-vertical-offset="945">
           <caret line="39" column="172" selection-start-line="39" selection-start-column="172" selection-end-line="39" selection-end-column="172" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/controllers/time_slot_controller.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.41015625" vertical-offset="735" max-vertical-offset="1575">
+          <caret line="63" column="22" selection-start-line="63" selection-start-column="22" selection-end-line="63" selection-end-column="22" />
           <folding />
         </state>
       </provider>
