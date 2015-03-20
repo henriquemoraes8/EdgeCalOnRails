@@ -4,10 +4,31 @@
 <% if @events.count == 0 %>
     <h3>No time slot schedules available</h3>
 <% else %>
-    <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'create'}) do |f| %>
+    <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'assign_time_slots'}) do |f| %>
     <% @events.each do |e| %>
-        <em>Title:</em> <%= e.title %><br>
-        <em>Description:</em> <%= e.description %><br>
+        <div class="event slot">
+          <em>Title:</em> <%= e.title %><br>
+          <em>Description:</em> <%= e.description %><br>
+          <%= f.fields_for "#{e.id}" do |s| %>
+              <em>Start time:</em>
+              <%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>
+              <em>Duration:</em>
+              <%= s.select :slot_duration, e.permitted_slot_durations %>
+              <!-- #s.text_field :slot_time, class: 'datetimepicker', id: "start_slot#{e.id}" -->
+              <script>
+                  $(<%"#start_slot#{e.id}"%>).datetimepicker({
+                      datepicker:false,
+                      allowTimes:[
+                          '12:00', '13:00', '15:00',
+                          '17:00', '17:05', '17:20', '19:00', '20:00'
+                      ]
+                  });
+              </script>
+          <% end %>
+        </div>
+    <% end %>
+
+    <%= f.submit 'save time slots', class: "button radius" %>
 
     <% end %>
 <% end %>

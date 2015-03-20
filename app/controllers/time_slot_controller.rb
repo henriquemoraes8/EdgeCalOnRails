@@ -43,11 +43,29 @@ class TimeSlotController < ApplicationController
 
   def signup
     @user = User.find(params[:id])
-    @events = @user.get_time_slot_created_events
+    @events = []
+    if !params[:e_id].blank?
+      event = Event.find(params[:e_id])
+      event.repetition_scheme.events.map {|e| @events << e}
+    else
+      @events = @user.get_time_slot_created_events
+    end
   end
 
   def assign_time_slots
-    
+    params[:event_signup].each do |e_id, e_hash|
+      event = Event.find(e_id.to_i)
+      slot = TimeSlot.new(:start_time => e_hash['slot_time'], :duration => e_hash['slot_duration'].to_i*60,
+                          :event_id => event.id, :user_id => current_user.id)
+      puts "START #{slot.start_time} DURATION #{slot.duration} E_ID #{slot.event_id}"
+      if slot.save
+        event.time_slots << slot
+      else
+        flash[:notice] = slot.errors[:base]
+        redirect_to signup, :id => event.creator_id
+      end
+
+    end
     redirect_to time_slot_index_path
   end
 
@@ -56,6 +74,13 @@ class TimeSlotController < ApplicationController
     event.destroy
     flash[:notice] = "Slot Block #{event.title} deleted successfully"
     redirect_to(time_slot_index_path)
+  end
+
+  def destroy_slot
+    slot = TimeSlot.find(params[:id])
+    flash[:notice] = "slot for event #{slot.event.title} at #{slot.start_time.strftime("%-d %b - %H:%M")} cancelled successfully"
+    slot.destroy
+    redirect_to time_slot_index_path
   end
 
   private

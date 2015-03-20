@@ -18,7 +18,7 @@
           <div class="time slot">
             <em>Asignee:</em> <%= t.user.email %><br>
             <em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
-            <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %>
+            <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %><br>
           </div>
       <% end %>
     </div>
@@ -37,7 +37,9 @@
           <em>Event Title:</em> <%= t.event.title %><br>
           <em>Event Description:</em> <%= t.event.description %><br>
           <em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
-          <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %>
+          <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %><br>
+          <%= link_to('Cancel', {:action => :destroy_slot, :id => t.id, :class => 'action event'}) %>&nbsp;&nbsp;
+          <%= link_to('Change', {:action => :signup, :id => t.user_id, :e_id => t.event_id, :class => 'action event'}) %>&nbsp;&nbsp;
         </div>
     <% end %>
     <hr>
@@ -47,7 +49,7 @@
     <h3>Sign Up</h3>
     <% @users.each do |u| %>
         <div class="sign up">
-          <%= link_to u.email, {:action => :signup, :id => request.id, :class => 'action request'} %><br>
+          <%= link_to u.email, {:action => :signup, :id => u.id, :class => 'action request'} %><br>
         </div>
     <% end %>
 <% end %>

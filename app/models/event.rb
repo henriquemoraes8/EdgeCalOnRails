@@ -141,12 +141,54 @@ class Event < ActiveRecord::Base
 		false
 	end
 
+	def permitted_slot_start_times
+		if event_type != 'time_slot'
+			return []
+		end
+
+		current_time = start_time
+		min_duration = repetition_scheme.min_time_slot_duration
+		slots = []
+		time_slots.map {|s| slots << s}
+		current_slot = slots.shift
+		permitted_times = []
+
+		while to_seconds(current_time + min_duration) <= to_seconds(end_time)
+			if current_slot.nil? || to_seconds(current_time) < to_seconds(current_slot.start_time)
+				permitted_times << current_time
+				current_time += min_duration
+			elsif	to_seconds(current_time) >= to_seconds(current_slot.start_time + current_slot.duration)
+				current_slot = slots.shift
+			else
+				current_time += min_duration
+			end
+		end
+		permitted_times
+	end
+
+	def permitted_slot_durations
+		current_duration = repetition_scheme.min_time_slot_duration
+		max_duration = repetition_scheme.max_time_slot_duration
+
+		permitted_durations = []
+		while current_duration <= max_duration
+			permitted_durations << (current_duration/60).to_s
+			current_duration += 5*60
+		end
+
+		permitted_durations
+	end
+
 	private
 
 	def check_to_do
 		if event_type == 'to_do' && end_time - start_time <= 15.minutes
 			errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
 		end
+	end
+
+	def to_seconds(time)
+		time.hour*3600 + time.min*60
 	end
 
 end
