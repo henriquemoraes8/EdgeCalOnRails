@@ -1,0 +1,18 @@
+<h1>Find Free Time</h1>
+
+<h2>Select a combination of participants and groups</h2>
+<hr>
+<h3>Participants</h3><br>
+<h3>Users</h3>
+<% @users.each do |u| %>
+    <%= check_box('user_request',"#{u.id}") %>
+    <%= u.email %>
+    <br>
+<% end %>
+<br><br>
+<h3>Groups</h3>
+<% @groups.each do |g| %>
+    <%= check_box('group_request',"#{g.id}") %>
+    <%= g.title %>
+    <br>
+<% end %>

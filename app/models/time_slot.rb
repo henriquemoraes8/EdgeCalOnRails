@@ -1,5 +1,6 @@
 class TimeSlot < ActiveRecord::Base
   belongs_to :event
+  belongs_to :user
 
   #before_create :time_frame_allowed
   validate :time_frame_allowed
@@ -11,7 +12,10 @@ class TimeSlot < ActiveRecord::Base
   private
 
   def time_frame_allowed
-    if !event.repetition_scheme.time_slot_start_time_allowed_for_event(event,start_time)
+    if user_id && !event.time_slots.where(:user_id => user_id).empty?
+      errors[:base] = "user already has a time slot for this event"
+      return false
+    elsif !event.repetition_scheme.time_slot_start_time_allowed_for_event(event,start_time)
       errors[:base] = "start time does not align with a multiple of the minimum duration or does not fall within event date range"
       return false
     elsif (duration/60) % 5 != 0

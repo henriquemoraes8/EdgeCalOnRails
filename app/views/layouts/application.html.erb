@@ -20,35 +20,22 @@
 	  </ul>
 	  <section class="top-bar-section">
 		<ul class="right">
-		  	<% if user_signed_in? %>
-			<li class="divider"></li>
-		    <li><%= link_to 'Home', events_path %></li>
-			<li class="divider"></li>
-		    <li><%= link_to 'Groups', groups_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'Subscriptions', subscription_index_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'Requests', requests_index_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'To-Dos', to_dos_index_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'Time Slots', time_slot_index_path%></li>
-            <%else%>
-			<li class="divider"></li>
-		    <li><%= link_to 'Home', new_user_session_path %></li>
-			<li class="divider"></li>
-		    <li><%= link_to 'Groups', new_user_session_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'Subscriptions', new_user_session_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'Requests', new_user_session_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'To-Dos', new_user_session_path%></li>
-            <li class="divider"></li>
-            <li><%= link_to 'Time Slots', new_user_session_path%></li>
-		    <%end%>
-			<li class="divider"></li>
-			<li><%= link_to "Contact Us", events_path %></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Home', user_signed_in? ? events_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Groups', user_signed_in? ? groups_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Subscriptions', user_signed_in? ? subscription_index_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Requests', user_signed_in? ? requests_index_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'To-Dos', user_signed_in? ? to_dos_index_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Time Slots', user_signed_in? ? time_slot_index_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Search Free Time', user_signed_in? ? free_time_find_path : new_user_session_path%></li>
+          <li class="divider"></li>
+          <li><%= link_to "Contact Us", events_path %></li>
 		</ul>
 	  </section>
 	</nav>
