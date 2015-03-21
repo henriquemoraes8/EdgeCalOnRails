@@ -11,8 +11,32 @@
 <% end %>
 <br><br>
 <h3>Groups</h3>
+<% if @groups.count == 0 %>
+    <em>You do not have any created group</em>
+<% else %>
 <% @groups.each do |g| %>
     <%= check_box('group_request',"#{g.id}") %>
     <%= g.title %>
     <br>
 <% end %>
+<% end %>
+
+<hr>
+
+<h2>Specify the duration of the requested event</h2>
+<% puts "ALLOWED #{@allowed_durations}" %>
+<%= select_tag :duration, options_for_select(@allowed_durations.map {|d| d}) %>
+
+<hr>
+
+<h2>Specify a week and time range</h2>
+<h3>Weekdays</h3>
+<% weekdays.each do |w| %>
+    <%= check_box_tag w[0], w[1] %>
+    <%= label_tag w[0] %>&nbsp;&nbsp;
+<% end %>
+<br>
+
+<h2>Time Range For Search</h2>
+<h3>Start</h3>
+<h3>End</h3>

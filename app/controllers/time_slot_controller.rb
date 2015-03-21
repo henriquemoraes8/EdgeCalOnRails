@@ -19,7 +19,7 @@ class TimeSlotController < ApplicationController
     puts "min #{min_duration} max #{max_duration}"
 
     if min_duration == 0 || max_duration == 0
-      flash[:notice] = "you must set minimum and maximum durations"
+      flash[:error] = "you must set minimum and maximum durations"
       redirect_to time_slot_new_path
       return
     end
@@ -67,7 +67,7 @@ class TimeSlotController < ApplicationController
       if slot.save
         event.time_slots << slot
       else
-        flash[:notice] = slot.errors[:base]
+        flash[:error] = slot.errors[:base]
         redirect_to signup, :id => event.creator_id
         return
       end
