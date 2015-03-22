@@ -4,11 +4,36 @@ class FreeTimeController < ApplicationController
     puts "*** got to FREE TIME ***"
     @users = User.where.not(:id => current_user.id)
     @groups = current_user.groups
-    @allowed_durations = generate_allowed_durations
 
   end
 
   def show
+    @users = []
+    get_users_to_search.map {|u| @users << User.find(u)}
+    if @users.count == 0
+      flash[:error] = "no user selected"
+      redirect_to free_time_find_path
+      return
+    end
+
+    duration = params[:duration].to_i
+
+    weekdays = get_weekday_indexes
+    if weekdays.count == 0
+      flash[:error] = "no weekday selected"
+      redirect_to free_time_find_path
+      return
+    end
+
+    start_time = params[:start_time].to_i
+    end_time = params[:end_time].to_i
+    if end_time <= start_time
+      flash[:error] = "start time must be before end time"
+      redirect_to free_time_find_path
+      return
+    end
+
+
   end
 
   private
@@ -33,17 +58,17 @@ class FreeTimeController < ApplicationController
     end
     all_users = all_users.flatten
     all_users = all_users.uniq
-    return all_users
+    all_users
   end
 
-  def generate_allowed_durations
-    duration = 15*60
-    allowed = []
-    while duration <= 4*3600
-      allowed << [Time.at(duration).utc.strftime("%H:%M"), duration]
-      duration += 15*60
+  def get_weekday_indexes
+    weekdays = []
+    params[:weekday].keys.each do |w|
+      if params[:weekday][w] == "1"
+        weekdays << w.to_i
+      end
     end
-    return allowed
+    weekdays
   end
 
 end

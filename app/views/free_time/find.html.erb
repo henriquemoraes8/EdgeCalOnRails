@@ -1,5 +1,6 @@
 <h1>Find Free Time</h1>
 
+<%= form_tag(:action => 'show') do %>
 <h2>Select a combination of participants and groups</h2>
 <hr>
 <h3>Participants</h3><br>
@@ -24,19 +25,25 @@
 <hr>
 
 <h2>Specify the duration of the requested event</h2>
-<% puts "ALLOWED #{@allowed_durations}" %>
-<%= select_tag :duration, options_for_select(@allowed_durations.map {|d| d}) %>
+<%= select_tag :duration, options_for_select(allowed_durations.map {|d| d}) %>
 
 <hr>
 
 <h2>Specify a week and time range</h2>
 <h3>Weekdays</h3>
 <% weekdays.each do |w| %>
-    <%= check_box_tag w[0], w[1] %>
+    <%= check_box('weekday', w[1]) %>
     <%= label_tag w[0] %>&nbsp;&nbsp;
 <% end %>
 <br>
 
 <h2>Time Range For Search</h2>
 <h3>Start</h3>
+<%= select_tag :start_time, options_for_select(time_range.map {|d| d}) %>
 <h3>End</h3>
+<%= select_tag :end_time, options_for_select(time_range.map {|d| d}) %>
+
+<hr>
+
+<%= submit_tag 'Search' %>
+<% end %>
