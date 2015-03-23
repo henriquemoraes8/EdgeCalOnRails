@@ -62,7 +62,7 @@
         </div>
         <div class="field">
           <%= v_form.label(:position,"Priority") %><br>
-          <%= v_form.select(:position, 1..(@visibility_count == 0 ? 1 : @visibility_count)) %>
+          <%= v_form.select(:position, 1..(@visibility_count == 0 ? 1 : @visibility_count + 1)) %>
         </div>
         <div class="field">
         <%= v_form.label(:status) %><br>

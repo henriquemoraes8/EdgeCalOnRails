@@ -72,8 +72,8 @@ gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
 
 # for creating Entity Relationship Diagrams (Database diagram)
-gem 'ruby-graphviz', group: :development
-gem 'rails-erd', group: :development
+# gem 'ruby-graphviz', group: :development
+# gem 'rails-erd', group: :development
 
 
 # Use ActiveModel has_secure_password

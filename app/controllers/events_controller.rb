@@ -50,9 +50,7 @@ class EventsController < ApplicationController
     params[:event][:end_time] = "#{params[:event][:end_time]} Eastern Time (US & Canada)"
     @event = Event.new(event_params)
 
-    ##### fails
     @event.creator_id = current_user.id   
-    ### @brianbolze -- throws error in test 
     ### NoMethodError: undefined method `id' for nil:NilClass
 
     puts "MASS ASSIGNED EVENT IS #{@event}"

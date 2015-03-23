@@ -6,7 +6,7 @@
 	<% for s in @event.subscriptions do %>
 		<li>
 			<% if s.subscriber == current_user %>
-				<b><%=s.subscriber.name%> -- Owner</b>
+				<b><%=s.subscriber.name%> -- <%=s.get_visibility%></b>
 			<% else %>	
 				<%=s.subscriber.name%> -- <%=s.get_visibility%>
 			<% end %>

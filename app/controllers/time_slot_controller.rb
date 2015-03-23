@@ -1,3 +1,9 @@
+################################################################
+# The TimeSlot controller is used to manage everything involved
+# with signing up for slots/appointments. 
+################################################################
+
+
 class TimeSlotController < ApplicationController
 
   def index

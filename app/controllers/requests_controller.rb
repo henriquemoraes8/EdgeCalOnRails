@@ -92,6 +92,12 @@ class RequestsController < ApplicationController
 
   def update
     @request_map = RequestMap.find(params[:id])
+    @request_map.update_attributes(request_params)
+      # save_item(@request_map)
+      redirect_to(:action => 'index')
+    else
+      render('index')
+    end
   end
 
   def destroy
