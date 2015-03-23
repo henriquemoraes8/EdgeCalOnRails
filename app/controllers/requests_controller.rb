@@ -51,6 +51,7 @@ class RequestsController < ApplicationController
     event = Event.new(event_params(params[:request_map]))
 
     if event.save
+      current_user.subscribe_to_event(event)
       request_map = RequestMap.create(:event_id => event.id)
       puts "**** CREATED REQUEST MAP ****"
 

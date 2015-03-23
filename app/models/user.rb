@@ -66,6 +66,7 @@ class User < ActiveRecord::Base
     created_events.where(:event_type => Event.event_types[:time_slot])
   end
 
+
   private
 
   def get_events_for_status(status)

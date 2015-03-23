@@ -46,10 +46,7 @@ class Event < ActiveRecord::Base
   end
 
 	def is_right_visibility_for_user(visibility, user_id)
-		if event_type == 'to_do'
-			return visibility == 'visible'
-		elsif event_type == 'request'
-			# TODO: Need to fix this potentially?
+		if event_type == 'to_do' || event_type == 'request' || event_type == 'time_slot'
 			return visibility == 'visible'
 		end
 
