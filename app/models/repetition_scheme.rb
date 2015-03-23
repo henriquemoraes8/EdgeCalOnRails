@@ -1,5 +1,7 @@
 class RepetitionScheme < ActiveRecord::Base
+  
 	enum recurrence: [:no_recurrence, :daily, :every_other_day, :weekly, :monthly, :yearly]
+  
 	validate :max_min_duration
 
 	has_many :events

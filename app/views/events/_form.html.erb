@@ -28,32 +28,34 @@
       <%= f.label :end_time %><br>
       <%= f.text_field :end_time, class: 'datetimepicker' %>
     </div>
-    <div class="field">
+    
+	<div class="field">
       <%= f.label :event_type, 'allocate for to-do' %>
       <%= f.check_box :event_type, {}, 'to_do', 'regular' %>
     </div>
-
-    <h2>Set Reminder</h2>
-    <%= f.fields_for(:reminder) do |r_form| %>
-      <div class="field">
-        <%= r_form.label :next_reminder_time, 'send reminder at' %><br>
-        <%= r_form.text_field :next_reminder_time,  class: 'datetimepicker' %>
-      </div>
-      <div class="field">
-        <%= r_form.label :recurrence %><br>
-        <%= r_form.select :recurrence, Reminder.recurrences.keys.map {|r| [r.humanize, r]} %>
-      </div>
-    <% end %>
-
+	
+	<h4>Recurring Event</h4>
     <%= f.fields_for(:repetition) do |r_form| %>
         <div class="field">
-          <%= r_form.label :recurrence, 'repeat' %><br>
+          <%= r_form.label :recurrence, 'Repeats:' %><br>
           <%= r_form.select :recurrence, RepetitionScheme.recurrences.keys.map {|r| [r.humanize, r]} %>
         </div>
         <div class="field">
-          <%= r_form.label :until, 'until' %><br>
+          <%= r_form.label :until, 'Until:' %><br>
           <%= r_form.text_field :until,  class: 'datetimepicker' %>
         </div>
+    <% end %>
+	
+	<h4>Email Reminder</h4>
+    <%= f.fields_for(:reminder) do |r_form| %>
+      <div class="field">
+        <%= r_form.label :next_reminder_time, 'Send Reminder At:' %><br>
+        <%= r_form.text_field :next_reminder_time,  class: 'datetimepicker' %>
+      </div>
+      <div class="field">
+        <%= r_form.label :recurrence, 'Recurs:' %><br>
+        <%= r_form.select :recurrence, Reminder.recurrences.keys.map {|r| [r.humanize, r]} %>
+      </div>
     <% end %>
 
 
