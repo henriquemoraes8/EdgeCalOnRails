@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'free_time/create'
+
   get 'free_time/find'
 
   get 'free_time/show'

@@ -21,7 +21,7 @@ class Event < ActiveRecord::Base
 	after_create :next_to_do
 
 	validates_presence_of :title, :start_time, :end_time
-	# validates_presence_of :creator
+	validate :time_concise
 
 	def duration
 		end_time - start_time
@@ -188,6 +188,14 @@ class Event < ActiveRecord::Base
 
 	def to_seconds(time)
 		time.hour*3600 + time.min*60
+	end
+
+	def time_concise
+		if start_time >= end_time
+			errors[:base] = "Start time must be before end time"
+			return false
+		end
+		true
 	end
 
 end

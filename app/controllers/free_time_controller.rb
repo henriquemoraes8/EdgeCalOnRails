@@ -7,6 +7,43 @@ class FreeTimeController < ApplicationController
 
   end
 
+  def create
+    duration = params[:duration].to_i
+    users = params[:users]
+    puts "**** GOT TO CREATE ****"
+
+    if params[:request][:selected_request].nil?
+      puts "**** selected nil #{params[:selected_request]} ****"
+      flash[:error] = "Need to choose an event to generate the request"
+      redirect_to free_time_find_path
+      return
+    end
+
+    puts "** will create event ***"
+    selected = params[:request][:selected_request]
+    start_time = params[:request][selected][:start_time].to_date
+    event = Event.new(:title => params[:request][:title], :description => params[:request][:description], :start_time => start_time, :end_time => start_time + duration.seconds, :creator_id => current_user.id, :event_type => Event.event_types[:request])
+
+    if event.save
+      puts "**** EVENT SAVED ***"
+      current_user.subscribe_to_event(event)
+      request_map = RequestMap.create(:event_id => event.id)
+      all_users = []
+      users.map {|u| all_users << u.to_i}
+
+      request_map.generate_requests_for_ids(all_users)
+      event.request_map = request_map
+      event.save
+
+      redirect_to requests_index_path
+    else
+      puts "*** EVENT NOT SAVED #{event.errors.full_messages} ***"
+      flash[:error] = "Event could not be saved: #{event.errors[:base]}"
+      redirect_to free_time_find_path
+    end
+
+  end
+
   def show
     @users = []
     get_users_to_search.map {|u| @users << User.find(u)}

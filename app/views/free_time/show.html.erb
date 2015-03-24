@@ -1,10 +1,26 @@
 <h1>Free Time Search</h1>
-<hr>
-<% puts "**GOT TO SHOW**" %>
-<%= form_for('request', :url => {:action => 'find'}) do |f| %>
+<% names = [] %>
+<% @users.map {|u| names << u.name} %>
+<p>Search for free time from users: <%= names.join(", ")%></p>
+<p>Duration of request is <%= "#{pluralize(@duration/3600, 'hour') if @duration/3600 > 0} #{pluralize((@duration/60)%60, 'minute') if (@duration/60)%60 > 0}" %></p>
+
+<%= form_for('request', :url => {:action => 'create', :duration => @duration, :users => @users}) do |f| %>
     <% puts "** START FORM FREE TIMES #{@free_times} **" %>
+    <div class="field">
+      <%= f.label :request_event_title %><br>
+      <%= f.text_field :title %>
+    </div>
+    <div class="field">
+      <%= f.label :request_event_description %><br>
+      <%= f.text_area :description %>
+    </div>
+
+    <hr>
+
     <table>
+    <% count_key = 1 %>
     <% @free_times['params'].each do |e| %>
+        <%= f.fields_for "#{count_key}" do |f2| %>
           <% puts "** E IS #{e} **" %>
         <tr>
           <td>
@@ -12,15 +28,19 @@
             <div class="field">
               <em>From: </em><%= e[:start_time].strftime('%a, %-d %b - %H:%M') %><br>
               <em>To: </em><%= e[:end_time].strftime('%a, %-d %b - %H:%M') %><br>
-              <%= f.label :available_times %><br>
-              <%= f.select :start_time, e[:free_times].map {|t| [t.strftime("%H:%M"), t]} %>
+              <%= f2.label :available_times %><br>
+              <%= f2.select :start_time, e[:free_times].map {|t| [t.strftime("%H:%M"), t]} %>
             </div>
           </td>
           <td>
-            <%= f.radio_button 'selected_request', "event" %>
+            <%= f.radio_button :selected_request, "#{count_key}" %>
           </td>
         </tr>
+        <% end %>
+        <% count_key = count_key + 1 %>
     <% end %>
     </table>
+
+    <%= submit_tag 'Create Request', :class => "button action" %>
 
 <% end %>
