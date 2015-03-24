@@ -143,7 +143,7 @@ class FreeTimeController < ApplicationController
         next
       #open a new free range
       elsif current_time < start_event
-        puts "RANGE IS ZERO, START OF NEW RUN"
+        puts "START OF NEW FREE RUN"
         free_time << [current_time, start_event]
         current_time = start_event
       end
