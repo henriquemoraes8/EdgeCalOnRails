@@ -11,18 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150315215037) do
+ActiveRecord::Schema.define(version: 20150324032609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "created_events", force: :cascade do |t|
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "created_events", ["user_id"], name: "index_created_events_on_user_id", using: :btree
 
   create_table "events", force: :cascade do |t|
     t.string   "title"
@@ -36,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150315215037) do
     t.integer  "event_type",           default: 0
     t.integer  "to_do_id"
     t.integer  "request_map_id"
+    t.integer  "respective_slot_id"
   end
 
   create_table "groups", force: :cascade do |t|
@@ -101,11 +94,12 @@ ActiveRecord::Schema.define(version: 20150315215037) do
 
   create_table "time_slots", force: :cascade do |t|
     t.integer  "user_id"
-    t.integer  "event_id",   null: false
+    t.integer  "event_id",      null: false
     t.datetime "start_time"
     t.integer  "duration"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "slot_event_id"
   end
 
   create_table "to_dos", force: :cascade do |t|

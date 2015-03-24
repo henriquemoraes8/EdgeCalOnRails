@@ -1,2 +1,26 @@
-<h1>FreeTime#show</h1>
-<p>Find me in app/views/free_time/show.html.erb</p>
+<h1>Free Time Search</h1>
+<hr>
+<% puts "**GOT TO SHOW**" %>
+<%= form_for('request', :url => {:action => 'find'}) do |f| %>
+    <% puts "** START FORM FREE TIMES #{@free_times} **" %>
+    <table>
+    <% @free_times['params'].each do |e| %>
+          <% puts "** E IS #{e} **" %>
+        <tr>
+          <td>
+            <em>Time Block</em>
+            <div class="field">
+              <em>From: </em><%= e[:start_time].strftime('%a, %-d %b - %H:%M') %><br>
+              <em>To: </em><%= e[:end_time].strftime('%a, %-d %b - %H:%M') %><br>
+              <%= f.label :available_times %><br>
+              <%= f.select :start_time, e[:free_times].map {|t| [t.strftime("%H:%M"), t]} %>
+            </div>
+          </td>
+          <td>
+            <%= f.radio_button 'selected_request', "event" %>
+          </td>
+        </tr>
+    <% end %>
+    </table>
+
+<% end %>
