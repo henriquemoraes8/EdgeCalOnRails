@@ -63,9 +63,8 @@ class User < ActiveRecord::Base
   end
 
   def get_time_slot_created_events
-    created_events.where(:event_type => Event.event_types[:time_slot])
+    created_events.where(:event_type => Event.event_types[:time_slot_block])
   end
-
 
   private
 

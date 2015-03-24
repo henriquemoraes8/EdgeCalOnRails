@@ -71,6 +71,10 @@ class RepetitionScheme < ActiveRecord::Base
 		duration <= max_time_slot_duration
 	end
 
+	def set_title(title)
+		events.each
+	end
+
 	private
 
 	def max_min_duration

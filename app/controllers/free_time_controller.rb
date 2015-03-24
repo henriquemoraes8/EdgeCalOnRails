@@ -33,7 +33,6 @@ class FreeTimeController < ApplicationController
       return
     end
 
-
   end
 
   private

@@ -59,7 +59,8 @@ class EventsController < ApplicationController
       if @event.save
         # Save was successful
         puts "SUCCESSFUL SAVE"
-        @subscription = Subscription.create(subscribed_event_id: @event.id,subscriber_id: current_user.id)
+        puts "event_id #{@event.id} USER ID #{current_user.id}"
+        @subscription = current_user.subscribe_to_event(@event)
 
         # Reminder creation logic here.  If the form at the bottom of the page
         # is not empty, the reminder will be set, and emails will be sent to
