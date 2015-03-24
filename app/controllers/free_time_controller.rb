@@ -33,6 +33,16 @@ class FreeTimeController < ApplicationController
       return
     end
 
+    @free_times = {}
+    weekdays.each do |w|
+      date = next_week_day(DateTime.now, w).beginning_of_day
+      free_time = map_free_time(date + start_time, date + end_time, @users)
+      free_time = eliminate_small_durations(free_time, duration)
+      puts "*** BUILDING HASH START TIME: #{date + start_tim} END TIME: #{date + end_time} FREE TIME COUNT: #{free_time.count}"
+
+      @free_times << {:start_time => date + start_time, :end_time => date + end_time, :free_times => free_time}
+    end
+
   end
 
   private
@@ -68,6 +78,93 @@ class FreeTimeController < ApplicationController
       end
     end
     weekdays
+  end
+
+  def map_free_time(start_time, end_time, users)
+    if users.count == 0
+      return []
+    end
+    start_time.second
+
+    current_user = users.shift
+    all_events = current_user.subscribed_events
+    while !current_user.nil?
+      current_user = users.shift
+      current_user.subscribed_events.map |e| all_events << e
+    end
+    round_second(start_time)
+    round_second(end_time)
+
+    all_events = all_events.where('start_time > ? and end_time < ?',start_time - 5.minutes, end_time + 5.minutes).order(:start_time)
+    step = 15*60
+    free_time = []
+    current_time = start_time
+    current_range = []
+
+    if all_events.empty?
+      free_time << [start_time, end_time]
+      return free_time
+    end
+
+    all_events.each do |e|
+      #current time hits an event block
+      if contains_time(e.start_time, e.end_time, current_time)
+        if current_range.count == 1
+          current_range << round_second(e.start_time <= start_time ? e.start_time : start_time)
+          free_time << current_range
+          current_range = []
+        end
+        current_time = round_second(e.end_time)
+      #previous event contained currents time frame
+      elsif end_time < current_time
+        next
+      #open a new free range
+      elsif current_time < round_second(e.start_time) && free_time.count == 0
+        free_time << current_time
+        current_time += step
+      else
+        current_time += step
+      end
+
+      #check if we did not pass
+      current_time.change(:sec => 0)
+      if current_time >= end_time
+        break
+      end
+    end
+
+    #corner case end iteration
+    if current_time < end_time
+      free_time << [current_time, end_time]
+    end
+
+    free_time
+  end
+
+  def eliminate_small_durations(free_time, duration)
+    new_free_time = []
+    free_time.each do |time|
+      if time[1] - time[0] >= duration
+        new_free_time << time
+      end
+    end
+    new_free_time
+  end
+
+  def contains_time(start_time, end_time, contained_time)
+    to_second(contained_time) >= to_second(start_time) && to_second(contained_time) < to_second(end_time)
+  end
+
+  def to_second(time)
+    time.hour*3600 + time.min*60
+  end
+
+  def round_second(time)
+    time.change(:sec => 0)
+  end
+
+  def next_week_day(date, day_week)
+     1.day + (((day_week-1)-date.wday)%7).day
   end
 
 end
