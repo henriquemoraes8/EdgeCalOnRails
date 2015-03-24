@@ -145,7 +145,7 @@ class FreeTimeController < ApplicationController
       elsif current_time < start_event
         puts "START OF NEW FREE RUN"
         free_time << [current_time, start_event]
-        current_time = start_event
+        current_time = end_event
       end
 
       #check if we did not pass
@@ -190,6 +190,7 @@ class FreeTimeController < ApplicationController
   end
 
   def contains_time(start_time, end_time, contained_time)
+    puts "** CONTAINS TIME #{to_second(contained_time) >= to_second(start_time) && to_second(contained_time) < to_second(end_time)}"
     to_second(contained_time) >= to_second(start_time) && to_second(contained_time) < to_second(end_time)
   end
 
