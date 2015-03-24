@@ -95,9 +95,9 @@ class RequestsController < ApplicationController
     @request_map.update_attributes(request_params)
       # save_item(@request_map)
       redirect_to(:action => 'index')
-    else
-      render('index')
-    end
+    # else
+    #   render('index')
+    # end
   end
 
   def destroy

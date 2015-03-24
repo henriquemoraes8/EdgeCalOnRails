@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 20150315215037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "created_events", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "created_events", ["user_id"], name: "index_created_events_on_user_id", using: :btree
+
   create_table "events", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
@@ -29,29 +37,6 @@ ActiveRecord::Schema.define(version: 20150315215037) do
     t.integer  "to_do_id"
     t.integer  "request_map_id"
   end
-
-  create_table "fullcalendar_engine_event_series", force: :cascade do |t|
-    t.integer  "frequency",  default: 1
-    t.string   "period",     default: "monthly"
-    t.datetime "starttime"
-    t.datetime "endtime"
-    t.boolean  "all_day",    default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "fullcalendar_engine_events", force: :cascade do |t|
-    t.string   "title"
-    t.datetime "starttime"
-    t.datetime "endtime"
-    t.boolean  "all_day",         default: false
-    t.text     "description"
-    t.integer  "event_series_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "fullcalendar_engine_events", ["event_series_id"], name: "index_fullcalendar_engine_events_on_event_series_id", using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.string   "title"
