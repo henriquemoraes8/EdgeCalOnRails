@@ -4,40 +4,19 @@
 	<%= link_to image_tag("add.png"), new_event_path, id: "new_event_button" %>
 	<br>
 	<br>
-	<a href="#" data-reveal-id="event-lists">List All Events</a>
+	<a href="#" data-reveal-id="event-lists">All Events</a> | 
+	<a href="#" data-reveal-id="to-do-list">To Do List</a>
 	<br>
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
 <% end %>
 
 <div class="reveal-modal" id="event-lists" data-reveal>
-<h1>My Events</h1>
+		<a class="close-reveal-modal"></a>
+		<%= render "list_index" %>
+</div>
 
-<% if @own_events.count > 0 %>
-    <div class="events own">
-      <h3>Owned Events</h3>
-      <%= render(:partial => 'table_index', :locals => {:events => @own_events, :status => nil}) %>
-    </div>
-<% end %>
-<% if @visible_events.count > 0 %>
-    <div class="events visible">
-      <h3>Visible Events</h3>
-      <%= render(:partial => 'table_index', :locals => {:events => @visible_events, :status => "visible"}) %>
-    </div>
-<% end %>
-<% if @modifiable_events.count > 0 %>
-    <div class="events modify">
-      <h3>Modifiable Events</h3>
-      <%= render(:partial => 'table_index', :locals => {:events => @modifiable_events, :status => "modify"}) %>
-    </div>
-<% end %>
-<% if @busy_events.count > 0 %>
-    <div class="events busy">
-      <h3>Busy Events</h3>
-      <%= render(:partial => 'table_index', :locals => {:events => @busy_events, :status => "busy"}) %>
-    </div>
-	
-<% end %>
-		
-  		<a class="close-reveal-modal"></a>
+<div class="reveal-modal" id="to-do-list" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= render "to_do_list" %>
 </div>

@@ -1,0 +1,27 @@
+<h1>My Events</h1>
+
+<% if @own_events.count > 0 %>
+    <div class="events own">
+      <h3>Owned Events</h3>
+      <%= render(:partial => 'table_index', :locals => {:events => @own_events, :status => nil}) %>
+    </div>
+<% end %>
+<% if @visible_events.count > 0 %>
+    <div class="events visible">
+      <h3>Visible Events</h3>
+      <%= render(:partial => 'table_index', :locals => {:events => @visible_events, :status => "visible"}) %>
+    </div>
+<% end %>
+<% if @modifiable_events.count > 0 %>
+    <div class="events modify">
+      <h3>Modifiable Events</h3>
+      <%= render(:partial => 'table_index', :locals => {:events => @modifiable_events, :status => "modify"}) %>
+    </div>
+<% end %>
+<% if @busy_events.count > 0 %>
+    <div class="events busy">
+      <h3>Busy Events</h3>
+      <%= render(:partial => 'table_index', :locals => {:events => @busy_events, :status => "busy"}) %>
+    </div>
+	
+<% end %>
