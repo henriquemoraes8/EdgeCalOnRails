@@ -178,11 +178,12 @@ class FreeTimeController < ApplicationController
 
   def parse_possible_start_times(free_times, duration)
     times = []
-
+    puts "PARSING STARTS"
     free_times.each do |t|
       current_time = t.first
       while current_time + duration.seconds <= t.last
         times << current_time
+        current_time += (15*60).seconds
       end
     end
     times
