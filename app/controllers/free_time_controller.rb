@@ -45,10 +45,12 @@ class FreeTimeController < ApplicationController
   end
 
   def conflict
-    duration = params[:duration].to_i
+    @duration = params[:duration].to_i
     users = params[:users]
-    start_time = DateTime.parse(params[:conflict][:start_time])
+    @start_time = DateTime.parse(params[:conflict][:start_time])
+    @end_time = @start_time + @duration.seconds
 
+    puts "*** GOT TO CONFLICT LOGIC START: #{start_time} END #{start_time + duration.seconds} USERS: #{users}"
     @events = map_user_conflict(users, start_time, duration)
   end
 
@@ -227,12 +229,25 @@ class FreeTimeController < ApplicationController
 
     place_holder = []
     all_events.each do |e|
-      same_start = round_second(to_eastern_time(e.start_time)) == start_time
-      overlap = round_second(to_eastern_time(e.start_time)) < end_time && round_second(to_eastern_time(e.end_time)) > start_time
+      event_start = round_second(to_eastern_time(e.start_time))
+      event_end = round_second(to_eastern_time(e.end_time))
+      puts "EVENT START: #{event_start} END #{event_end}"
+
+      #performance enhancement to reduce iterations
+      if event_end < start_time
+        next
+      elsif event_start > end_time
+        break
+      end
+
+      same_start = event_start == start_time
+      overlap = event_start < end_time && event_end > start_time
       if same_start || overlap
+        puts "CONFLICT"
         place_holder << e
       end
-      end
+
+    end
     all_events = place_holder.sort_by {|e| e.start_time}
     return all_events
   end
