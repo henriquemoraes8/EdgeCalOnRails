@@ -1,3 +1,2 @@
 <% @todos = ToDo.where(creator_id: current_user.id) %>
-
 <%= render 'to_dos/table_view', remote: true %>
