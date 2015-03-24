@@ -1,0 +1,28 @@
+<% if @request_maps.count > 0 %>
+
+<h2>My Requests</h2>
+<table class="listing" class="To Do List">
+  <tr class="header">
+	    <th>Request Event</th>
+	    <th>Description</th>
+	    <th>Start Time</th>
+	    <th>End Time</th>
+		<th>Pending Users</th>
+		<th>Confirmed Users</th>
+		<th>Declined Users</th>
+		<th>Removed Users</th>
+	</tr>
+<% @request_maps.each do |request| %>
+    <tr class='request'>
+      <td><%= request.event.title %></td>
+      <td><%= request.event.description %></td>
+      <td><%= request.event.start_time.strftime("%-d %b - %H:%M") %></td>
+      <td><%= request.event.end_time.strftime("%-d %b - %H:%M") %></td>
+      <td><%= request.pending_requests.count %></td>
+	  <td><%= request.confirmed_requests.count + request.modification_requests.count %></td>
+	  <td><%= request.declined_requests.count %></td>
+	  <td><%= request.removed_requests.count %></td>
+	</tr>
+<% end %>
+
+<% end %> 

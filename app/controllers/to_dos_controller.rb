@@ -7,7 +7,7 @@ class ToDosController < ApplicationController
   # about their to-do.  To-Dos will remain on the user's calendar
   # until they're done.
   ################################################################
-
+    
   def index
     @todos = current_user.to_dos.sorted
     # puts "GOT TO LINE BEFORE EMAIL NOTIFICATION"
@@ -78,6 +78,10 @@ class ToDosController < ApplicationController
     flash[:notice] = "To-do '#{@todo.title}' deleted successfully"
 
     redirect_to(to_dos_index_path)
+  end
+
+  def get_to_do_list
+    index
   end
 
   private

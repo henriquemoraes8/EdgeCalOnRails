@@ -28,6 +28,14 @@ $(document).on('ready page:load', function(){
 		
 	],
 	
+	windowResize: function(view) {
+	      if ($(window).width() < 514){
+	        $('#calendar').fullCalendar( 'changeView', 'agendaDay' );
+	      } else {
+	        $('#calendar').fullCalendar( 'changeView', 'agendaWeek' );
+	      }
+	 }
+	
   })
   $('#calendar').fullCalendar('refetchEvents')
 }).call(this);

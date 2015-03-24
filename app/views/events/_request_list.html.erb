@@ -1,0 +1,6 @@
+<%
+@request_maps = []
+current_user.get_requested_events.map {|e| @request_maps << e.request_map}
+%>
+
+<%= render 'requests/table_view', remote: true %>

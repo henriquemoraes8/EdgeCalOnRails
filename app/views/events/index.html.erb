@@ -5,7 +5,8 @@
 	<br>
 	<br>
 	<a href="#" data-reveal-id="event-lists">All Events</a> | 
-	<a href="#" data-reveal-id="to-do-list">To Do List</a>
+	<a href="#" data-reveal-id="to-do-list">To Do List</a> |
+	<a href="#" data-reveal-id="requests">My Requests</a>
 	<br>
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
@@ -19,4 +20,9 @@
 <div class="reveal-modal" id="to-do-list" data-reveal>
 		<a class="close-reveal-modal"></a>
 		<%= render "to_do_list" %>
+</div>
+
+<div class="reveal-modal" id="requests" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= render "request_list" %>
 </div>
