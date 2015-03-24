@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	enum event_type: [:regular, :to_do, :request, :recurrent, :time_slot]
+	enum event_type: [:regular, :to_do, :request, :recurrent, :time_slot_block, :time_slot]
 
 	# Added by @brianbolze, @henriquemoraes -- 2/2
 	belongs_to :creator, :class_name => "User"
@@ -14,6 +14,8 @@ class Event < ActiveRecord::Base
 	has_many :visibilities, -> { order("position ASC") }, :dependent => :delete_all
 
 	has_many :time_slots, :dependent => :delete_all
+
+	belongs_to :respective_slot, :class_name => 'TimeSlot'#, :foreign_key => 'slot_event_id'
 
 	before_validation :check_to_do
 	after_create :next_to_do
@@ -46,7 +48,7 @@ class Event < ActiveRecord::Base
   end
 
 	def is_right_visibility_for_user(visibility, user_id)
-		if event_type == 'to_do' || event_type == 'request' || event_type == 'time_slot'
+		if event_type == 'to_do' || event_type == 'request' || event_type == 'time_slot' || event_type == 'time_slot_block'
 			return visibility == 'visible'
 		end
 
@@ -114,7 +116,7 @@ class Event < ActiveRecord::Base
 
 	def time_slot_overlaps(time_slot)
 		puts "** check time slot overlap event type #{event_type} relation #{event_type != 'time_slot'} **"
-		if event_type != 'time_slot'
+		if event_type != 'time_slot_block'
 			return false
 		end
 
@@ -139,7 +141,7 @@ class Event < ActiveRecord::Base
 	end
 
 	def permitted_slot_start_times
-		if event_type != 'time_slot'
+		if event_type != 'time_slot_block'
 			return []
 		end
 

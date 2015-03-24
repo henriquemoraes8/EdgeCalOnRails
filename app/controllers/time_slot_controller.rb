@@ -14,7 +14,7 @@ class TimeSlotController < ApplicationController
 
   def new
     @events = []
-    @events << Event.new(:event_type => Event.event_types[:time_slot])
+    @events << Event.new(:event_type => Event.event_types[:time_slot_block])
   end
 
   def create
@@ -34,7 +34,7 @@ class TimeSlotController < ApplicationController
 
     params[:event_blocks][:events].each do |e_param|
       event = Event.new(event_params(e_param))
-      event.event_type = Event.event_types[:time_slot]
+      event.event_type = Event.event_types[:time_slot_block]
       event.creator_id = current_user.id
       if event.save
         repetition.events << event

@@ -6,6 +6,8 @@ class RepetitionScheme < ActiveRecord::Base
 
 	has_many :events
 
+	### <<<< LEAVE COMMENTED OUTPUTS TO CONSOLE ALONE >>>>
+
 	def self.recurrence_to_date_time(period)
 		return 1.day if period == ToDo.recurrences[:daily] || period == "daily"
 		return 2.days if period == ToDo.recurrences[:every_other_day] || period == "every_other_day"
@@ -24,10 +26,10 @@ class RepetitionScheme < ActiveRecord::Base
 		period = RepetitionScheme.recurrence_to_date_time(recurrence)
 		date += period
 
-		puts "WILL START RECURRENCE CREATION START: #{date}, PERIOD: #{period}, DURATION: #{original_event.duration}"
+		#puts "WILL START RECURRENCE CREATION START: #{date}, PERIOD: #{period}, DURATION: #{original_event.duration}"
 
 		while date < until_time do
-			puts "CREATING EVENT AT DATE #{date}"
+			#puts "CREATING EVENT AT DATE #{date}"
 			event = Event.create(:creator_id => original_event.creator_id, :title => original_event.title,
 													 :description => original_event.description, :start_time => date,
 													 :end_time => date + original_event.duration, :event_type => Event.event_types[:recurrent])
@@ -41,7 +43,7 @@ class RepetitionScheme < ActiveRecord::Base
 
 	def update_events_based_on_event(event)
 		events.each do |e|
-			puts "WILL UPDATE EVENT ID #{e} TITLE #{e.title} DESCRIPTION #{e.description} TO TITLE #{event.title} AND DESC #{event.description}"
+			#puts "WILL UPDATE EVENT ID #{e} TITLE #{e.title} DESCRIPTION #{e.description} TO TITLE #{event.title} AND DESC #{event.description}"
 			e.title = event.title
 			e.description = event.description
 			e.save
@@ -49,8 +51,8 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def time_slot_start_time_allowed_for_event(event, start_time)
-		puts "** REP TIME ALLOWED **"
-		puts "** seconds of min #{min_time_slot_duration}"
+		#puts "** REP TIME ALLOWED **"
+		#puts "** seconds of min #{min_time_slot_duration}"
 		start_allowed = event.start_time
 		if start_time < event.start_time || start_time > event.end_time
 			return false
@@ -65,14 +67,14 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def time_slot_duration_allowed(duration)
-		puts "** REP DURATION ALLOWED **"
+		#puts "** REP DURATION ALLOWED **"
 		duration <= max_time_slot_duration
 	end
 
 	private
 
 	def max_min_duration
-		puts "VALIDATION MIN #{min_time_slot_duration} MAX #{max_time_slot_duration}"
+		#puts "VALIDATION MIN #{min_time_slot_duration} MAX #{max_time_slot_duration}"
 		if min_time_slot_duration.nil? && max_time_slot_duration.nil?
 			return true
 		end
