@@ -21,7 +21,7 @@ class FreeTimeController < ApplicationController
 
     puts "** will create event ***"
     selected = params[:request][:selected_request]
-    start_time = params[:request][selected][:start_time].to_date
+    start_time = DateTime.parse(params[:request][selected][:start_time])
     event = Event.new(:title => params[:request][:title], :description => params[:request][:description], :start_time => start_time, :end_time => start_time + duration.seconds, :creator_id => current_user.id, :event_type => Event.event_types[:request])
 
     if event.save
@@ -42,6 +42,14 @@ class FreeTimeController < ApplicationController
       redirect_to free_time_find_path
     end
 
+  end
+
+  def conflict
+    duration = params[:duration].to_i
+    users = params[:users]
+    start_time = DateTime.parse(params[:conflict][:start_time])
+
+    @events = map_user_conflict(users, start_time, duration)
   end
 
   def show
@@ -130,7 +138,6 @@ class FreeTimeController < ApplicationController
     users.map {|u| user_array << u}
     current_user = user_array.shift
 
-    #hack for empty record relation
     all_events = []
     while !current_user.nil?
       current_user.subscribed_events.map {|e| all_events << e}
@@ -139,8 +146,8 @@ class FreeTimeController < ApplicationController
         break
       end
     end
-    round_second(start_time)
-    round_second(end_time)
+    start_time = round_second(start_time)
+    end_time = round_second(end_time)
 
     puts "*** ALL EVENTS COUNT BEFORE QUERY FILTER #{all_events.count} ***\n"
 
@@ -199,6 +206,35 @@ class FreeTimeController < ApplicationController
     end
 
     free_time
+  end
+
+  def map_user_conflict(users, start_time, duration)
+    start_time = round_second(to_eastern_time(start_time))
+    end_time = start_time + duration.seconds
+
+    user_array = []
+    users.map {|u| user_array << User.find(u.to_i)}
+    current_user = user_array.shift
+
+    all_events = []
+    while !current_user.nil?
+      current_user.subscribed_events.map {|e| all_events << e}
+      current_user = user_array.shift
+      if current_user.nil?
+        break
+      end
+    end
+
+    place_holder = []
+    all_events.each do |e|
+      same_start = round_second(to_eastern_time(e.start_time)) == start_time
+      overlap = round_second(to_eastern_time(e.start_time)) < end_time && round_second(to_eastern_time(e.end_time)) > start_time
+      if same_start || overlap
+        place_holder << e
+      end
+      end
+    all_events = place_holder.sort_by {|e| e.start_time}
+    return all_events
   end
 
   def eliminate_small_durations(free_time, duration)
