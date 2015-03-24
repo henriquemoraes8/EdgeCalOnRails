@@ -1,7 +1,7 @@
 <%# This renders the actual graphical calendar (fullcalendar.js) %>
 <%# See assets/javascripts/events.js.erb %>
 <% content_for :calendar do %>
-	<%= link_to image_tag("add.png"), new_event_path, id: "new_event_button" %>
+	<a href="#" data-reveal-id="new-event-modal"><%= image_tag("add.png") %></a>
 	<br>
 	<br>
 	<a href="#" data-reveal-id="event-lists">All Events</a> | 
@@ -11,6 +11,13 @@
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
 <% end %>
+
+<div class="reveal-modal" id="new-event-modal" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<h1>New Event</h1>
+		<% @event = Event.new %>
+		<%= render "form" %>
+</div>
 
 <div class="reveal-modal" id="event-lists" data-reveal>
 		<a class="close-reveal-modal"></a>
