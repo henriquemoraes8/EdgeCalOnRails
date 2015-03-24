@@ -1,0 +1,26 @@
+<h3>To Do List</h3>
+
+
+<table class="listing" summary="To Do List">
+  <tr class="header">
+    <th>Title</th>
+    <th>Description</th>
+    <th>Priority</th>
+    <th>Duration</th>
+	<th>Actions</th>
+  </tr>
+  
+  <% @todos.each do |todo| %>
+      <tr class=<%= todo.done? ? "done" : "not done" %>, id=<%= todo.done? ? "done" : "not done" %>>
+        <td><%= todo.title %></td>
+        <td><%= todo.description %></td>
+        <td class="center"><%= todo.position %></td>
+        <td class="center"><%= "#{pluralize(todo.duration.hour, 'hour') if todo.duration.hour > 0} #{pluralize(todo.duration.min, 'minute') if todo.duration.min > 0}" %></td>
+		<td>
+        <%= link_to('Delete', {controller: :to_dos, :action => :destroy, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
+        <%= link_to('Edit', {controller: :to_dos, :action => :edit, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
+        <%= link_to('Done', {controller: :to_dos, :action => :done, :id => todo.id, :class => 'action todo'}) if !todo.done? %>
+		</td>
+      </tr>
+  <% end %>
+</table>

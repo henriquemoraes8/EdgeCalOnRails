@@ -1,8 +1,35 @@
 <%# This renders the actual graphical calendar (fullcalendar.js) %>
 <%# See assets/javascripts/events.js.erb %>
 <% content_for :calendar do %>
-	<%= link_to image_tag("add.png"), new_event_path, id: "new_event_button" %>
+	<a href="#" data-reveal-id="new-event-modal"><%= image_tag("add.png") %></a>
+	<br>
+	<br>
+	<a href="#" data-reveal-id="event-lists">All Events</a> | 
+	<a href="#" data-reveal-id="to-do-list">To Do List</a> |
+	<a href="#" data-reveal-id="requests">My Requests</a>
 	<br>
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
 <% end %>
+
+<div class="reveal-modal" id="new-event-modal" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<h1>New Event</h1>
+		<% @event = Event.new %>
+		<%= render "form" %>
+</div>
+
+<div class="reveal-modal" id="event-lists" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= render "list_index" %>
+</div>
+
+<div class="reveal-modal" id="to-do-list" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= render "to_do_list" %>
+</div>
+
+<div class="reveal-modal" id="requests" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= render "request_list" %>
+</div>

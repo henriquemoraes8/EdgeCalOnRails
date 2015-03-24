@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(document).on('ready page:load', function(){
   $('#calendar').fullCalendar({
 	  
 	editable: false,
@@ -28,6 +28,15 @@ $(document).ready(function(){
 		
 	],
 	
+	windowResize: function(view) {
+	      if ($(window).width() < 514){
+	        $('#calendar').fullCalendar( 'changeView', 'agendaDay' );
+	      } else {
+	        $('#calendar').fullCalendar( 'changeView', 'agendaWeek' );
+	      }
+	 }
+	
   })
   $('#calendar').fullCalendar('refetchEvents')
 }).call(this);
+

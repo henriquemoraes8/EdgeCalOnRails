@@ -171,6 +171,10 @@ class RequestsController < ApplicationController
     request.save
     redirect_to requests_index_path
   end
+  
+  def get_my_requests
+    index
+  end
 
   private
 
