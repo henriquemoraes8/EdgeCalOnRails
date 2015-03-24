@@ -16,7 +16,7 @@ class FreeTimeController < ApplicationController
       return
     end
 
-    duration = params[:duration].to_i
+    @duration = params[:duration].to_i
 
     weekdays = get_weekday_indexes
     if weekdays.count == 0
@@ -38,11 +38,11 @@ class FreeTimeController < ApplicationController
       date = next_week_day(DateTime.now, w).beginning_of_day
       free_time = map_free_time(date + start_time.seconds, date + end_time.seconds, @users)
 
-      free_time = eliminate_small_durations(free_time, duration)
+      free_time = eliminate_small_durations(free_time, @duration)
       puts "*** BUILDING HASH DATE: #{date} START:#{start_time} START TIME: #{date + start_time.seconds} END TIME: #{date + end_time.seconds}"
       puts "\nFREE TIME: #{free_time}\n"
 
-      @free_times['params'] << {:start_time => date + start_time.seconds, :end_time => date + end_time.seconds, :free_times => free_time}
+      @free_times['params'] << {:start_time => date + start_time.seconds, :end_time => date + end_time.seconds, :free_times => parse_possible_start_times(free_time, @duration)}
     end
 
   end
@@ -89,13 +89,15 @@ class FreeTimeController < ApplicationController
     end
     start_time.second
 
-    current_user = users.shift
+    user_array = []
+    users.map {|u| user_array << u}
+    current_user = user_array.shift
 
     #hack for empty record relation
     all_events = []
     while !current_user.nil?
       current_user.subscribed_events.map {|e| all_events << e}
-      current_user = users.shift
+      current_user = user_array.shift
       if current_user.nil?
         break
       end
@@ -106,10 +108,9 @@ class FreeTimeController < ApplicationController
     puts "*** ALL EVENTS COUNT BEFORE QUERY FILTER #{all_events.count} ***\n"
 
     place_holder = []
-    all_events.map {|e| place_holder << e if e.start_time > start_time - 5.minutes && e.end_time < end_time + 5.minutes}
+    all_events.map {|e| place_holder << e if to_eastern_time(e.start_time) > to_eastern_time(start_time) - 5.minutes && to_eastern_time(e.end_time) < to_eastern_time(end_time + 5.minutes)}
     all_events = place_holder.sort_by {|e| e.start_time}
 
-    step = 15*60
     free_time = []
     current_time = to_eastern_time(start_time)
     current_range = []
@@ -117,7 +118,7 @@ class FreeTimeController < ApplicationController
     puts "*** WILL CHECK ALL EVENTS COUNT #{all_events.count} ***\n"
     if all_events.empty?
       puts "*** ALL EVENTS ARE EMPTY ***\n"
-      free_time << [start_time, end_time]
+      free_time << [to_eastern_time(start_time), to_eastern_time(end_time)]
       return free_time
     end
 
@@ -173,6 +174,18 @@ class FreeTimeController < ApplicationController
       end
     end
     new_free_time
+  end
+
+  def parse_possible_start_times(free_times, duration)
+    times = []
+
+    free_times.each do |t|
+      current_time = t.first
+      while current_time + duration.seconds <= t.last
+        times << current_time
+      end
+    end
+    times
   end
 
   def contains_time(start_time, end_time, contained_time)

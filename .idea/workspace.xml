@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a0dd890b-3a3f-4343-aea3-8c6c2d685bcf" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/free_time_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/free_time_controller.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
     </list>
     <ignored path="EdgeCalOnRails.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -148,8 +147,8 @@
       <file leaf-file-name="free_time_controller.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/controllers/free_time_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5019531" vertical-offset="1093" max-vertical-offset="3060">
-              <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.33867735" vertical-offset="431" max-vertical-offset="3255">
+              <caret line="40" column="56" selection-start-line="40" selection-start-column="56" selection-end-line="40" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -1236,8 +1235,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/free_time_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5019531" vertical-offset="1093" max-vertical-offset="3060">
-          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.33867735" vertical-offset="431" max-vertical-offset="3255">
+          <caret line="40" column="56" selection-start-line="40" selection-start-column="56" selection-end-line="40" selection-end-column="56" />
           <folding />
         </state>
       </provider>
