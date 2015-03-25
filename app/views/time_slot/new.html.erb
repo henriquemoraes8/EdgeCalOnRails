@@ -22,12 +22,17 @@
       <% end %>
       <div id="time_slot_events">
       <% @events.each do |e| %>
-          <div class="partial">
-            <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
-          </div>
+          <script type="text/javascript">
+          var num = prompt("How many different event boxes would you like?");
+          for (i=0; i<num; i++){
+              $('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
+            }
+          </script>
+          <%#= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
+          <%#= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
       <% end %>
       </div>
-      <%#= f.button 'Add Event Block', id: 'add_button', class:'button radius' %>
+      <%#= f.button 'Add Event Block', id: 'add_button', class:'button radius', :action => :add_event_block, :remote => true %>
 
       <%= link_to 'Add Event Block', {:action => :add_event_block}, :remote => true%>
 

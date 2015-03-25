@@ -1,1 +1,10 @@
-$('#partial').html("<%= escape_javascript (render :partial => 'form_event') %>");
+$(document).ready(function(){
+    alert("hi");
+    $('#add_button').click(function () {
+        alert("button clicked");
+        $("#time_slot_events").append("<div class='partial'>
+        <%= escape_javascript(render :partial => 'form_event', :locals => {:f => f, :event => e}) %>
+        </div>");
+        location.reload();
+    });
+});
