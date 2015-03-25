@@ -2,6 +2,14 @@
 
 <div class="event block">
   <%= form_for('event_blocks', :url => {:controller => 'time_slot', :action => 'create'}) do |f| %>
+      <div class="field">
+        <%= f.label :title %><br>
+        <%= f.text_field :title %>
+      </div>
+      <div class="field">
+        <%= f.label :description %><br>
+        <%= f.text_area :description %>
+      </div>
       <%= f.fields_for :repetition_scheme do |r| %>
           <div class="field">
             <%= r.label 'minimum slot duration' %><br>

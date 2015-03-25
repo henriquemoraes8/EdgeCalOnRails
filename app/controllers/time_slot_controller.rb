@@ -32,8 +32,11 @@ class TimeSlotController < ApplicationController
 
     repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration)
 
+    title = params[:event_blocks][:title]
+    description = params[:event_blocks][:description]
     params[:event_blocks][:events].each do |e_param|
-      event = Event.new(event_params(e_param))
+      puts e_param.merge(:title=>title, :description=>description)
+      event = Event.new(event_params(e_param.merge(:title=>title, :description=>description)))
       event.event_type = Event.event_types[:time_slot_block]
       event.creator_id = current_user.id
       if event.save
