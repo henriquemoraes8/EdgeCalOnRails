@@ -86,7 +86,7 @@ class FreeTimeController < ApplicationController
     if recurrence != 'no_recurrence'
       until_date = params[:search][:until_date]
       recurrence = RepetitionScheme.recurrence_to_date_time(params[:search][:recurrence])
-      if until_time.blank?
+      if until_date.blank?
         flash[:error] = "with recurrence an end time must be specified"
         redirect_to free_time_find_path
         return
