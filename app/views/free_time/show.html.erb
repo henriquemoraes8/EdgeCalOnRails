@@ -11,6 +11,7 @@
 
 <%= form_for('conflict', :url => {:action => 'conflict', :duration => @duration, :users => @users}) do |fc| %>
     <%= fc.text_field :start_time, class: 'datetimepicker' %>
+    <%= render :partial => 'recur_form', :locals => {:f => fc} %>
     <%= fc.submit 'Find Conflicts', :class => "button action" %>
 <% end %>
 
