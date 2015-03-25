@@ -8,5 +8,6 @@ $(document).ready(function(){
         $("#time_slot_events").append("<div class='partial'>
         <%= escape_javascript(render :partial => 'form_event', :locals => {:f => f, :event => e}) %>
         </div>");
+        location.reload();
     });
 });

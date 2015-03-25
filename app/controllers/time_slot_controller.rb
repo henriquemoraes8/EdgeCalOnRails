@@ -35,7 +35,6 @@ class TimeSlotController < ApplicationController
     title = params[:event_blocks][:title]
     description = params[:event_blocks][:description]
     params[:event_blocks][:events].each do |e_param|
-      puts e_param.merge(:title=>title, :description=>description)
       event = Event.new(event_params(e_param.merge(:title=>title, :description=>description)))
       event.event_type = Event.event_types[:time_slot_block]
       event.creator_id = current_user.id
@@ -97,6 +96,12 @@ class TimeSlotController < ApplicationController
     flash[:notice] = "slot for event #{slot.event.title} at #{slot.start_time.strftime("%-d %b - %H:%M")} cancelled successfully"
     slot.destroy
     redirect_to time_slot_index_path
+  end
+
+  def add_event_block
+    respond_to do |format|               
+      format.js
+    end
   end
 
   private
