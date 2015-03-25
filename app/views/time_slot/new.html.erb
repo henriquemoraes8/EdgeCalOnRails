@@ -23,7 +23,7 @@
       <div id="time_slot_events">
       <% @events.each do |e| %>
           <script type="text/javascript">
-          var num = prompt("How many different event boxes would you like?");
+          var num = prompt("How many different slot blocks would you like?");
           for (i=0; i<num; i++){
               $('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
             }
