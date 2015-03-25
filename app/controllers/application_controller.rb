@@ -13,6 +13,24 @@ class ApplicationController < ActionController::Base
   end
   
   before_filter :configure_permitted_parameters, if: :devise_controller?
+
+  def to_eastern_time(time)
+    time.in_time_zone('Eastern Time (US & Canada)')
+  end
+
+  def correct_time_from_datepicker(time)
+    time = to_eastern_time(DateTime.parse(time))
+    time -= time.utc_offset.seconds
+    time
+  end
+
+  def to_second(time)
+    time.hour*3600 + time.min*60
+  end
+
+  def round_second(time)
+    time.change(:sec => 0)
+  end
   
   protected
 
