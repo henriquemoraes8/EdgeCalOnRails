@@ -2,20 +2,23 @@
 
 <hr>
 
-<p>Mapping conflicts for date <%= @start_time.strftime('%a, %-d %b') %>, from <%= @start_time.strftime('%H:%M') %> to <%= @end_time.strftime('%H:%M') %></p>
-
-<% if @events.empty? %>
-    <em>Clear of conflicts</em>
-<% else %>
-    <% @events.each do |e| %>
-        <div class="event conflict">
-          <p>
-            <em>User:</em> <%= e.creator.name %><br>
-            <em>Title:</em> <%= e.title %><br>
-            <em>Description:</em> <%= e.description %><br>
-            <em>Start Time:</em> <%= e.start_time.in_time_zone('Eastern Time (US & Canada)').strftime("%-d %b - %H:%M") %><br>
-            <em>End Time:</em> <%= e.end_time.in_time_zone('Eastern Time (US & Canada)').strftime("%-d %b - %H:%M") %>
-          </p>
-        </div>
+<% @conflict_hash.keys.each do |d| %>
+    <p>Mapping conflicts for date <%= d.strftime('%a, %-d %b') %>, from <%= d.strftime('%H:%M') %> to <%= (d + @duration.seconds).strftime('%H:%M') %></p>
+    <% if @conflict_hash[d].empty? %>
+        <em>Clear of conflicts</em>
+    <% else %>
+        <% @conflict_hash[d].each do |e| %>
+            <div class="event conflict">
+              <p>
+                <em>User:</em> <%= e.creator.name %><br>
+                <em>Title:</em> <%= e.title %><br>
+                <em>Description:</em> <%= e.description %><br>
+                <em>Start Time:</em> <%= e.start_time.in_time_zone('Eastern Time (US & Canada)').strftime("%-d %b - %H:%M") %><br>
+                <em>End Time:</em> <%= e.end_time.in_time_zone('Eastern Time (US & Canada)').strftime("%-d %b - %H:%M") %>
+              </p>
+            </div>
+        <% end %>
     <% end %>
+    <hr>
+
 <% end %>

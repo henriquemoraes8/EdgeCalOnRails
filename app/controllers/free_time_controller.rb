@@ -51,7 +51,7 @@ class FreeTimeController < ApplicationController
     recurrence = RepetitionScheme.recurrence_to_date_time(params[:conflict][:recurrence])
 
     @conflict_hash = {}
-    
+
     puts "*** GOT TO CONFLICT LOGIC START: #{start_time} END #{start_time + @duration.seconds} USERS: #{users}"
     if recurrence == 0
       @conflict_hash[start_time] = map_user_conflict(users, start_time, @duration)
@@ -257,7 +257,7 @@ class FreeTimeController < ApplicationController
   def parse_search_days(weekdays, recurrence, until_date)
     dates = []
     current_time = DateTime.now
-    if recurrence == 'no_recurrence'
+    if recurrence == 0
       weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
     else
       puts "** PARSE SEARCH DAYS RECURRENCE, UNTIL DATE #{until_date}, RECURRENCE #{recurrence} ***"
