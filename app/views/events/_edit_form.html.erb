@@ -54,7 +54,7 @@
 	<br>
         <div class="field">
         <%= v_form.label(:user_id, "User for rule") %><br>
-        <%= v_form.select(:user_id, User.all.map {|u| [u.email, u.id]}, {:include_blank => true}) %>
+        <%= v_form.select(:user_id, User.where.not(id: current_user.id).map {|u| [u.email, u.id]}, {:include_blank => true}) %>
         </div>
         <div class="field">
         <%= v_form.label(:group_id, "Group for rule") %><br>

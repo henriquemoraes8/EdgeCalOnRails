@@ -143,6 +143,24 @@ class EventsController < ApplicationController
     render 'busy.json.jbuilder'
   end
   
+  # GET /events/invited_events.json
+  def invited_events
+    # render json: current_user.get_busy_events
+    @events = current_user.requests
+    render 'invited_events.json.jbuilder'
+  end
+  
+  # GET /events/PUD_events.json
+  def PUD_events
+    @events = Event.where(creator: current_user, event_type: Event.event_types[:to_do])
+    render 'index.json.jbuilder'
+  end
+  
+  # GET /events/created_events.json
+  def created_events
+    @events = Event.where(creator: current_user, event_type: [Event.event_types[:recurrent], Event.event_types[:regular]])
+    render 'index.json.jbuilder'
+  end
   
   # GET /events/1/get_subscribers
   def get_subscribers
