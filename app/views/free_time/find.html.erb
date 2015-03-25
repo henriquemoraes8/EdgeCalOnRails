@@ -1,6 +1,6 @@
 <h1>Find Free Time</h1>
 
-<%= form_tag(:action => 'show') do %>
+<%= form_for('search', :url => {:action => 'show'}) do |f|%>
 <h2>Select a combination of participants and groups</h2>
 <hr>
 <h3>Participants</h3><br>
@@ -25,25 +25,35 @@
 <hr>
 
 <h2>Specify the duration of the requested event</h2>
-<%= select_tag :duration, options_for_select(allowed_durations.map {|d| d}) %>
+<%= f.select :duration, options_for_select(allowed_durations.map {|d| d}) %>
 
 <hr>
 
-<h2>Specify a week and time range</h2>
-<h3>Weekdays</h3>
+<h2>Specify periods for search</h2>
+<h3>Include next days of week</h3>
 <% weekdays.each do |w| %>
     <%= check_box('weekday', w[1]) %>
     <%= label_tag w[0] %>&nbsp;&nbsp;
 <% end %>
 <br>
 
-<h2>Time Range For Search</h2>
+<h3>Time Range For Search</h3>
 <h3>Start</h3>
-<%= select_tag :start_time, options_for_select(time_range.map {|d| d}) %>
+<%= f.select :start_time, options_for_select(time_range.map {|d| d}) %>
 <h3>End</h3>
-<%= select_tag :end_time, options_for_select(time_range.map {|d| d}) %>
+<%= f.select :end_time, options_for_select(time_range.map {|d| d}) %>
+<br><br>
 
+<h3>Repeat search by criteria</h3>
+    <div class="field">
+      <%= label :recurrence, 'Repeat:' %><br>
+      <%= f.select :recurrence, options_for_select(RepetitionScheme.recurrences.keys.map {|r| [r.humanize, r]}) %>
+    </div>
+    <div class="field">
+      <%= label :until, 'Until:' %><br>
+      <%= f.text_field :until_time, class: 'datetimepicker' %>
+    </div>
 <hr>
 
-<%= submit_tag 'Search', class: "button radius" %>
+<%= f.submit 'Search', class: "button radius" %>
 <% end %>
