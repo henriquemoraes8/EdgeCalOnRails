@@ -19,7 +19,10 @@
           </div>
       <% end %>
       </div>
-      <%= f.button 'Add Event Block', id: 'add_button', class:'button radius' %>
+      <%#= f.button 'Add Event Block', id: 'add_button', class:'button radius' %>
+
+      <%= link_to 'Add Event Block', {:action => :add_event_block}, :remote => true%>
+
 
       <div class="actions">
         <%= f.submit 'Create Time Slots', class: "button radius"%>
