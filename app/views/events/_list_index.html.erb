@@ -1,27 +1,43 @@
 <h1>My Events</h1>
 
 <% if @own_events.count > 0 %>
+    <% own_events_bool = true %>
     <div class="events own">
       <h3>Owned Events</h3>
       <%= render(:partial => 'table_index', :locals => {:events => @own_events, :status => nil}) %>
     </div>
+<% else %>
+    <% own_events_bool = false %>
 <% end %>
 <% if @visible_events.count > 0 %>
+    <% visible_events_bool = true %>
     <div class="events visible">
       <h3>Visible Events</h3>
       <%= render(:partial => 'table_index', :locals => {:events => @visible_events, :status => "visible"}) %>
     </div>
+<% else %>
+    <% visible_events_bool = false %>
 <% end %>
 <% if @modifiable_events.count > 0 %>
+    <% modifiable_events_bool = true %>
     <div class="events modify">
       <h3>Modifiable Events</h3>
       <%= render(:partial => 'table_index', :locals => {:events => @modifiable_events, :status => "modify"}) %>
     </div>
+<% else %>
+    <% modifiable_events_bool = false %>
 <% end %>
 <% if @busy_events.count > 0 %>
+    <% busy_events_bool = false %>
     <div class="events busy">
       <h3>Busy Events</h3>
       <%= render(:partial => 'table_index', :locals => {:events => @busy_events, :status => "busy"}) %>
     </div>
+<% else %>
+    <% busy_events_bool = false %>
 	
+<% end %>
+
+<% if !own_events_bool && !visible_events_bool && !modifiable_events_bool && !busy_events_bool %>
+    <i>You don't have any events yet</i>
 <% end %>

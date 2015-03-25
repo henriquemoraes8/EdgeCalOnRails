@@ -1,9 +1,11 @@
-<div id="navigation">
+<h2>Subscriptions</h2>
+<br>
+<div id="subscription_navigation">
   <%= render(:partial => 'navigation', :locals => {:users => @users}) %>
 </div>
 
 <div class="display">
-  <h2>events</h2>
+  <h4>Events</h4>
   <%= form_tag(subscription_manage_path, :id => @selected_user.id) do %>
   <table class="listing" summary="events list">
     <tr class="header">
@@ -33,6 +35,6 @@
         </tr>
     <% end %>
   </table>
-  <%= submit_tag("Subscribe") %>
+  <%= submit_tag "Subscribe", class: "button radius"%>
   <% end %>
 </div>
