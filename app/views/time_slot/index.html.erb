@@ -42,7 +42,7 @@
           <em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
           <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %><br>
           <%= link_to('Cancel', {:action => :destroy_slot, :id => t.id, :class => 'action event'}) %>&nbsp;&nbsp;
-          <%= link_to('Change', {:action => :signup, :id => t.user_id, :e_id => t.event_id, :class => 'action slot'}) %>&nbsp;&nbsp;
+          <%= link_to('Change', {:action => :signup, :id => t.event.creator_id, :e_id => t.event_id, :class => 'action slot'}) %>&nbsp;&nbsp;
         </div>
     <% end %>
     <hr>
