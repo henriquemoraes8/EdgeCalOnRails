@@ -46,8 +46,8 @@ class EventsController < ApplicationController
       params[:event][:event_type] = Event.event_types[:recurrent]
     end
 
-    params[:event][:start_time] = "#{params[:event][:start_time]} Eastern Time (US & Canada)"
-    params[:event][:end_time] = "#{params[:event][:end_time]} Eastern Time (US & Canada)"
+    params[:event][:start_time] = correct_time_from_datepicker(params[:event][:start_time])
+    params[:event][:end_time] = correct_time_from_datepicker(params[:event][:end_time])
     @event = Event.new(event_params)
 
     @event.creator_id = current_user.id   

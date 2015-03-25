@@ -45,14 +45,7 @@
 <br><br>
 
 <h3>Repeat search by criteria</h3>
-    <div class="field">
-      <%= label :recurrence, 'Repeat:' %><br>
-      <%= f.select :recurrence, options_for_select(RepetitionScheme.recurrences.keys.map {|r| [r.humanize, r]}) %>
-    </div>
-    <div class="field">
-      <%= label :until, 'Until:' %><br>
-      <%= f.text_field :until_time, class: 'datetimepicker' %>
-    </div>
+    <%= render :partial => 'recur_form', :locals => {:f => f} %>
 <hr>
 
 <%= f.submit 'Search', class: "button radius" %>

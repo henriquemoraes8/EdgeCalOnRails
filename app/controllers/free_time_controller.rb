@@ -47,12 +47,36 @@ class FreeTimeController < ApplicationController
   def conflict
     @duration = params[:duration].to_i
     users = params[:users]
-    @start_time = correct_time_from_datepicker(params[:conflict][:start_time])
+    start_time = correct_time_from_datepicker(params[:conflict][:start_time])
+    recurrence = RepetitionScheme.recurrence_to_date_time(params[:conflict][:recurrence])
 
-    @end_time = @start_time + @duration.seconds
+    @conflict_hash = {}
+    
+    puts "*** GOT TO CONFLICT LOGIC START: #{start_time} END #{start_time + @duration.seconds} USERS: #{users}"
+    if recurrence == 0
+      @conflict_hash[start_time] = map_user_conflict(users, start_time, @duration)
+    else
+      until_date = params[:conflict][:until_date]
+      if until_date.blank?
+        flash[:error] = "with recurrence an end time must be specified"
+        redirect_to free_time_find_path
+        return
+      end
+      until_date = correct_time_from_datepicker(until_date).end_of_day
+      if until_date < DateTime.now + 5.minutes
+        flash[:error] = "limit until time must be in the future"
+        redirect_to free_time_find_path
+        return
+      end
 
-    puts "*** GOT TO CONFLICT LOGIC START: #{@start_time} END #{@start_time + @duration.seconds} USERS: #{users}"
-    @events = map_user_conflict(users, @start_time, @duration)
+      current_time = round_second(start_time)
+      while current_time < until_date
+        puts "ITERATION WITH CURRENT TIME #{current_time}"
+        @conflict_hash[current_time] = map_user_conflict(users, current_time, @duration)
+        current_time += recurrence
+      end
+
+    end
   end
 
   def show
@@ -82,10 +106,10 @@ class FreeTimeController < ApplicationController
     end
 
     until_date = DateTime.now
-    recurrence = params[:search][:recurrence]
-    if recurrence != 'no_recurrence'
+    recurrence = RepetitionScheme.recurrence_to_date_time(params[:search][:recurrence])
+    if recurrence != 0
       until_date = params[:search][:until_date]
-      recurrence = RepetitionScheme.recurrence_to_date_time(params[:search][:recurrence])
+      puts "*** RECURRENCE #{recurrence} UNTIL DATE #{until_date} ***"
       if until_date.blank?
         flash[:error] = "with recurrence an end time must be specified"
         redirect_to free_time_find_path
@@ -99,10 +123,10 @@ class FreeTimeController < ApplicationController
       end
     end
 
-    parsed_times = parse_search_days(weekdays, recurrence, until_date)
-
+    parsed_dates = parse_search_days(weekdays, recurrence, until_date)
+    puts "PARSED DATES IS #{parsed_dates}"
     @free_times = {'params' => []}
-    parsed_times.each do |d|
+    parsed_dates.each do |d|
       free_time = map_free_time(d + start_time.seconds, d + end_time.seconds, @users)
 
       free_time = eliminate_small_durations(free_time, @duration)
@@ -115,24 +139,6 @@ class FreeTimeController < ApplicationController
   end
 
   private
-
-  def parse_search_days(weekdays, recurrence, until_date)
-    dates = []
-    current_time = DateTime.now
-    puts "** WILL PARSE SEARCH DAYS **"
-    if recurrence == 'no_recurrence'
-      puts "** NO RECURRENCE **"
-      weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
-    else
-      puts "** RECURRENCE, UNTIL DATE #{until_date}, RECURRENCE #{recurrence} ***"
-      while current_time < until_date
-        puts "ITERATION WITH CURRENT TIME #{current_time}"
-        weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
-        current_time += recurrence
-      end
-    end
-    dates.uniq
-  end
 
   def get_users_to_search
     all_users = []
@@ -246,6 +252,22 @@ class FreeTimeController < ApplicationController
     end
 
     free_time
+  end
+
+  def parse_search_days(weekdays, recurrence, until_date)
+    dates = []
+    current_time = DateTime.now
+    if recurrence == 'no_recurrence'
+      weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
+    else
+      puts "** PARSE SEARCH DAYS RECURRENCE, UNTIL DATE #{until_date}, RECURRENCE #{recurrence} ***"
+      while current_time < until_date
+        puts "ITERATION WITH CURRENT TIME #{current_time}"
+        weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
+        current_time += recurrence
+      end
+    end
+    dates.uniq
   end
 
   def map_user_conflict(users, start_time, duration)
