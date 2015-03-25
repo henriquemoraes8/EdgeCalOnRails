@@ -44,6 +44,12 @@ Rails.application.routes.draw do
   post 'subscription/manage'
   
   get 'events/busy_events.json' => 'events#busy_events'
+  
+  get 'events/created_events.json' => 'events#created_events'
+  
+  get 'events/PUD_events.json' => 'events#PUD_events'
+  
+  get 'events/invited_events.json' => 'events#invited_events'
     
   # GET /events/1/get_subscribers
   get 'events/:id/get_subscribers' => 'events#get_subscribers'

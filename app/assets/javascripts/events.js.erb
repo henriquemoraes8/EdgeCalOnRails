@@ -18,7 +18,18 @@ $(document).on('ready page:load', function(){
 	eventSources: [
 		
 		{
-			url: '/events',
+			url: '/events/created_events.json',
+			// Defaults to blue
+		},
+		
+		{
+			url: '/events/PUD_events.json',
+			color: 'orange'
+		},
+		
+		{
+			url: '/events/invited_events.json',
+			color: 'grey'
 		},
 		
 		{
