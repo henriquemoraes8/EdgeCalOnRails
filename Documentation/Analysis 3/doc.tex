@@ -1,0 +1,189 @@
+\documentclass[11pt]{article}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+
+
+\renewcommand{\baselinestretch}{1.4}
+\setlength{\parskip}{0.8em}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+	language=Java,
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize\ttfamily,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=codestyle}
+
+\newcommand{\quotes}[1]{``#1"}
+
+\begin{document}
+
+\begin{center}
+\textbf{ECE 458: Engineering Software For Maintainability \\
+Senior Design Course\\
+Spring 2015\\[0.2in]}
+Evolution 3 Analysis\\
+Brian Bolze, Jeff Day, Henrique Rusca, Wes Koorbusch
+\end{center}
+
+\singlespacing
+\tableofcontents
+
+% Writen Analysis (25%) Along with every software deliverable, you will turn in a written docu- ment which will cover two main points:
+
+% 1. A retrospective on how your previous design choices impacted your work to meet the current set of requirements. This section should analyze not only where your good design choices made things easy, but also where your bad design choices made things hard. For both of these points, you should analyze how/why these design choices helped or hindered you. For bad design choices, you should discuss what you might have done differently in the past to avoid the problem this time around.
+
+% 2. An evaluation of your current design, with an analysis of its strengths and weaknesses going forwards. This section should justify your current design choices, explaining why you think they will be beneficial to you in the long run. If you recognize weaknesses in your current design, you should discuss them—including an explanation of why they are there, and how you plan to fix them in future submissions.
+
+% These documents should not only deep analysis of the strengths and weaknesses of your design choice, but also be well written. Ideally, the retrospective section of submission N would connect back to the forward-looking analysis of submission N-1 (i.e., Did things you think would be beneficial actually end up helping you? Did the weaknesses you identified come back to bite you? Did you fix your weaknesses this time around?).
+
+\pagebreak
+
+\section{Previous Design Analysis}
+
+Considering our groups general inexperience with Rails, we as a group were generally very happy with how our previous design choices impacted our ability to fulfill Evolution 2 requirements.  One key design feature that we created in our model that made some things very simple for us in this evolution was the idea of a subscription.  At the time, we believed that having a user subscribe to a specific event would make notifications, requests, and updates easier to add in the future.  This particularly helped with things like email reminders.  A second design decision that we unfortunately unable to implement in Evolution 1 but had always planned to include was a visibility model object.  There was a significant discussion over whether or not visibility should simply be an aspect of the event field or whether it should have its own entire definition.  The fact that we planned to have it as a distinct definition in our design made it easier to incorporate the ability to see events or not depending on user choices to requests and invites.
+
+One specific area where our design was poor was with repeating events.  We thought the implementation would be relatively simple: make copies of a single event at some defined period.  However, there are a lot of adjustments that need to be made when editing a repeating event.  Initially, we attempted to make a simple encoding of a single number to the days of a week that an event could be repeated and also the period that it would be repeated.  We then realized, it was very difficult to do math with regards to a calendar with integers that represent days of the week.  As is clear in our Evolution 2 implementation, we refactored our design with regards to repeating events in order to make it more robust and flexible.
+
+\section{Current Design Evaluation}
+On Evolution 3, we were able to reuse several models to tie up the new logic while creating new structures and engendering more code. The team has improved on AJAX and jQuery skills to add more dynamism to views while the backend still tries to maintain its cohesion.
+
+\subsection{views}
+Views have improved significantly since evolution 2. We were able to group several features into forms in the home screen, but time constraints did not allow us to apply the technique to all functionalities. It is possible we migrate everything to a more user-friendly interface by the end of evolution 4. For the two new functionalities, time slots and free time, partials are still a crucial feature. We still reuse similar html code and modularize it among partials.
+
+\subsection{Controllers}
+The \texttt{TimeSlot} controller is relatively short since the validation, creation, and deletion logic is moved to the models as always. The controller basically handles creation, deletion and slot signup. It does not even handle selection of free slot times, that logic is moved to the models as well
+
+The \texttt{FreeTime} controller, however, handles heavy logic and computation. Since a “FreeTime” model is not necessary to know when not to have an event, this controller behaves differently than the others. There is no specific model tied to it. Rather, it needs to manage users and their subscription and filter them accordingly. One big advantage of the finding-free-time-logic is that every tangible event (i.e. a slot event block is only for time boundary display but a time slot actually represents a busy time frame) is tied to a subscription. So, after the user selects all the people he wants to know the free time of, it is just a matter of retrieving all the visible subscriptions of all these users. It does not matter whether the event is a request, a time slot, or a to-do allocated, they all have subscriptions tied to it.
+If we would compare user by user, it would become computationally impossible map out each conflict. Imagine if we chose k users each with an average of n events. The naïve approach to compare each one would yield an O($k!n^2$) algorithm because every event of every user would be compared to each other. Given that this approach is not viable, we needed to come with more efficient algorithms and heuristics to provide a fast server response. To actually filter the right times, the logic used is the following.
+
+\begin{description}
+ \item [Parameter Validation] It is important to not let the user input any inconsistent parameter since the free time logic is extremely sensitive. Any date off its place could terminate a whole loop iteration due to aggregated heuristics. The parameter validation includes the existence of at least one selected user, one selected weekday, correct start and end periods, and existence of an appropriate until time if recurrence is requested. Note that even though the until date field presents time input, it is irrelevant since the time period is already defined by previous fields.
+\item[Date parsing] We need to know all days that the user wants to look for. If the user does not specify any recurrence the next days of week checked will be used for the search. However, if the user specifies a recurrence period, all the very next days of week are taken as a starting point and each one recurs for the amount of time given until the defined end date. However, suppose someone chooses M T W and an “every other day” recurrence. Obviously Monday will land on every day that Wednesday lands, so only unique dates are taken into consideration.  
+\item[Merge user events] The first step is to merge all events of all users into a single array. For purposes of finding the free time available, it is not necessary to know who conflicted, only what times did not conflict. The conflict logic is reserved for another action call.
+\item[Filter event array] After merging all events, we will need to eventually calculate the free time between them. To avoid iterating more times than normal, a filter is performed to extract only events that land on the given time frame. In case there is no event that meets the criteria, the whole time period is returned and terminating the free time parsing routine.
+\item[Iteration] The idea is to build an array with all free times with the format \texttt{[[start1, end1], [start2, end2]…}.  This way we construct an array with all possible free time ranges. This algorithm can be accomplished in O(n) worst case time if we manipulate data decently. Firstly, it is important to notice that the resulting events are sorted by starting time, then the event array is iterated following the rules below along with a \texttt{current_time} pointer to keep track of our position in the time frame:
+\begin{itemize}
+\item If \texttt{current_time} is contained in the time frame of the iterated event, we move current time to the end time of the event
+\item In case there is a large event iterated that encompasses a whole other event, the next event will have an end time smaller than current time. So we can skip this iteration.
+\item If we find a \texttt{current_time} that is less than the start of the next event, we can add \texttt{[current_time, event.end_time]} to the free time array.
+\item As a precaution, if \texttt{current_time} passes the given end period, we break the iteration.
+\item Finally, if the event iteration finished with an event inside the given period, we still need to add one last time range to free times consisting of the final state of the current time and the end period provided.
+\end{itemize}
+\item[Small duration elimination] After mapping every free time interval available, we still need to take into consideration the duration of the event the user wants to create. Therefore, we run the resulting array into a routine to eliminate such short time ranges from the array of free times.
+\item[Parsing into start times] After retrieving the free intervals for a given period, these intervals are parsed into all possible start times with time steps of 15 minutes until 15 minutes before the end of the free time range. This is necessary for the html select input field. Then, the start date, end date, and free time are added to a hash used by the view.
+\item[Repeat] Repeat the free time parsing for each day
+\end{description}
+From the options generated of free time, the user can choose one day and a start time to automatically send a request to all other users chosen.
+
+For the conflict logic, the idea is similar but simpler. For conflicts, the user can only specify one date with optional recurring search. For each calculated day that the user wants to check for conflicts, all the user events are merged and sorted for the given period as well. However, this time on the iteration, the event period is compared for an overlap with the given period. If a match is found, it is added to the array of conflicted events. To expedite the iteration, events that have their end time before the conflict period start time trigger a skip on the current iteration, and the loop breaks upon finding the first event that has a start time greater than the end time of the period. The parsed information is displayed on the view with each user and event. If there are no conflicts for a given time period, an appropriate message is displayed.
+It is important to notice that, to handle the confusing realm of time zones, several controller global methods were created to manage them. From rounding seconds, to converting time zones, to converting to seconds to sum times, out project now has a steady base for handling this issue.
+
+\subsection{Model and Database}
+The only novelty on the project here are time slots. The free time requirement did not bring any new models to the table. However, two new types of events arose: time slot blocks and time slot events. Time slot blocks are more like informational event to delimit a time frame used for creating time slots. Users do not specifically have subscriptions assigned to these types of events. The repetition scheme model was reused to bundle together time slot blocks with the same purpose. The time slot model works only as a buffer to modularize and manage the time slot logic. It takes into account all possible validations upon creating to prevent the database from storing corrupt data. The validations are:
+\begin{itemize}
+\item There is not a previously created time slot on this event block
+\item Alignment of time slot start time with a multiple of the minimum duration allowed and certification that the time slot period does not fall outside the slot block time frame
+\item Time slot duration is a multiple of 5 minutes
+\item Duration is not greater than maximum duration
+\item Time slot does not overlap with an existing one
+\end{itemize}
+Note that, since the time slot durations are flexible, we decided to appeal to lazy loading and only create a time slot when a user requests it. The event block keeps track of the available times to schedule an appointment and presents them to the view. This way we can allocate slots properly without any conflict. 
+After creation, a TimeSlot creates a time slot event and a subscription to both the requesting user and the owner of the event block. If we were only left with the TimeSlot model creation, ther would be no subscriptions tied to them and free time parsing would be significantly more complicated.
+
+
+\section{Design Process Notes}
+
+This section of the document describes experiences regarding the design and testing process for each member of the team.  These experiences include analyzing data, design processes, and team management.
+
+\subsection{Designed and Conducted Experiment}
+
+\textit{Brian's Contribution}
+
+
+\textit{Jeff's Contribution}
+
+
+\textit{Wes's Contribution}
+
+
+\textit{Henrique's Contribution}
+
+
+\subsection{Analyzed and Interpreted Data}
+
+\textit{Brian's Contribution}
+
+\textit{Jeff's Contribution}
+
+
+\textit{Wes's Contribution}
+
+\textit{Henrique's Contribution}
+
+
+\subsection{Designed System Component to Meet Desired Needs}
+
+\textit{Brian's Contribution}
+
+
+\textit{Jeff's Contribution}
+
+
+
+\textit{Wes's Contribution}
+
+
+\textit{Henrique's Contribution}
+
+
+\subsection{Deal with Realistic Constraints}
+
+\textit{Brian's Contribution}
+
+
+\textit{Jeff's Contribution}
+
+
+\textit{Wes's Contribution}
+ 
+
+\textit{Henrique's Contribution}
+
+\subsection{Contributed to Team Work and Interacted with Team Members}
+
+\textit{Brian's Contribution}
+
+
+\textit{Jeff's Contribution}
+
+
+\textit{Wes's Contribution}
+
+\textit{Henrique's Contribution}
+
+
+\end{document}
