@@ -81,51 +81,57 @@ class FreeTimeController < ApplicationController
       return
     end
 
-    until_time = DateTime.now
+    until_date = DateTime.now
     recurrence = params[:search][:recurrence]
     if recurrence != 'no_recurrence'
-      until_time = params[:search][:until_time]
+      until_date = params[:search][:until_date]
       recurrence = RepetitionScheme.recurrence_to_date_time(params[:search][:recurrence])
       if until_time.blank?
         flash[:error] = "with recurrence an end time must be specified"
         redirect_to free_time_find_path
         return
       end
-      until_time = correct_time_from_datepicker(until_time)
-      if until_time < DateTime.now
+      until_date = correct_time_from_datepicker(until_date).end_of_day
+      if until_date < DateTime.now + 5.minutes
         flash[:error] = "limit until time must be in the future"
         redirect_to free_time_find_path
         return
       end
     end
 
-    current_time = DateTime.now
-
-    parsed_times = parse_search_days(weekdays, recurrence, until_time)
-
+    parsed_times = parse_search_days(weekdays, recurrence, until_date)
 
     @free_times = {'params' => []}
-    weekdays.each do |w|
-      date = next_week_day(DateTime.now, w).beginning_of_day
-      free_time = map_free_time(date + start_time.seconds, date + end_time.seconds, @users)
+    parsed_times.each do |d|
+      free_time = map_free_time(d + start_time.seconds, d + end_time.seconds, @users)
 
       free_time = eliminate_small_durations(free_time, @duration)
-      puts "*** BUILDING HASH DATE: #{date} START:#{start_time} START TIME: #{date + start_time.seconds} END TIME: #{date + end_time.seconds}"
+      puts "*** BUILDING HASH DATE: #{d} START:#{start_time} START TIME: #{d + start_time.seconds} END TIME: #{d + end_time.seconds}"
       puts "\nFREE TIME: #{free_time}\n"
 
-      @free_times['params'] << {:start_time => date + start_time.seconds, :end_time => date + end_time.seconds, :free_times => parse_possible_start_times(free_time, @duration)}
+      @free_times['params'] << {:start_time => d + start_time.seconds, :end_time => d + end_time.seconds, :free_times => parse_possible_start_times(free_time, @duration)}
     end
 
   end
 
   private
 
-  def parse_search_days(weekdays, recurrence, until_time)
+  def parse_search_days(weekdays, recurrence, until_date)
     dates = []
     current_time = DateTime.now
-    weekdays.each do |w|
-      dates << next_week_day()
+    puts "** WILL PARSE SEARCH DAYS **"
+    if recurrence == 'no_recurrence'
+      puts "** NO RECURRENCE **"
+      weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
+    else
+      puts "** RECURRENCE, UNTIL DATE #{until_date}, RECURRENCE #{recurrence} ***"
+      while current_time < until_date
+        puts "ITERATION WITH CURRENT TIME #{current_time}"
+        weekdays.map {|w| dates << next_week_day(current_time, w).beginning_of_day}
+        current_time += recurrence
+      end
     end
+    dates.uniq
   end
 
   def get_users_to_search

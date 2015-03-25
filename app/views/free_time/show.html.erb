@@ -19,7 +19,6 @@
 <h2>Create a request from available free times</h2>
 
 <%= form_for('request', :url => {:action => 'create', :duration => @duration, :users => @users}) do |f| %>
-    <% puts "** START FORM FREE TIMES #{@free_times} **" %>
     <div class="field">
       <%= f.label :request_event_title %><br>
       <%= f.text_field :title %>
