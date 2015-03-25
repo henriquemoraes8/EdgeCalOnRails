@@ -4,14 +4,19 @@
 <p>Search for free time from users: <%= names.join(", ")%></p>
 <p>Duration of request is <%= "#{pluralize(@duration/3600, 'hour') if @duration/3600 > 0} #{pluralize((@duration/60)%60, 'minute') if (@duration/60)%60 > 0}" %></p>
 
+<hr>
+
 <h3>Did not find the times you were looking for?</h3>
 <p>Search for conflicts at a base time:</p>
 
 <%= form_for('conflict', :url => {:action => 'conflict', :duration => @duration, :users => @users}) do |fc| %>
     <%= fc.text_field :start_time, class: 'datetimepicker' %>
+    <%= fc.submit 'Find Conflicts', :class => "button action" %>
 <% end %>
 
 <hr>
+
+<h2>Create a request from available free times</h2>
 
 <%= form_for('request', :url => {:action => 'create', :duration => @duration, :users => @users}) do |f| %>
     <% puts "** START FORM FREE TIMES #{@free_times} **" %>

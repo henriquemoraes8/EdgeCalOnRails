@@ -47,11 +47,12 @@ class FreeTimeController < ApplicationController
   def conflict
     @duration = params[:duration].to_i
     users = params[:users]
-    @start_time = DateTime.parse(params[:conflict][:start_time])
+    @start_time = correct_time_from_datepicker(params[:conflict][:start_time])
+
     @end_time = @start_time + @duration.seconds
 
-    puts "*** GOT TO CONFLICT LOGIC START: #{start_time} END #{start_time + duration.seconds} USERS: #{users}"
-    @events = map_user_conflict(users, start_time, duration)
+    puts "*** GOT TO CONFLICT LOGIC START: #{@start_time} END #{@start_time + @duration.seconds} USERS: #{users}"
+    @events = map_user_conflict(users, @start_time, @duration)
   end
 
   def show
@@ -63,7 +64,7 @@ class FreeTimeController < ApplicationController
       return
     end
 
-    @duration = params[:duration].to_i
+    @duration = params[:search][:duration].to_i
 
     weekdays = get_weekday_indexes
     if weekdays.count == 0
@@ -72,13 +73,36 @@ class FreeTimeController < ApplicationController
       return
     end
 
-    start_time = params[:start_time].to_i
-    end_time = params[:end_time].to_i
+    start_time = params[:search][:start_time].to_i
+    end_time = params[:search][:end_time].to_i
     if end_time <= start_time
       flash[:error] = "start time must be before end time"
       redirect_to free_time_find_path
       return
     end
+
+    until_time = DateTime.now
+    recurrence = params[:search][:recurrence]
+    if recurrence != 'no_recurrence'
+      until_time = params[:search][:until_time]
+      recurrence = RepetitionScheme.recurrence_to_date_time(params[:search][:recurrence])
+      if until_time.blank?
+        flash[:error] = "with recurrence an end time must be specified"
+        redirect_to free_time_find_path
+        return
+      end
+      until_time = correct_time_from_datepicker(until_time)
+      if until_time < DateTime.now
+        flash[:error] = "limit until time must be in the future"
+        redirect_to free_time_find_path
+        return
+      end
+    end
+
+    current_time = DateTime.now
+
+    parsed_times = parse_search_days(weekdays, recurrence, until_time)
+
 
     @free_times = {'params' => []}
     weekdays.each do |w|
@@ -95,6 +119,14 @@ class FreeTimeController < ApplicationController
   end
 
   private
+
+  def parse_search_days(weekdays, recurrence, until_time)
+    dates = []
+    current_time = DateTime.now
+    weekdays.each do |w|
+      dates << next_week_day()
+    end
+  end
 
   def get_users_to_search
     all_users = []
@@ -211,7 +243,7 @@ class FreeTimeController < ApplicationController
   end
 
   def map_user_conflict(users, start_time, duration)
-    start_time = round_second(to_eastern_time(start_time))
+    start_time = round_second(start_time)
     end_time = start_time + duration.seconds
 
     user_array = []
@@ -227,7 +259,10 @@ class FreeTimeController < ApplicationController
       end
     end
 
-    place_holder = []
+
+    all_events = all_events.sort_by {|e| e.start_time}
+    result = []
+    puts "*** ALL EVENTS SIZE #{all_events.count} START TIME #{start_time} END #{end_time} ***"
     all_events.each do |e|
       event_start = round_second(to_eastern_time(e.start_time))
       event_end = round_second(to_eastern_time(e.end_time))
@@ -235,8 +270,10 @@ class FreeTimeController < ApplicationController
 
       #performance enhancement to reduce iterations
       if event_end < start_time
+        puts "*** WILL SKIP LOOP ***"
         next
       elsif event_start > end_time
+        puts "*** WILL BREAK LOOP ***"
         break
       end
 
@@ -244,12 +281,11 @@ class FreeTimeController < ApplicationController
       overlap = event_start < end_time && event_end > start_time
       if same_start || overlap
         puts "CONFLICT"
-        place_holder << e
+        result << e
       end
 
     end
-    all_events = place_holder.sort_by {|e| e.start_time}
-    return all_events
+    result
   end
 
   def eliminate_small_durations(free_time, duration)
@@ -282,20 +318,8 @@ class FreeTimeController < ApplicationController
     to_second(contained_time) >= to_second(start_time) && to_second(contained_time) < to_second(end_time)
   end
 
-  def to_second(time)
-    time.hour*3600 + time.min*60
-  end
-
-  def round_second(time)
-    time.change(:sec => 0)
-  end
-
   def next_week_day(date, day_week)
      date + 1.day + (((day_week-1)-date.wday)%7).day
-  end
-
-  def to_eastern_time(time)
-    time.in_time_zone('Eastern Time (US & Canada)')
   end
 
 end
