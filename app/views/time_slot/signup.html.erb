@@ -4,8 +4,9 @@
 <% if @events.count == 0 %>
     <h3>No time slot schedules available</h3>
 <% else %>
-    <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'assign_time_slots'}) do |f| %>
     <% @events.each do |e| %>
+    <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'assign_time_slots'}) do |f| %>
+    <% #@events.each do |e| %>
         <div class="event slot">
           <em>Title:</em> <%= e.title %><br>
           <em>Description:</em> <%= e.description %><br>
@@ -26,9 +27,10 @@
               </script>
           <% end %>
         </div>
+        <%= f.submit 'save time slots', class: "button radius" %>
     <% end %>
 
-    <%= f.submit 'save time slots', class: "button radius" %>
+    <%#= f.submit 'save time slots', class: "button radius" %>
 
     <% end %>
 <% end %>
