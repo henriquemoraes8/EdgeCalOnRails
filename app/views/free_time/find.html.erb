@@ -13,7 +13,7 @@
 <br><br>
 <h3>Groups</h3>
 <% if @groups.count == 0 %>
-    <em>You do not have any created group</em>
+    <em>You do not have any created groups</em>
 <% else %>
 <% @groups.each do |g| %>
     <%= check_box('group_request',"#{g.id}") %>
