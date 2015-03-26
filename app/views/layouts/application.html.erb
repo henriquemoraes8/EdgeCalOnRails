@@ -8,11 +8,18 @@
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "vendor/modernizr" %>
-    <%= javascript_include_tag "application", 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag "application", 'data-turbolinks-track' => false %>
     <%= csrf_meta_tags %>
+	
+	<script src="js/foundation/foundation.js"></script>
+	<script src="js/foundation/foundation.reveal.js"></script>
   </head>
 
   <body>
+	  
+  	<script>
+    	$(document).foundation();
+  	</script>
 
 	<nav class="top-bar">
 	  <ul class="title-area">

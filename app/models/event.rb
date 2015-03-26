@@ -69,6 +69,10 @@ class Event < ActiveRecord::Base
 				return 'reserved for a to-do'
 			when 'request'
 				return 'requested event'
+			when 'recurrent'
+				return 'recurrent event'
+			when 'time_slot'
+				return 'time slot'	
 			else
 				return 'regular event'
 		end

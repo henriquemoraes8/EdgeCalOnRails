@@ -1,17 +1,18 @@
-<h1>Find Free Time</h1>
+<h2>Find Free Time</h2>
+<br>
 
 <%= form_for('search', :url => {:action => 'show'}) do |f|%>
-<h2>Select a combination of participants and groups</h2>
+<h3>Select a combination of participants and groups</h3>
 <hr>
-<h3>Participants</h3><br>
-<h3>Users</h3>
+<h4>Participants</h4><br>
+<h4>Users</h4>
 <% @users.each do |u| %>
     <%= check_box('user_request',"#{u.id}") %>
     <%= u.email %>
     <br>
 <% end %>
 <br><br>
-<h3>Groups</h3>
+<h4>Groups</h4>
 <% if @groups.count == 0 %>
     <em>You do not have any created groups</em>
 <% else %>
@@ -24,13 +25,13 @@
 
 <hr>
 
-<h2>Specify the duration of the requested event</h2>
+<h3>Specify the duration of the requested event</h3>
 <%= f.select :duration, options_for_select(allowed_durations.map {|d| d}) %>
 
 <hr>
 
-<h2>Specify periods for search</h2>
-<h3>Include next days of week</h3>
+<h4>Specify periods for search</h4>
+<h4>Include next days of week</h4>
 <% weekdays.each do |w| %>
     <%= check_box('weekday', w[1]) %>
     <%= label_tag w[0] %>&nbsp;&nbsp;
