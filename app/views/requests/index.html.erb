@@ -1,8 +1,9 @@
+<h1>My Requests</h1>
+<br>
 <%= link_to 'New Request', requests_new_path %><br><br>
+<hr>
 
 <% if @request_maps.count > 0 %>
-
-<h2>My Requests</h2>
 
 <% @request_maps.each do |request| %>
     <hr>
