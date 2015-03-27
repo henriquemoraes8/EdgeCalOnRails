@@ -162,6 +162,12 @@ class EventsController < ApplicationController
     render 'index.json.jbuilder'
   end
   
+  # GET /events/visible_events.json
+  def visible_events
+    @events = current_user.get_visible_events - Event.where(creator: current_user)
+    render 'index.json.jbuilder'
+  end
+  
   # GET /events/1/get_subscribers
   def get_subscribers
     @event = Event.find(params[:id])
