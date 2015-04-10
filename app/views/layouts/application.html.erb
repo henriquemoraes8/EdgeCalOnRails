@@ -41,6 +41,8 @@
           <li><%= link_to 'Time Slots', (user_signed_in? ? time_slot_index_path : new_user_session_path)%></li>
           <li class="divider"></li>
           <li><%= link_to 'Search Free Time', (user_signed_in? ? free_time_find_path : new_user_session_path)%></li>
+          <li class="divider"></li>
+          <li><%= link_to 'Mass Creation', (user_signed_in? ? mass_event_creation_index_path : new_user_session_path)%></li>
 		</ul>
 	  </section>
 	</nav>

@@ -2,10 +2,51 @@
 
 <div>
   To create several events, input at each line the event type with its
-  respective parameters separated by a semicolon (;).
+  respective parameters separated by a semicolon (;).<br>
+  Keep in mind that date/time parameters always have the format [yyyy/mm/dd | yyyy-mm-dd] HH:mm
   <h3>Event type</h3>
   <p>Your choice of type of event you want to create, can be <em>regular, to-do, request</em>, or <em>slot</em></p>
   <hr>
   <h3>Regular events</h3>
-  <p>The parameters that you can include for a regular event are as follows</p>
+  <p>The parameters that you can include for a regular event are as follows:</p>
+  <ul>
+    <li><em>Title: &ltyour title&gt</em> Mandatory. The title of the event</li>
+    <li><em>Description: &ltyour description&gt</em> Optional. The description of the event</li>
+    <li><em>Start: &ltyour start time&gt</em>Mandatory. The start time of the event in the format given</li>
+    <li><em>End: &ltyour end time&gt</em>Mandatory. The end time of the event in the format given</li>
+    <li><em>For To-do</em>If present, this event will be allocated for a to-do</li>
+  </ul>
+  <h3>To-dos</h3>
+  <p>The parameters you can include for to-dos are as follows:</p>
+  <ul>
+    <li><em>Title: &ltyour title&gt</em> Mandatory. The title of the to-do</li>
+    <li><em>Description: &ltyour description&gt</em> Optional. The description of the to-do</li>
+    <li><em>Priority: &ltyour priority&gt</em> Mandatory. The priority of the to-do. You can provide a number being
+    1 the highest priority or writing <em>last</em> to place it at the end of the to-do queue</li>
+    <li><em>Duration: &ltyour duration&gt</em> Mandatory. The duration of the to-do in minutes. Must be a minimum of <em>5</em>
+    and be in multiple of 5 minutes</li>
+  </ul>
+  <h3>Request</h3>
+  <p>The parameters that you can include for an event request are as follows:</p>
+  <ul>
+    <li><em>Title: &ltyour title&gt</em> Mandatory. The title of the event</li>
+    <li><em>Description: &ltyour description&gt</em> Optional. The description of the event</li>
+    <li><em>Start: &ltyour start time&gt</em>Mandatory. The start time of the event in the format given</li>
+    <li><em>End: &ltyour end time&gt</em>Mandatory. The end time of the event in the format given</li>
+    <li><em>Participants: &ltuser 1, user 2...&gt</em>Optional. Comma-separated list of participants ids.
+      For more information consult the table of user ids</li>
+    <li><em>Groups: &ltgroup 1, group 2...&gt</em>Optional. Comma-separated list of participants ids.
+      For more information consult the table of group ids</li>
+  </ul>
+  <h3>Slot Block</h3>
+  <p>The parameters that you can include for the creation of slot blocks are as follows:</p>
+  <ul>
+    <li><em>Title: &ltyour title&gt</em> Mandatory. The title of the slot block</li>
+    <li><em>Description: &ltyour description&gt</em> Optional. The description of the slot block</li>
+    <li><em>Title: &ltyour title&gt</em> Mandatory. The title of the to-do</li>
+    <li><em>Min: &ltminimum slot duration&gt</em> Mandatory. The minimum duration of a time slot</li>
+    <li><em>Max: &ltmaximum slot duration&gt</em> Mandatory. The maximum duration of a time slot</li>
+    <li><em>(Block: &ltdate(yyyy/mm/dd) start time(HH:mm) end time(HH:mm)&gt)+</em> One or more. For each <em>Block</em> statement a
+      slot block will be created based on the date, start time and end time separated by spaces</li>
+  </ul>
 </div>
