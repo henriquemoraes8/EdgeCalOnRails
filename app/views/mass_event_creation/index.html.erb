@@ -2,8 +2,16 @@
 
 <div class="block">
 <div class="left">
+
+  <% if !@error.blank? %>
+    <p>The following errors were found when parsing the text:</p>
+      <p><%= simple_format(@error) %></p>
+  <% end %>
+
+  <hr>
+
   <%= form_tag :action => :process_events do %>
-      <%= text_area_tag 'events', nil, rows: 20, cols: 150 %>
+      <%= text_area_tag 'events', @text, rows: 20, cols: 150 %>
 
     <%= submit_tag 'Process', class: "button radius" %>
   <% end %>
