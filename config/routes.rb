@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   
   get 'events/busy_events.json' => 'events#busy_events'
   
+  get 'events/visible_events.json' => 'events#visible_events'
+  
   get 'events/created_events.json' => 'events#created_events'
   
   get 'events/PUD_events.json' => 'events#PUD_events'
