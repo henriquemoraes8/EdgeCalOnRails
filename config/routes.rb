@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get 'mass_event_creation/index'
+
+  get 'mass_event_creation/help'
+
+  get 'mass_event_creation/show'
+
   get 'free_time/create'
 
   get 'free_time/find'
