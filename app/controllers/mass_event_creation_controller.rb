@@ -37,6 +37,13 @@ class MassEventCreationController < ApplicationController
       return
     end
 
+    created_events = create_events(parsed_params)
+
+    if !@error.blank?
+      render :index
+      return
+    end
+
     render :index
   end
 
@@ -56,17 +63,18 @@ class MassEventCreationController < ApplicationController
       key_error = validate_key(key, index)
       @error += key_error
 
-      if key_error.blank?
+      if !key_error.blank?
         index += 1
         next
       end
 
-      event_hash = {:type => key}
+      event_hash = {}
       event.each do |e|
         parameter = e.split(%r{:\s*})
         @error += validate_parameter_length(parameter, index)
         (event_hash[parameter.first.downcase.strip] = parameter.count > 1 ? parameter.second.strip : "") if parameter.count > 0
       end
+      event_hash[:type] = key
 
       event_array << event_hash
       index += 1
@@ -106,43 +114,54 @@ class MassEventCreationController < ApplicationController
           validate_slot(e, line)
         else
       end
+      line += 1
     end
   end
 
   def validate_regular(regular_hash, line)
     validate_number_arguments(regular_hash, line, 3, 5)
-    validate_keys(regular_hash, line, ['title', 'description', 'start', 'end', 'to-do'])
+    validate_keys_of_arguments(regular_hash, line, ['title', 'description', 'start', 'end', 'to-do', :type])
   end
 
   def validate_request(request_hash, line)
     validate_number_arguments(request_hash, line, 4, 6)
-    validate_keys(regular_hash, line, ['title', 'description', 'start', 'end', 'to-do'])
+    validate_keys_of_arguments(request_hash, line, ['title', 'description', 'start', 'end', 'participants', 'groups', :type])
   end
 
   def validate_to_do(to_do_hash, line)
     validate_number_arguments(to_do_hash, line, 3, 4)
-    validate_keys(to_do_hash, line, ['title', 'description', 'start', 'end', 'to-do'])
+    validate_keys_of_arguments(to_do_hash, line, ['title', 'description', 'priority', 'duration', :type])
   end
 
   def validate_slot(slot_hash, line)
-    if arguments.count < 6
-      @error += "event #{line}: wrong number of arguments. You provided #{arguments.count} arguments of allowed minimum of 6"
+    if slot_hash.count < 5
+      @error += "event #{line}: wrong number of arguments. You provided #{slot_hash.count} arguments of allowed minimum of 4\n"
     end
-    validate_keys(regular_hash, line, ['title', 'description', 'start', 'end', 'to-do'])
+    validate_keys_of_arguments(slot_hash, line, ['title', 'description', 'min', 'max', 'block', :type])
   end
 
-  def validate_number_arguments(arguments, min, max, line)
+  def validate_number_arguments(arguments, line, min, max)
+    puts "VALIDATE MIN #{min} MAX #{max} ARGS: #{arguments}"
     if arguments.count < min + 1 || arguments.count > max + 1
-      @error += "event #{line}: wrong number of arguments. You provided #{arguments.count} arguments of allowed range [#{min}, #{max}]"
+      @error += "event #{line}: wrong number of arguments. You provided #{arguments.count} arguments of allowed range [#{min}, #{max}]\n"
     end
   end
 
-  def validate_keys(arguments, line, possible_keys)
-    arguments.each do |key, value|
+  def validate_keys_of_arguments(arguments, line, possible_keys)
+    puts "VALIDATE KEYS ARGS #{arguments} POSSIBLE #{possible_keys}"
+    wrong_keys = []
+    arguments.keys.each do |key|
       if !(possible_keys.include? key)
-        @error += "event #{line}: key #{key} not valid"
+        wrong_keys << key
       end
     end
+    if wrong_keys.count > 0
+      @error += "event #{line}: #{'key'.pluralize(wrong_keys.count)} #{wrong_keys.join(', ')} #{wrong_keys.count == 1 ? 'is' : 'are'} invalid\n"
+    end
+  end
+
+  def create_events(arguments_array)
+
   end
 
 end
