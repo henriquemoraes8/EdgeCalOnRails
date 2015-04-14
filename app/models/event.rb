@@ -85,12 +85,14 @@ class Event < ActiveRecord::Base
 		elsif end_time < Time.now
 			self.title = "allocated for to-do"
 			self.description = "this event has passed and cannot be assigned a to-do"
+			save
 			return
 		end
 
 		duration = start_time > Time.now && end_time < Time.now ? end_time - Time.now : end_time - start_time
 
 		creator.to_dos.each do |t|
+			puts "MY TODO #{t.duration}"
 			if t.duration.hour*3600 + t.duration.min*60 < duration && t.can_be_allocated
 				self.to_do_id = t.id
 				t.event_id = id

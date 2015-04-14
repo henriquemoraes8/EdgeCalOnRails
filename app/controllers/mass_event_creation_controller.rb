@@ -40,10 +40,15 @@ class MassEventCreationController < ApplicationController
 
     created_events = create_events(parsed_params)
 
+    puts "CREATED EVENTS IS #{created_events}"
+
     if !@error.blank?
+      created_events.map {|e| e.destroy}
       render :index
       return
     end
+
+    created_events.map {|e| e.destroy}
 
     render :index
   end
@@ -133,11 +138,14 @@ class MassEventCreationController < ApplicationController
   def validate_request(request_hash, line)
     validate_mandatory_arguments(request_hash, line, ['title', 'start', 'end'])
     validate_keys_of_arguments(request_hash, line, ['title', 'description', 'start', 'end', 'participants', 'groups', :type])
+    if !(request_hash.keys.include? 'participants') && !(request_hash.keys.include? 'groups')
+      @error += "event #{line}: must have either participants or groups"
+    end
   end
 
   def validate_to_do(to_do_hash, line)
-    validate_mandatory_arguments(to_do_hash, line, ['title', 'priority', 'duration'])
-    validate_keys_of_arguments(to_do_hash, line, ['title', 'description', 'priority', 'duration', :type])
+    validate_mandatory_arguments(to_do_hash, line, ['title', 'position', 'duration'])
+    validate_keys_of_arguments(to_do_hash, line, ['title', 'description', 'position', 'duration', :type])
   end
 
   def validate_slot(slot_hash, line)
@@ -189,19 +197,73 @@ class MassEventCreationController < ApplicationController
   end
 
   def create_regular_event(args)
-    event = Event.new(:title => args['title'])
+    puts "ARGS REGULAR #{args}"
+    event = Event.new(:title => args['title'], :description => args['description'],
+    :start_time => args['start'], :end_time => args['end'], :creator_id => current_user.id)
+    event.event_type = Event.event_types[(args.include? 'to-do') ? :to_do : :regular]
+    if !event.save
+      @error += "Error creating event #{event.title}. #{event.errors[:base]}"
+    end
+    event
   end
 
   def create_to_do_event(args)
-
+    puts "ARGS TODO #{args}"
+    to_do = ToDo.new(:title => args['title'], :description => args['description'],
+    :position => args['position'], :duration => Time.now.beginning_of_day + args['duration']*60, :creator_id => current_user.id)
+    if !to_do.save
+      @error += "Error creating to do #{to_do.title}. #{to_do.errors[:base]}"
+    end
+    to_do
   end
 
   def create_request_event(args)
+    puts "ARGS REQUEST #{args}"
+    event = Event.new(:title => args['title'], :description => args['description'],
+                      :start_time => args['start'], :end_time => args['end'],
+                      :creator_id => current_user.id, :event_type => Event.event_types[:request])
 
+    if event.save
+      request_map = RequestMap.create(:event_id => event.id)
+      all_users = (args.include? 'participants') ? [] : args['participants']
+
+      if args.include? 'groups'
+        args['groups'].each do |g|
+          group = Group.find_by_id(g)
+          if group.nil?
+            @error += "Error creating request #{event.title} group id #{g} does not exist"
+            return event
+          else
+            all_users << group.all_user_ids
+          end
+        end
+      end
+
+      all_users = all_users.flatten.uniq
+      all_users.each do |u|
+        if User.find_by_id(u).nil?
+          @error += "Error creating request #{event.title} user id #{g} does not exist"
+          return event
+        end
+      end
+
+      request_map.generate_requests_for_ids(all_users)
+      event.request_map_id = request_map.id
+      event.save
+      current_user.created_events << event
+    else
+      @error += "Error creating request #{event.title}. #{event.errors[:base]}"
+    end
+    event
   end
 
   def create_slot_event(args)
-
+    puts "ARGS SLOT #{args}"
+    repetition = RepetitionScheme.create(:min_time_slot_duration => args['min'], :max_time_slot_duration => args['max'])
+    args['block'].each do |b|
+      event = Event.new(:title => args['title'], :description => args['description'],
+      :event_type => Event.event_types[:time_slot_block])
+    end
   end
 
   def validate_values(values, line)
@@ -213,10 +275,10 @@ class MassEventCreationController < ApplicationController
     value_error += validate_date(values, 'start', line)
     value_error += validate_date(values, 'end', line)
 
-    if values.keys.include? 'priority' && !is_int?(values['priority'])
-      value_error += "event #{line}: priority is not an integer\n"
+    if values.keys.include? 'position' && !is_int?(values['position'])
+      value_error += "event #{line}: position is not an integer\n"
     else
-      values['priority'] = values['priority'].to_i
+      values['position'] = values['position'].to_i
     end
 
     value_error += validate_duration(values, 'duration', line)
@@ -242,6 +304,7 @@ class MassEventCreationController < ApplicationController
         values['block'] = parsed_dates
       end
     end
+
     value_error
   end
 
@@ -264,24 +327,58 @@ class MassEventCreationController < ApplicationController
 
   def validate_date(args, key, line)
     date_error = ''
-    if args.keys.include? key
-      if args[key].empty?
-        date_error += "event #{line}: #{key} in incorrect format\n"
-      else
-        begin
-          args[key].to_datetime
-        rescue
-          date_error += "event #{line}: #{key} in incorrect format\n"
-          return date_error
-        end
-        args[key] = args[key].to_datetime
-      end
+    if !(args.keys.include? key)
+      return date_error
     end
+
+    if args[key].empty?
+      date_error += "event #{line}: #{key} in incorrect format\n"
+    else
+      begin
+        args[key].to_datetime
+      rescue
+        date_error += "event #{line}: #{key} in incorrect format\n"
+        return date_error
+      end
+      args[key] = args[key].to_datetime
+    end
+
     date_error
   end
 
   def is_int?(integer)
    !!(integer =~ /\A[-+]?[0-9]+\z/)
+  end
+
+  def validate_id_list(args, line)
+    id_error = ''
+    if !(args.keys.include? 'participants') && !(args.keys.include? 'groups')
+      return id_error
+    end
+
+    if args.keys.include? 'participants'
+      new_participants = []
+      list = args['participants'].split.strip
+      list.map {|n| new_participants << n.to_i if is_int?(n)}
+      if list.count != new_participants.count
+        id_error += "event #{line}: participants must be a comma separated list of integers"
+      else
+        args['participants'] = new_participants
+      end
+    end
+
+    if args.keys.include? 'groups'
+      new_participants = []
+      list = args['groups'].split.strip
+      list.map {|n| new_participants << n.to_i if is_int?(n)}
+      if list.count != new_participants.count
+        id_error += "event #{line}: groups must be a comma separated list of integers"
+      else
+        args['groups'] = new_participants
+      end
+    end
+
+    id_error
   end
 
 end
