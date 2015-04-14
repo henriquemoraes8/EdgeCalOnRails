@@ -36,7 +36,8 @@ class ToDosController < ApplicationController
   def create
     @todo = ToDo.new(todo_params)
     @todo.creator_id = current_user.id
-
+    @todo.duration = params['to_do']['duration(4i)'].to_i*3600 + params['to_do']['duration(5i)'].to_i*60
+    puts "DURATION #{@todo.duration}"
     puts "*** GOT TO TO DO CREATE ***"
 
     if @todo.save
@@ -87,7 +88,7 @@ class ToDosController < ApplicationController
   private
 
   def todo_params
-    params.require(:to_do).permit(:title,:description,:duration,:position,:recurrence)
+    params.require(:to_do).permit(:title,:description,:position,:recurrence)
   end
 
 end

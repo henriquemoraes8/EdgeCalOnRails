@@ -3,10 +3,13 @@ class ToDo < ActiveRecord::Base
 
   before_update :reschedule_if_needed, :notify_event_if_needed
   before_create :verify_next_schedule
+  validate :validate_duration
+  before_destroy :destroy_reminder
 
   belongs_to :event
   belongs_to :creator, :class_name => "User"
-  has_one :reminder, :dependent => :destroy
+  has_one :reminder
+
 
   acts_as_list scope: :creator
 
@@ -82,6 +85,20 @@ class ToDo < ActiveRecord::Base
     if !event_id.nil? && done
       event.next_to_do
       event.save
+    end
+  end
+
+  def validate_duration
+    if duration.nil? || duration < 1 || duration%5 != 0
+      errors[:base] = "a to do duration must be a multiple of 5 and greater than 0"
+      return false
+    end
+    true
+  end
+
+  def destroy_reminder
+    if !reminder.nil?
+      reminder.destroy
     end
   end
 

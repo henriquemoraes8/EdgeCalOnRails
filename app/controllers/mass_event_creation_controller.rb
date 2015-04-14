@@ -48,9 +48,9 @@ class MassEventCreationController < ApplicationController
       return
     end
 
-    created_events.map {|e| e.destroy}
+    flash[:notice] = "Events created successfully"
 
-    render :index
+    redirect_to events_path
   end
 
   private
@@ -210,7 +210,7 @@ class MassEventCreationController < ApplicationController
   def create_to_do_event(args)
     puts "ARGS TODO #{args}"
     to_do = ToDo.new(:title => args['title'], :description => args['description'],
-    :position => args['position'], :duration => Time.now.beginning_of_day + args['duration']*60, :creator_id => current_user.id)
+    :position => args['position'], :duration => args['duration']*60, :creator_id => current_user.id)
     if !to_do.save
       @error += "Error creating to do #{to_do.title}. #{to_do.errors[:base]}"
     end
@@ -225,7 +225,7 @@ class MassEventCreationController < ApplicationController
 
     if event.save
       request_map = RequestMap.create(:event_id => event.id)
-      all_users = (args.include? 'participants') ? [] : args['participants']
+      all_users = (args.include? 'participants') ? args['participants'] : []
 
       if args.include? 'groups'
         args['groups'].each do |g|
@@ -240,9 +240,11 @@ class MassEventCreationController < ApplicationController
       end
 
       all_users = all_users.flatten.uniq
+      all_users.delete(current_user.id)
+      puts"ALL USERS #{all_users}"
       all_users.each do |u|
         if User.find_by_id(u).nil?
-          @error += "Error creating request #{event.title} user id #{g} does not exist"
+          @error += "Error creating request #{event.title} user id #{u} does not exist"
           return event
         end
       end
@@ -305,6 +307,8 @@ class MassEventCreationController < ApplicationController
       end
     end
 
+    value_error += validate_id_list(values, line)
+
     value_error
   end
 
@@ -358,7 +362,8 @@ class MassEventCreationController < ApplicationController
 
     if args.keys.include? 'participants'
       new_participants = []
-      list = args['participants'].split.strip
+      list = args['participants'].split(%r{,\s*})
+      puts "LIST IS #{list}"
       list.map {|n| new_participants << n.to_i if is_int?(n)}
       if list.count != new_participants.count
         id_error += "event #{line}: participants must be a comma separated list of integers"
@@ -369,7 +374,7 @@ class MassEventCreationController < ApplicationController
 
     if args.keys.include? 'groups'
       new_participants = []
-      list = args['groups'].split.strip
+      list = args['groups'].split(%r{,\s*})
       list.map {|n| new_participants << n.to_i if is_int?(n)}
       if list.count != new_participants.count
         id_error += "event #{line}: groups must be a comma separated list of integers"

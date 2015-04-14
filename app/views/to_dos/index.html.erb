@@ -11,7 +11,7 @@
       <em>Title:</em> <%= todo.title %><br>
       <em>Description:</em> <%= todo.description %><br>
       <em>Priority:</em> <%= todo.position %><br>
-      <em>Duration:</em> <%= "#{pluralize(todo.duration.hour, 'hour') if todo.duration.hour > 0} #{pluralize(todo.duration.min, 'minute') if todo.duration.min > 0}" %><br>
+      <em>Duration:</em> <%= "#{pluralize(todo.duration/3600, 'hour') if todo.duration/3600 > 0} #{pluralize((todo.duration/60)%60, 'minute') if (todo.duration/60)%60 > 0}" %><br>
       <em>Recurrence:</em> <%= todo.recurrence.humanize %><br>
       <%= link_to('Delete', {:action => :destroy, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
       <%= link_to('Edit', {:action => :edit, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;

@@ -93,7 +93,7 @@ class Event < ActiveRecord::Base
 
 		creator.to_dos.each do |t|
 			puts "MY TODO #{t.duration}"
-			if t.duration.hour*3600 + t.duration.min*60 < duration && t.can_be_allocated
+			if t.duration < duration && t.can_be_allocated
 				self.to_do_id = t.id
 				t.event_id = id
 				self.title = "allocated for to-do: #{t.title}"
