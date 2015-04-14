@@ -3,10 +3,12 @@
 <div class="block">
 <div class="left">
 
-  <% if !@error.blank? %>
-    <p>The following errors were found when parsing the text:</p>
-      <p><%= simple_format(@error) %></p>
-  <% end %>
+  <div class="error">
+    <% if !@error.blank? %>
+        <p>The following errors were found when parsing the text:</p>
+        <p><%= simple_format(@error) %></p>
+    <% end %>
+  </div>
 
   <hr>
 
@@ -58,9 +60,12 @@
 </div>
 
 <div class="right">
-  To create several events, input at each line the event type with its
-  respective parameters separated by a semicolon (;).<br>
-  Keep in mind that date/time parameters always have the format [yyyy/mm/dd | yyyy-mm-dd] HH:mm
+  <p>
+    To create several events, input at each line the event type with its
+    respective parameters separated by a semicolon (;).<br>
+    Keep in mind that date/time parameters always have the format [yyyy/mm/dd | yyyy-mm-dd] HH:mm<br>
+    If you repeat parameters, only the last one will be considered
+  </p>
 
   <hr>
 
@@ -116,7 +121,7 @@
     <li><em>Description: &ltyour description&gt</em> Optional. The description of the slot block</li>
     <li><em>Min: &ltminimum slot duration&gt</em> Mandatory. The minimum duration of a time slot</li>
     <li><em>Max: &ltmaximum slot duration&gt</em> Mandatory. The maximum duration of a time slot</li>
-    <li><em>(Block: &ltdate(yyyy/mm/dd) start time(HH:mm) end time(HH:mm)&gt)+</em> One or more. For each <em>Block</em> statement a
+    <li><em>Block: &ltdate(yyyy/mm/dd) start time(HH:mm) end time(HH:mm)&gt</em> One or more. For each <em>Block</em> statement a
       slot block will be created based on the date, start time and end time separated by spaces</li>
   </ul>
 </div>
