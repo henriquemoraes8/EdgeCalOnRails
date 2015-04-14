@@ -13,6 +13,9 @@ gem 'devise'
 # gem "rails-boilerplate"
 gem "foundation-rails"
 
+gem 'angularjs-rails'
+gem 'angular-rails-templates'
+
 gem 'simple_form'
 
 gem 'jquery-ui-rails'
