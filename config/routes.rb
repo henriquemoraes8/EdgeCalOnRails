@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'calendar/index'
+
   get 'mass_event_creation/index'
 
   get 'mass_event_creation/help'
@@ -62,6 +64,9 @@ Rails.application.routes.draw do
   # GET /events/1/get_subscribers
   get 'events/:id/get_subscribers' => 'events#get_subscribers'
 
+
+  # FOR ANGULAR APP
+  
   devise_for :users
   
   devise_scope :user do
