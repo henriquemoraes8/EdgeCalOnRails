@@ -1,6 +1,13 @@
 <h1>Groups</h1>
 <br>
-<%= link_to 'New Group', groups_new_path %>
+<a href="#" data-reveal-id="new-group-modal">New Group</a>
+<div class="reveal-modal" id="new-group-modal" data-reveal>
+	<a class="close-reveal-modal"></a>
+	<h2>New Group</h2>
+	<% @group = Group.new %>
+	<% @users = User.where.not(id: current_user.id) %>
+	<%= render 'form' %>
+</div>
 <br>
 <body>
 	<!--<a href="#" class="button" data-reveal-id="new_group">New Group</a>-->
@@ -24,9 +31,9 @@
 	<td><strong>Group Title: </strong><%=group.title %></td><br>
 	<td><strong>Group Description: </strong><%=group.description %></td><br>
 
-	<a href="#" data-reveal-id="view-members">View All Group Members &nbsp</a>
-	<div class="reveal-modal" id="view-members" data-reveal>
-			List of Group Members
+	<a href="#" data-reveal-id="view-members-modal">View All Group Members</a>
+	<div class="reveal-modal" id="view-members-modal" data-reveal>
+			<h2>List of Group Members</h2><br>
 			<% group.members.each do |member|%>
 				<li><%=member.email%> </li>
 			<%end%>
@@ -35,6 +42,8 @@
   		<a class="close-reveal-modal"></a>
   		<!--%= render 'form' %-->
 	</div>
+	
+	
 
 	<%= link_to('Edit Group', {:action => :edit, :id => group.id, :class => 'action request'}) %>
 

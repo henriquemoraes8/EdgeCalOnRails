@@ -42,7 +42,9 @@ class TimeSlotController < ApplicationController
         repetition.events << event
       else
         @event = event
+        flash[:error] = "Error in submission, try again"
         redirect_to time_slot_new_path
+        return
       end
     end
 

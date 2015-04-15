@@ -1,7 +1,7 @@
 <h1>Mass Event Creation</h1>
 
 <div class="block">
-<div class="left">
+<div class="right">
 
   <div class="error">
     <% if !@error.blank? %>
@@ -59,12 +59,16 @@
   </div>
 </div>
 
-<div class="right">
+<div class="left">
   <p>
     To create several events, input at each line the event type with its
     respective parameters separated by a semicolon (;).<br>
     Keep in mind that date/time parameters always have the format [yyyy/mm/dd | yyyy-mm-dd] HH:mm<br>
     If you repeat parameters, only the last one will be considered
+	<br><br>
+	<strong>Example:</strong>
+	<br>
+	<em>regular; title: Soccer Practice; start: 2015-04-22 18:00; end: 2015-04-22 19:00</em>
   </p>
 
   <hr>

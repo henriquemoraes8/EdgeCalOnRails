@@ -187,8 +187,13 @@ class Event < ActiveRecord::Base
 	private
 
 	def check_to_do
-		if event_type == 'to_do' && end_time - start_time <= 15.minutes
-			errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+		if event_type == 'to_do' 
+      if start_time.nil? || end_time.nil?
+        errors[:base] = 'Need to supply a start and end time'
+      end
+      if end_time - start_time <= 15.minutes
+			  errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+      end
 		end
 	end
 
@@ -197,6 +202,10 @@ class Event < ActiveRecord::Base
 	end
 
 	def time_concise
+    if start_time.nil? || end_time.nil?
+      errors[:base] = 'Need to supply a start and end time'
+      return false
+    end
 		if start_time >= end_time
 			errors[:base] = "Start time must be before end time"
 			return false
