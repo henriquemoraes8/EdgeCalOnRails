@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414061713) do
+ActiveRecord::Schema.define(version: 20150415034839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,18 +103,23 @@ ActiveRecord::Schema.define(version: 20150414061713) do
   end
 
   create_table "to_dos", force: :cascade do |t|
-    t.boolean  "done",            default: false
+    t.boolean  "done",                  default: false
     t.integer  "event_id"
-    t.integer  "position",                        null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "recurrence",      default: 0
-    t.string   "title",                           null: false
+    t.integer  "position",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "recurrence",            default: 0
+    t.string   "title",                                 null: false
     t.string   "description"
-    t.integer  "creator_id",                      null: false
+    t.integer  "creator_id",                            null: false
     t.datetime "next_reschedule"
     t.integer  "reminder_id"
     t.integer  "duration"
+    t.datetime "expiration"
+    t.integer  "job_id"
+    t.datetime "next_escalation"
+    t.integer  "escalation_recurrence"
+    t.integer  "escalation_step"
   end
 
   create_table "users", force: :cascade do |t|
