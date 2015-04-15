@@ -128,8 +128,15 @@ class ToDo < ActiveRecord::Base
     if expiration.nil? || escalation_prior == ToDo.recurrences[:no_recurrence]
       return
     end
+    puts "SETUP ESC"
 
-    self.job_id = Rufus::Scheduler.singleton.at event.start_time - ToDo.recurrence_to_date_time(escalation_prior) do
+    if expiration - ToDo.recurrence_to_date_time(escalation_prior) < DateTime.now
+      puts "AUTOMATIC ESCALATION"
+      escalate
+      return
+    end
+
+    self.job_id = Rufus::Scheduler.singleton.at expiration - ToDo.recurrence_to_date_time(escalation_prior) do
       escalate
     end
     save
@@ -147,5 +154,4 @@ class ToDo < ActiveRecord::Base
     end
     save
   end
-
 end
