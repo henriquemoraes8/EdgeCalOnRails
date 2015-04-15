@@ -11,7 +11,9 @@
       <em>Title:</em> <%= todo.title %><br>
       <em>Description:</em> <%= todo.description %><br>
       <em>Priority:</em> <%= todo.position %><br>
-      <em>Duration:</em> 
+      <em>Duration:</em>
+      <%= unless todo.expiration.nil? %> <em>Expiration:</em> <%= todo.expiration.strftime('%-d %b - %H:%M') %> <%end%>
+      <%= unless todo.escalation_recurrence == 0 %> <em>Expiration:</em> <%= todo.escalation_recurrence.humanize %> <%end%>
 	  <% unless todo.duration.nil? %>
 	  <%= "#{pluralize(todo.duration/3600, 'hour') if todo.duration/3600 > 0} #{pluralize((todo.duration/60)%60, 'minute') if (todo.duration/60)%60 > 0}" %><br>
 	  <% end %>

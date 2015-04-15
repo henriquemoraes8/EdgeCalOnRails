@@ -1,11 +1,11 @@
 class ToDo < ActiveRecord::Base
-  enum recurrence: [:no_recurrence, :always, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly, :less_than_minute]
+  enum recurrence: [:no_recurrence, :always, :minutely, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly, :less_than_minute]
 
   before_update :reschedule_if_needed, :notify_event_if_needed
   before_create :verify_next_schedule
   after_create :setup_escalation, :setup_expiration
   validate :validate_duration, :validate_expiration
-  before_destroy :destroy_reminder
+  before_destroy :destroy_reminder_escalation
 
   belongs_to :event
   belongs_to :creator, :class_name => 'User'
@@ -16,6 +16,7 @@ class ToDo < ActiveRecord::Base
 
   def self.recurrence_to_date_time(period)
     return 0.seconds if period == ToDo.recurrences[:always] || period == 'always'
+    return 1.minute if period == ToDo.recurrences[:minutely] || period == 'minutely'
     return 1.hour if period == ToDo.recurrences[:hourly] || period == 'hourly'
     return 1.day if period == ToDo.recurrences[:daily] || period == 'daily'
     return 2.days if period == ToDo.recurrences[:every_other_day] || period == 'every_other_day'
@@ -98,9 +99,12 @@ class ToDo < ActiveRecord::Base
     true
   end
 
-  def destroy_reminder
+  def destroy_reminder_escalation
     if !reminder.nil?
       reminder.destroy
+    end
+    if !job_id.nil?
+      Rufus::Scheduler.singleton.job(job_id).unschedule
     end
   end
 
@@ -128,7 +132,7 @@ class ToDo < ActiveRecord::Base
     if expiration.nil? || escalation_prior == ToDo.recurrences[:no_recurrence]
       return
     end
-    puts "SETUP ESC"
+    puts "SETUP ESC EXPIRATION #{expiration}"
 
     if expiration - ToDo.recurrence_to_date_time(escalation_prior) < DateTime.now
       puts "AUTOMATIC ESCALATION"
@@ -136,6 +140,7 @@ class ToDo < ActiveRecord::Base
       return
     end
 
+    puts "WILL SCHEDULE FOR #{expiration - ToDo.recurrence_to_date_time(escalation_prior)} and current time #{DateTime.now}"
     self.job_id = Rufus::Scheduler.singleton.at expiration - ToDo.recurrence_to_date_time(escalation_prior) do
       escalate
     end
@@ -144,12 +149,14 @@ class ToDo < ActiveRecord::Base
 
   def escalate
     self.position = position - escalation_step < 1 ? 1 : position - escalation_step
-    puts "NEW ESCALATED POS #{position}"
-    if position == 1
+    puts "NEW ESCALATED POS #{position} EXPIRATION #{expiration}"
+    puts "MATH #{DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence)} > #{expiration}: #{DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) > expiration}"
+    if position == 1 || DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) > expiration
+      self.job_id = nil
       save
       return
     end
-    self.job_id = Rufus::Scheduler.singleton.at DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) do
+    self.job_id = Rufus::Scheduler.singleton.at (DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence)).to_time do
       escalate
     end
     save
