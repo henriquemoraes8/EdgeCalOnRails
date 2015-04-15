@@ -37,8 +37,17 @@ class ToDosController < ApplicationController
     @todo = ToDo.new(todo_params)
     @todo.creator_id = current_user.id
     @todo.duration = params['to_do']['duration(4i)'].to_i*3600 + params['to_do']['duration(5i)'].to_i*60
-    puts "DURATION #{@todo.duration}"
-    puts "*** GOT TO TO DO CREATE ***"
+    @todo.expiration = correct_time_from_datepicker(params[:to_do][:expiration])
+    puts "*** GOT TO TO DO CREATE TODO EXP IS #{@todo.expiration} ***"
+
+    step_error = validate_to_do
+    unless step_error.blank?
+      puts "STEP ERROR"
+      flash[:error] = step_error
+      @todo_count = current_user.to_dos.count + 1
+      render('new')
+      return
+    end
 
     if @todo.save
       flash[:notice] = "To-do '#{@todo.title}' created successfully"
@@ -54,22 +63,43 @@ class ToDosController < ApplicationController
 
       redirect_to(:action => 'index')
     else
-      @todo = ToDo.new
       @todo_count = current_user.to_dos.count + 1
+      flash[:error] = @todo.errors.full_messages
       render('new')
     end
   end
 
+  def validate_to_do
+    if @todo.expiration.nil?
+      return ''
+    end
+
+    if @todo.escalation_step <= 0
+      return 'priority raise must be an integer greater then or equal to 1'
+    end
+    ''
+  end
+
   def update
     @todo = ToDo.find(params[:id])
+    @todo.assign_attributes(todo_params)
+    @todo.expiration = correct_time_from_datepicker(params[:to_do][:expiration])
 
-    if @todo.update_attributes(todo_params)
+    step_error = validate_to_do
+    unless step_error.blank?
+      flash[:error] = step_error
+      @todo_count = current_user.to_dos.count + 1
+      render('edit')
+      return
+    end
+
+    if @todo.save
       flash[:notice] = "To-do '#{@todo.title}' updated successfully"
       redirect_to(:action => 'index')
     else
       @todo = ToDo.new
       @todo_count = current_user.to_dos.count + 1
-      render('new')
+      render('edit')
     end
   end
 
@@ -88,7 +118,7 @@ class ToDosController < ApplicationController
   private
 
   def todo_params
-    params.require(:to_do).permit(:title,:description,:position,:recurrence)
+    params.require(:to_do).permit(:title,:description,:position,:recurrence, :expiration, :escalation_prior, :escalation_recurrence,:escalation_step)
   end
 
 end

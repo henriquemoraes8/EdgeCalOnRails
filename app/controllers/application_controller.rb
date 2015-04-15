@@ -19,6 +19,9 @@ class ApplicationController < ActionController::Base
   end
 
   def correct_time_from_datepicker(time)
+    if time.nil?
+      return nil
+    end
     time = to_eastern_time(DateTime.parse(time))
     time -= time.utc_offset.seconds
     time

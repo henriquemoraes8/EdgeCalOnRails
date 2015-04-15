@@ -1,7 +1,7 @@
 class ToDo < ActiveRecord::Base
   enum recurrence: [:no_recurrence, :always, :minutely, :hourly, :daily, :every_other_day, :weekly, :monthly, :yearly, :less_than_minute]
 
-  before_update :reschedule_if_needed, :notify_event_if_needed
+  before_update :reschedule_if_needed, :notify_event_if_needed, :stop_escalation_if_needed
   before_create :verify_next_schedule
   after_create :setup_escalation, :setup_expiration
   validate :validate_duration, :validate_expiration
@@ -25,6 +25,19 @@ class ToDo < ActiveRecord::Base
     return 1.year if period == ToDo.recurrences[:yearly] || period == 'yearly'
     return 10.seconds if period == ToDo.recurrences[:less_than_minute] || period == 'less_than_minute'
     return 0.seconds
+  end
+
+  def self.options_for_escalation_prior
+    return [['never', ToDo.recurrences[:no_recurrence]],['hour before', ToDo.recurrences[:hourly]],
+            ['day before', ToDo.recurrences[:daily]],['two days before', ToDo.recurrences[:every_other_day]],
+            ['week before', ToDo.recurrences[:weekly]],['month before', ToDo.recurrences[:monthly]]]
+  end
+
+  def self.options_for_escalation_recurrence
+    return [['never', ToDo.recurrences[:no_recurrence]],['minute',ToDo.recurrences[:minutely]],
+            ['hour', ToDo.recurrences[:hourly]],['day', ToDo.recurrences[:daily]],
+            ['two days', ToDo.recurrences[:every_other_day]],['week', ToDo.recurrences[:weekly]],
+            ['month', ToDo.recurrences[:monthly]]]
   end
 
   scope :sorted, lambda {order('to_dos.position ASC')}
@@ -81,6 +94,13 @@ class ToDo < ActiveRecord::Base
       scheduler.at next_reschedule do
         reschedule
       end
+    end
+  end
+
+  def stop_escalation_if_needed
+    if done && !job_id.nil?
+      Rufus::Scheduler.singleton.job(job_id).unschedule
+      self.job_id = nil
     end
   end
 
@@ -151,7 +171,7 @@ class ToDo < ActiveRecord::Base
     self.position = position - escalation_step < 1 ? 1 : position - escalation_step
     puts "NEW ESCALATED POS #{position} EXPIRATION #{expiration}"
     puts "MATH #{DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence)} > #{expiration}: #{DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) > expiration}"
-    if position == 1 || DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) > expiration
+    if position == 1 || DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) > expiration || escalation_recurrence == 0
       self.job_id = nil
       save
       return
