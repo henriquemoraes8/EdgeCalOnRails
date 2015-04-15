@@ -3,33 +3,35 @@ class ToDo < ActiveRecord::Base
 
   before_update :reschedule_if_needed, :notify_event_if_needed
   before_create :verify_next_schedule
-  validate :validate_duration
+  after_create :setup_escalation, :setup_expiration
+  validate :validate_duration, :validate_expiration
   before_destroy :destroy_reminder
 
   belongs_to :event
-  belongs_to :creator, :class_name => "User"
+  belongs_to :creator, :class_name => 'User'
   has_one :reminder
 
 
   acts_as_list scope: :creator
 
   def self.recurrence_to_date_time(period)
-    return 0.seconds if period == ToDo.recurrences[:always] || period == "always"
-    return 1.hour if period == ToDo.recurrences[:hourly] || period == "hourly"
-    return 1.day if period == ToDo.recurrences[:daily] || period == "daily"
-    return 2.days if period == ToDo.recurrences[:every_other_day] || period == "every_other_day"
-    return 1.week if period == ToDo.recurrences[:weekly] || period == "weekly"
-    return 1.month if period == ToDo.recurrences[:monthly] || period == "monthly"
-    return 1.year if period == ToDo.recurrences[:yearly] || period == "yearly"
-    return 10.seconds if period == ToDo.recurrences[:less_than_minute] || period == "less_than_minute"
+    return 0.seconds if period == ToDo.recurrences[:always] || period == 'always'
+    return 1.hour if period == ToDo.recurrences[:hourly] || period == 'hourly'
+    return 1.day if period == ToDo.recurrences[:daily] || period == 'daily'
+    return 2.days if period == ToDo.recurrences[:every_other_day] || period == 'every_other_day'
+    return 1.week if period == ToDo.recurrences[:weekly] || period == 'weekly'
+    return 1.month if period == ToDo.recurrences[:monthly] || period == 'monthly'
+    return 1.year if period == ToDo.recurrences[:yearly] || period == 'yearly'
+    return 10.seconds if period == ToDo.recurrences[:less_than_minute] || period == 'less_than_minute'
     return 0.seconds
   end
 
   scope :sorted, lambda {order('to_dos.position ASC')}
 
-  def can_be_allocated
+  def can_be_allocated(end_time)
     puts "SEE IF #{title} CAN BE ALLOCATED, EVENTNIL #{event_id.nil?}, DONE #{done}"
-    return event_id.nil? && !done
+    expiration_not_a_problem = expiration.nil? || round_second(expiration) >= end_time
+    return event_id.nil? && !done && expiration_not_a_problem
   end
 
   def set_reminder(params_r)
@@ -100,6 +102,50 @@ class ToDo < ActiveRecord::Base
     if !reminder.nil?
       reminder.destroy
     end
+  end
+
+  def validate_expiration
+    if !expiration.nil? && expiration <= DateTime.now
+      errors[:base] = "expiration must be in the future"
+      return false
+    end
+    true
+  end
+
+  def setup_expiration
+    if expiration.nil?
+      return
+    end
+    Rufus::Scheduler.singleton.at expiration do
+      puts "EXPIRED"
+      self.expiration = nil
+      self.done = true
+      save
+    end
+  end
+
+  def setup_escalation
+    if expiration.nil? || escalation_prior == ToDo.recurrences[:no_recurrence]
+      return
+    end
+
+    self.job_id = Rufus::Scheduler.singleton.at event.start_time - ToDo.recurrence_to_date_time(escalation_prior) do
+      escalate
+    end
+    save
+  end
+
+  def escalate
+    self.position = position - escalation_step < 1 ? 1 : position - escalation_step
+    puts "NEW ESCALATED POS #{position}"
+    if position == 1
+      save
+      return
+    end
+    self.job_id = Rufus::Scheduler.singleton.at DateTime.now + ToDo.recurrence_to_date_time(escalation_recurrence) do
+      escalate
+    end
+    save
   end
 
 end

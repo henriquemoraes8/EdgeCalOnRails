@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(version: 20150415034839) do
     t.integer  "duration"
     t.datetime "expiration"
     t.integer  "job_id"
-    t.datetime "next_escalation"
-    t.integer  "escalation_recurrence"
+    t.integer  "escalation_prior",      default: 0
+    t.integer  "escalation_recurrence", default: 0
     t.integer  "escalation_step"
   end
 
