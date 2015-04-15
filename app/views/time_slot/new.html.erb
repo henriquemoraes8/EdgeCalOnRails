@@ -20,6 +20,17 @@
             <%= r.time_select :max_duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and ", :start_hour => 0, :end_hour => 2} %> minutes
           </div>
       <% end %>
+
+      <hr>
+
+      <h3>Preference options</h3>
+      <div class="field">
+        <%= f.check_box :preference %> <%= f.label :preference %> <%= f.check_box :create_to_do %> <%= f.label :create_to_do %>
+      </div>
+
+      <hr>
+
+      <h3>Blocks</h3>
       <div id="time_slot_events">
       <% @events.each do |e| %>
           <script type="text/javascript">
