@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150324032609) do
+ActiveRecord::Schema.define(version: 20150415034839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -30,6 +30,29 @@ ActiveRecord::Schema.define(version: 20150324032609) do
     t.integer  "request_map_id"
     t.integer  "respective_slot_id"
   end
+
+  create_table "fullcalendar_engine_event_series", force: :cascade do |t|
+    t.integer  "frequency",  default: 1
+    t.string   "period",     default: "monthly"
+    t.datetime "starttime"
+    t.datetime "endtime"
+    t.boolean  "all_day",    default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "fullcalendar_engine_events", force: :cascade do |t|
+    t.string   "title"
+    t.datetime "starttime"
+    t.datetime "endtime"
+    t.boolean  "all_day",         default: false
+    t.text     "description"
+    t.integer  "event_series_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "fullcalendar_engine_events", ["event_series_id"], name: "index_fullcalendar_engine_events_on_event_series_id", using: :btree
 
   create_table "groups", force: :cascade do |t|
     t.string   "title"
@@ -103,18 +126,23 @@ ActiveRecord::Schema.define(version: 20150324032609) do
   end
 
   create_table "to_dos", force: :cascade do |t|
-    t.boolean  "done",            default: false
+    t.boolean  "done",                  default: false
     t.integer  "event_id"
-    t.integer  "position",                        null: false
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
-    t.integer  "recurrence",      default: 0
-    t.string   "title",                           null: false
+    t.integer  "position",                              null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.integer  "recurrence",            default: 0
+    t.string   "title",                                 null: false
     t.string   "description"
-    t.integer  "creator_id",                      null: false
-    t.time     "duration"
+    t.integer  "creator_id",                            null: false
     t.datetime "next_reschedule"
     t.integer  "reminder_id"
+    t.integer  "duration"
+    t.datetime "expiration"
+    t.integer  "job_id"
+    t.integer  "escalation_prior",      default: 0
+    t.integer  "escalation_recurrence", default: 0
+    t.integer  "escalation_step"
   end
 
   create_table "users", force: :cascade do |t|

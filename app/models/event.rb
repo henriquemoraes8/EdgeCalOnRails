@@ -85,19 +85,21 @@ class Event < ActiveRecord::Base
 		elsif end_time < Time.now
 			self.title = "allocated for to-do"
 			self.description = "this event has passed and cannot be assigned a to-do"
+			save
 			return
 		end
 
 		duration = start_time > Time.now && end_time < Time.now ? end_time - Time.now : end_time - start_time
 
 		creator.to_dos.each do |t|
-			if t.duration.hour*3600 + t.duration.min*60 < duration && t.can_be_allocated
+			puts "MY TODO #{t.duration}"
+			if t.duration < duration && t.can_be_allocated(end_time)
 				self.to_do_id = t.id
 				t.event_id = id
 				self.title = "allocated for to-do: #{t.title}"
 				self.description = t.description
 				puts "GOT A TODO AND ASSIGNED ID #{id}"
-				t.save
+				t.event_updated
 				save
 				return
 			end
@@ -185,8 +187,13 @@ class Event < ActiveRecord::Base
 	private
 
 	def check_to_do
-		if event_type == 'to_do' && end_time - start_time <= 15.minutes
-			errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+		if event_type == 'to_do' 
+      if start_time.nil? || end_time.nil?
+        errors[:base] = 'Need to supply a start and end time'
+      end
+      if end_time - start_time <= 15.minutes
+			  errors[:base] = 'a to-do allocated event needs a minimum time frame of 15 minutes'
+      end
 		end
 	end
 
@@ -195,6 +202,10 @@ class Event < ActiveRecord::Base
 	end
 
 	def time_concise
+    if start_time.nil? || end_time.nil?
+      errors[:base] = 'Need to supply a start and end time'
+      return false
+    end
 		if start_time >= end_time
 			errors[:base] = "Start time must be before end time"
 			return false
