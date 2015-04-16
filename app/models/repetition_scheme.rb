@@ -84,7 +84,7 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def generate_to_dos_with_position(position)
-		if status != RepetitionScheme.statuses[:preference_based]
+		if RepetitionScheme.statuses[status] != RepetitionScheme.statuses[:preference_based]
 			return
 		end
 
@@ -98,9 +98,13 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def resolve_preferences_for_slots(slot_ids)
+		if RepetitionScheme.statuses[status] != RepetitionScheme.statuses[:preference_based]
+			return
+		end
 
 		to_dos.map {|t| t.done = true; t.save }
 		self.status = RepetitionScheme.statuses[:resolved]
+		save
 	end
 
 	def user_allowed?(user_id)

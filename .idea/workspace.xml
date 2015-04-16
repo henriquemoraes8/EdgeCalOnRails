@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0dd890b-3a3f-4343-aea3-8c6c2d685bcf" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/migrate/20150416040722_to_do_on_repetition.rb" afterPath="$PROJECT_DIR$/db/migrate/20150416040722_to_do_on_repetition.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/event.rb" afterPath="$PROJECT_DIR$/app/models/event.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/repetition_scheme.rb" afterPath="$PROJECT_DIR$/app/models/repetition_scheme.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="EdgeCalOnRails.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,8 +30,8 @@
             <file leaf-file-name="schema.rb" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/db/schema.rb">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.21529175" vertical-offset="793" max-vertical-offset="2415">
-                    <caret line="60" column="52" selection-start-line="60" selection-start-column="52" selection-end-line="60" selection-end-column="52" />
+                  <state vertical-scroll-proportion="0.21529175" vertical-offset="898" max-vertical-offset="2550">
+                    <caret line="67" column="52" selection-start-line="67" selection-start-column="52" selection-end-line="67" selection-end-column="52" />
                     <folding />
                   </state>
                 </provider>
@@ -163,8 +159,8 @@
       <file leaf-file-name="repetition_scheme.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models/repetition_scheme.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7734375" vertical-offset="990" max-vertical-offset="2070">
-              <caret line="99" column="39" selection-start-line="99" selection-start-column="39" selection-end-line="99" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.5625" vertical-offset="1125" max-vertical-offset="2130">
+              <caret line="99" column="6" selection-start-line="99" selection-start-column="6" selection-end-line="99" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -1248,8 +1244,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/db/schema.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.21529175" vertical-offset="793" max-vertical-offset="2415">
-          <caret line="60" column="52" selection-start-line="60" selection-start-column="52" selection-end-line="60" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.21529175" vertical-offset="898" max-vertical-offset="2550">
+          <caret line="67" column="52" selection-start-line="67" selection-start-column="52" selection-end-line="67" selection-end-column="52" />
           <folding />
         </state>
       </provider>
@@ -1264,8 +1260,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/repetition_scheme.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7734375" vertical-offset="990" max-vertical-offset="2070">
-          <caret line="99" column="39" selection-start-line="99" selection-start-column="39" selection-end-line="99" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.5625" vertical-offset="1125" max-vertical-offset="2130">
+          <caret line="99" column="6" selection-start-line="99" selection-start-column="6" selection-end-line="99" selection-end-column="35" />
           <folding />
         </state>
       </provider>
