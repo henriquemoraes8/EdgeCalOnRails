@@ -68,6 +68,12 @@ class User < ActiveRecord::Base
     created_events.where(:event_type => Event.event_types[:time_slot_block])
   end
 
+  def get_allowed_signup_schemes(user_id)
+    schemes = []
+    slot_schemes.map {|s| schemes << s if s.user_allowed?(user_id)}
+    schemes
+  end
+
   private
 
   def get_events_for_status(status)

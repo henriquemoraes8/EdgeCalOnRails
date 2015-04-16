@@ -3,11 +3,12 @@ class RepetitionScheme < ActiveRecord::Base
 	enum recurrence: [:no_recurrence, :daily, :every_other_day, :weekly, :monthly, :yearly]
   
 	validate :max_min_duration
-	after_create :generate_to_dos_if_needed
+	before_create :equalize_slot_duration
 
 	has_many :events
 	has_and_belongs_to_many :allowed_users, :class_name => 'User'
 	has_many :to_dos, :dependent => :destroy
+	belongs_to :creator, :class_name => 'User'
 
 	### <<<< LEAVE COMMENTED OUTPUTS TO CONSOLE ALONE >>>>
 
@@ -88,8 +89,9 @@ class RepetitionScheme < ActiveRecord::Base
 
 		title = events.first.title
 		allowed_users.each do |u|
-			todo = ToDo.create(:creator_id => u.id, :position => position, :title => "Signup for a slot with #{current_user.name}",
+			todo = ToDo.create(:creator_id => u.id, :position => position, :title => "Signup for a slot with #{creator.name}",
 			:description => title, :duration => 5)
+			u.to_dos << todo
 			self.to_dos << todo
 		end
 	end
@@ -106,12 +108,18 @@ class RepetitionScheme < ActiveRecord::Base
 			return true
 		end
 		if min_time_slot_duration > 0 || max_time_slot_duration > 0
-			if min_time_slot_duration >= max_time_slot_duration || min_time_slot_duration % 5 != 0 || max_time_slot_duration % 5 != 0
+			if min_time_slot_duration > max_time_slot_duration || min_time_slot_duration % 5 != 0 || max_time_slot_duration % 5 != 0
 				errors[:base] = "minimum and maximum durations are incompatible"
 				return false
 			end
 		end
 		true
+	end
+
+	def equalize_slot_duration
+		if preference_based
+			self.max_time_slot_duration = min_time_slot_duration
+		end
 	end
 
 end
