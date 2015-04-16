@@ -187,8 +187,6 @@ class EventsController < ApplicationController
     @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
     html = render_to_string(:template => "events/_list_index", :layout => false)
-    puts "HTML RIGHT AFTER THIS"
-    puts html
 
     puts "USER EMAIL IS: " + current_user.email
 
@@ -196,11 +194,6 @@ class EventsController < ApplicationController
 
     # Define your message parameters
     puts "SENDING EMAIL HERE"
-    #message_params = {:from => 'notifications@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org',  
-    #  :to      => current_user.email, #'wes.koorbusch@gmail.com',
-    #  :subject => 'Your Events!',
-    #  :html    => html
-    #}
 
     RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
     "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
