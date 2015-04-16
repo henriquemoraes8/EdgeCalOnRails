@@ -1,6 +1,7 @@
 class RepetitionScheme < ActiveRecord::Base
   
 	enum recurrence: [:no_recurrence, :daily, :every_other_day, :weekly, :monthly, :yearly]
+	enum status: [:regular, :preference_based, :resolved]
   
 	validate :max_min_duration
 	before_create :equalize_slot_duration
@@ -83,7 +84,7 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def generate_to_dos_with_position(position)
-		if !preference_based
+		if status != RepetitionScheme.statuses[:preference_based]
 			return
 		end
 
@@ -94,6 +95,12 @@ class RepetitionScheme < ActiveRecord::Base
 			u.to_dos << todo
 			self.to_dos << todo
 		end
+	end
+
+	def resolve_preferences_for_slots(slot_ids)
+
+		to_dos.map {|t| t.done = true; t.save }
+		self.status = RepetitionScheme.statuses[:resolved]
 	end
 
 	def user_allowed?(user_id)

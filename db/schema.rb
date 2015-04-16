@@ -57,11 +57,11 @@ ActiveRecord::Schema.define(version: 20150416040722) do
   end
 
   create_table "repetition_schemes", force: :cascade do |t|
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "min_time_slot_duration"
     t.integer  "max_time_slot_duration"
-    t.boolean  "preference_based",       default: false
+    t.integer  "status",                 default: 0
     t.integer  "creator_id"
   end
 
@@ -107,6 +107,7 @@ ActiveRecord::Schema.define(version: 20150416040722) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
     t.integer  "slot_event_id"
+    t.integer  "preference"
   end
 
   create_table "to_dos", force: :cascade do |t|

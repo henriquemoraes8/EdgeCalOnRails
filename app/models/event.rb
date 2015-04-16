@@ -184,6 +184,15 @@ class Event < ActiveRecord::Base
 		permitted_durations
 	end
 
+	def resolve_preference_slot(slot_id)
+		current_slot = TimeSlot.find(slot_id)
+		to_destroy = []
+		time_slots.each do |t|
+				to_destroy << t if current_slot.user_id == t.user_id && t.id != slot_id
+		end
+		to_destroy.map {|t| t.destroy}
+	end
+
 	private
 
 	def check_to_do
