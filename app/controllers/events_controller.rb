@@ -216,6 +216,10 @@ class EventsController < ApplicationController
     render 'index.html'
   end
 
+  def find_events_in_range
+    #Still needs to be implemented by @jeffday1113
+  end 
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
