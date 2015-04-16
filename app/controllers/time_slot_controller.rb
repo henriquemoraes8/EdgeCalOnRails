@@ -30,6 +30,12 @@ class TimeSlotController < ApplicationController
       return
     end
 
+    if min_duration > max_duration
+      flash[:error] = "your minimum duration must be less than or equal to your maximum duration"
+      redirect_to time_slot_new_path
+      return
+    end
+
     repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration)
 
     title = params[:event_blocks][:title]
