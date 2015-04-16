@@ -3,8 +3,11 @@ class RepetitionScheme < ActiveRecord::Base
 	enum recurrence: [:no_recurrence, :daily, :every_other_day, :weekly, :monthly, :yearly]
   
 	validate :max_min_duration
+	after_create :generate_to_dos_if_needed
 
 	has_many :events
+	has_and_belongs_to_many :allowed_users, :class_name => 'User'
+	has_many :to_dos, :dependent => :destroy
 
 	### <<<< LEAVE COMMENTED OUTPUTS TO CONSOLE ALONE >>>>
 
@@ -72,7 +75,27 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def set_title(title)
-		events.each
+		events.each do |e|
+			e.title = title
+			e.save
+		end
+	end
+
+	def generate_to_dos_with_position(position)
+		if !preference_based
+			return
+		end
+
+		title = events.first.title
+		allowed_users.each do |u|
+			todo = ToDo.create(:creator_id => u.id, :position => position, :title => "Signup for a slot with #{current_user.name}",
+			:description => title, :duration => 5)
+			self.to_dos << todo
+		end
+	end
+
+	def user_allowed?(user_id)
+		allowed_users.ids.include?(user_id)
 	end
 
 	private
