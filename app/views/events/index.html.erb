@@ -7,7 +7,8 @@
 	<a href="#" data-reveal-id="event-lists">All Events</a> | 
 	<a href="#" data-reveal-id="to-do-list">To Do List</a> |
 	<a href="#" data-reveal-id="requests">My Requests</a> |
-	<a href="#" data-reveal-id="events-email">Email My Schedule</a>
+	<a href="#" data-reveal-id="events-email">Email My Schedule</a> |
+	<a href="#" data-reveal-id="graphic-events-email">Email My Graphic Schedule</a>
 	<br>
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
@@ -38,4 +39,9 @@
 <div class="reveal-modal" id="events-email" data-reveal>
 		<a class="close-reveal-modal"></a>
 		<%= render "events_email" %>
+</div>
+
+<div class="reveal-modal" id="graphic-events-email" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= render "graphic_calendar_form"%>
 </div>
