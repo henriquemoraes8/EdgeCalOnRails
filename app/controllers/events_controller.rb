@@ -8,6 +8,8 @@ class EventsController < ApplicationController
   # allows the user to create a new event.
   ################################################################
 
+  require 'mailgun'
+
   before_action :set_event, only: [:show, :edit, :update, :delete]
     
   # GET /events
@@ -176,6 +178,41 @@ class EventsController < ApplicationController
       format.js { render json: @event}
     end
   end
+
+  def create_html_email
+    @own_events = current_user.created_events
+    @visible_events = current_user.get_visible_events
+    @modifiable_events = current_user.get_modifiable_events
+    @busy_events = current_user.get_busy_events
+    @date = params[:month] ? Date.parse(params[:month]) : Date.today
+
+    html = render_to_string(:template => "events/_list_index", :layout => false)
+
+    puts "USER EMAIL IS: " + current_user.email
+
+    #mg_client = Mailgun::Client.new "key-345efdd486ec59509f9161b99b78d333"
+
+    # Define your message parameters
+    puts "SENDING EMAIL HERE"
+
+    RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
+    "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
+      :from => "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>",
+      :to => current_user.email,
+      :subject => "Here's your schedule!",
+      :html => html.to_str
+
+    puts "EMAIL OFFICIALLY SENT"
+
+    # A strange bug is happening, so I'm putting this here for now because
+    # it kinda fixes it.  Need to figure out what's happening
+    render 'index.html'
+  end
+
+  def find_events_in_range
+    #Still needs to be implemented by @jeffday1113
+  end 
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -31,19 +31,54 @@
 
       <hr>
 
+      <script type="text/javascript">
+        
+      </script>
+
       <h3>Blocks</h3>
+
+
       <div id="time_slot_events">
       <% @events.each do |e| %>
           <script type="text/javascript">
-          var num = prompt("How many different event boxes would you like?");
-          for (i=0; i<num; i++){
+
+            $(document).ready(function(){
+            $('#MyButton').click(function(){
               $('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
-            }
+              $("#datetimepicker").datetimepicker();
+              
+              });
+              //location.reload();
+            });
+
+          // if (localStorage.getItem("alert")===null){
+          //   alert("FEFF");
+          // }
+          // else{
+          //   alert(localStorage.getItem("alert"));
+          // }
+          //console.log(alert);
+          //if (alert ==){
+          //var alert = prompt("How many different slot blocks would you like?  Choose a number between 1 and 10", 1);
+          //}
+
+          //var num = parseInt(alert);
+
+          //if (isNaN(num)){
+            //alert = localStorage.setItem("alert", "You didn't enter a valid number.  How many different slot blocks would you like?");
+            //location.reload();
+          //}
+
+          //for (i=0; i<num; i++){
+              //$('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
+            //}
+            //location.reload();
           </script>
-          <%#= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
+          <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
           <%#= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
       <% end %>
       </div>
+      <input type="button" value="Add Another Block" id="MyButton" >
       <%#= f.button 'Add Event Block', id: 'add_button', class:'button radius', :action => :add_event_block, :remote => true %>
 
 
@@ -54,5 +89,4 @@
 
 
 </div>
-
 

@@ -1,0 +1,12 @@
+<%= form_for('Get Calendar', :url => {:action => 'find_events_in_range'}) do |f|%>
+
+<div class="field">
+  <%= label :start, 'Starting Date:' %><br>
+  <%= f.text_field :start_date, class: 'datetimepicker' %>
+</div>
+<div class="field">
+  <%= label :end, 'Ending Date:' %><br>
+  <%= f.text_field :end_date, class: 'datetimepicker' %>
+</div>
+<%= f.submit 'Search', class: "button radius" %>
+<%end%>

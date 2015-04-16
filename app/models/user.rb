@@ -6,9 +6,11 @@ class User < ActiveRecord::Base
 
   # Added by @brianbolze and @jeffday -- 2/2
   has_many :created_events, :foreign_key => 'creator_id', :class_name => 'Event', :dependent => :destroy
+  has_and_belongs_to_many :allowed_signups, :class_name => 'RepetitionScheme'
 
   has_many :subscriptions, :foreign_key => 'subscriber_id', :dependent => :destroy
   has_many :subscribed_events, :through => :subscriptions
+  has_many :slot_schemes, :foreign_key => 'creator_id', :class_name => 'RepetitionScheme', :dependent => :destroy
 
   #model logic by @henriquemoraes
 
@@ -64,6 +66,12 @@ class User < ActiveRecord::Base
 
   def get_time_slot_created_events
     created_events.where(:event_type => Event.event_types[:time_slot_block])
+  end
+
+  def get_allowed_signup_schemes(user_id)
+    schemes = []
+    slot_schemes.map {|s| schemes << s if s.user_allowed?(user_id)}
+    schemes
   end
 
   private
