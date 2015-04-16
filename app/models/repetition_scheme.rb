@@ -124,7 +124,7 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def equalize_slot_duration
-		if preference_based
+		if status == RepetitionScheme.statuses[:preference_based]
 			self.max_time_slot_duration = min_time_slot_duration
 		end
 	end

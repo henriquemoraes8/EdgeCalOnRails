@@ -24,22 +24,36 @@
 
       <hr>
 
-      <h3>Preference options</h3>
+      <h3>Preference options</h3><br>
       <div class="field">
         <%= f.check_box :preference %> <%= f.label :preference %> <%= f.check_box :create_to_do %> <%= f.label :create_to_do %>
       </div>
 
       <hr>
 
-      <script type="text/javascript">
-        
-      </script>
+<h3>Participants</h3><br>
+<h4>Users</h4>
+	<% @users.each do |u| %>
+    	<%= check_box('user_participant',"#{u.id}") %>
+    	<%= u.email %>
+    	<br>
+	<% end %>
+	<br><br>
+	<h4>Groups</h4>
+	<% @groups.each do |g| %>
+    	<%= check_box('group_participant',"#{g.id}") %>
+   	 	<%= g.title %>
+    	<br>
+	<% end %>
+
+	  <hr>
 
       <h3>Blocks</h3>
 
 
       <div id="time_slot_events">
       <% @events.each do |e| %>
+	  	<%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
           <script type="text/javascript">
 
             $(document).ready(function(){
@@ -74,11 +88,10 @@
             //}
             //location.reload();
           </script>
-          <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
           <%#= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
       <% end %>
       </div>
-      <input type="button" value="Add Another Block" id="MyButton" >
+      <input type="button" value="Add Another Block" id="MyButton" class="button radius">
       <%#= f.button 'Add Event Block', id: 'add_button', class:'button radius', :action => :add_event_block, :remote => true %>
 
 
