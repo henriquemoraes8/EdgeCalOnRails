@@ -20,7 +20,28 @@
   <%= f.label :recurrence %><br>
   <%= f.select :recurrence, ToDo.recurrences.keys.map {|r| [r.humanize, r]} %>
 </div>
+<div class="field">
+  <%= f.label :expiration, 'expires' %><br>
+  <%= f.text_field :expiration,  class: 'datetimepicker' %>
+</div>
+
 <hr>
+
+<div class="field">
+  <%= f.label :escalation_prior, 'Start escalating relative to deadline' %><br>
+  <%= f.select :escalation_prior, ToDo.options_for_escalation_prior.map {|r| r } %>
+</div>
+<div class="field">
+  <%= f.label :escalation_recurrence, 'Escalate every' %><br>
+  <%= f.select :escalation_recurrence, ToDo.options_for_escalation_recurrence.map {|r| r } %>
+</div>
+<div class="field">
+  <%= f.label :escalation_step, 'Increase priority by' %><br>
+  <%= f.number_field :escalation_step, :min => 1, :step => 1 %>
+</div>
+
+<hr>
+
 <h2>Set Reminder</h2>
    <%= f.fields_for(:reminder) do |r_form| %>
     <div class="field">

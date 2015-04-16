@@ -21,9 +21,17 @@
           </div>
       <% end %>
 	  
-	  <br>
-	  <h2>Blocks</h2>
-	  <br>
+
+      <hr>
+
+      <h3>Preference options</h3>
+      <div class="field">
+        <%= f.check_box :preference %> <%= f.label :preference %> <%= f.check_box :create_to_do %> <%= f.label :create_to_do %>
+      </div>
+
+      <hr>
+
+      <h3>Blocks</h3>
       <div id="time_slot_events">
       <% @events.each do |e| %>
           <script type="text/javascript">
