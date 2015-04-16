@@ -40,7 +40,14 @@ class TimeSlotController < ApplicationController
       return
     end
 
-    repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration)
+    if params[:preference] == 1
+      status = RepetitionScheme.statuses[:preference_based]
+    else
+      status = RepetitionScheme.statuses[:normal]
+    end
+
+    repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration,
+                      status: status)
 
     title = params[:event_blocks][:title]
     description = params[:event_blocks][:description]
@@ -62,7 +69,7 @@ class TimeSlotController < ApplicationController
     if !params[:user_participant].blank?
       params[:user_participant].keys.each do |u|
         if params[:user_participant][u] == "1"
-          # repetition.allowed_users << User.where(id: u)
+          repetition.allowed_users << User.where(id: u)
           # puts User.where(id: u).name
         end
       end
@@ -93,6 +100,13 @@ class TimeSlotController < ApplicationController
   
   def scheduler
     @event = Event.find_by_id(params[:id])
+    @slots = Hash.new
+  end
+  
+  def assign_user_to_slot
+    user = params[:user]
+    slot = params[:slot]
+    @slots[user] = slot
   end
 
   def assign_time_slots

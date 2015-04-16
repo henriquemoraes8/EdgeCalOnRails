@@ -1,6 +1,25 @@
 <h2>Slot Scheduler</h2>
 
 <%= @event.title %><br>
-<% if preference_based(@event) %> Preference Based
-<% else %> Not Preference Based!
-<% end %>
+<% @repetition = Event.find_by_id(params[:id]).repetition_scheme %>
+<%= @repetition.status%>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Preferences</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for u in @repetition.allowed_users %>
+		<tr>
+			<td><%= u.name %></td>
+			<td><%= u.email %></td>
+			<td>Event A - 1  --
+			<%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event, remote: true%></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
