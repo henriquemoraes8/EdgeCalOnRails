@@ -6,7 +6,8 @@
 	<br>
 	<a href="#" data-reveal-id="event-lists">All Events</a> | 
 	<a href="#" data-reveal-id="to-do-list">To Do List</a> |
-	<a href="#" data-reveal-id="requests">My Requests</a>
+	<a href="#" data-reveal-id="requests">My Requests</a> |
+	<a href="#" data-reveal-id="events-email">Email My Schedule</a>
 	<br>
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
@@ -33,3 +34,10 @@
 		<a class="close-reveal-modal"></a>
 		<%= render "request_list" %>
 </div>
+
+<div class="reveal-modal" id="events-email" data-reveal>
+		<a class="close-reveal-modal"></a>
+		<%= link_to('Email My Schedule', {:action => :create_html_email, :id => current_user.id, :class => 'html email', :remote => true}) %>
+</div>
+
+<%= link_to('Email My Schedule', {:action => :create_html_email, :id => current_user.id, :class => 'html email', :remote => true}) %>
