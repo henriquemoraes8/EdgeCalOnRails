@@ -20,7 +20,11 @@
 	  	<div class="reveal-modal" id="invitees-modal" data-reveal>
 		  <a class="close-reveal-modal"></a>
 			<h3>Invitees</h3>
-
+			<ul>
+			<% for u in e.repetition_scheme.allowed_users do %>
+			<li><%= u.email %></li>
+			<% end %>
+			</ul>
 		</div>
 		
       <% e.time_slots.each do |t| %>

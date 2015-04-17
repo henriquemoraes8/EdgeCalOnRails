@@ -1,6 +1,7 @@
+<% content_for :center do%>
 <h2>New Time Slot Event</h2>
 
-<div class="event block">
+<div class="event block" id="Time_Slot_Form">
   <%= form_for('event_blocks', :url => {:controller => 'time_slot', :action => 'create'}) do |f| %>
       <div class="field">
         <%= f.label :title %><br>
@@ -8,7 +9,7 @@
       </div>
       <div class="field">
         <%= f.label :description %><br>
-        <%= f.text_area :description %>
+        <%= f.text_area :description, size: "10x5" %>
       </div>
       <%= f.fields_for :repetition_scheme do |r| %>
           <div class="field">
@@ -26,7 +27,10 @@
 
       <h3>Preference options</h3><br>
       <div class="field">
-        <%= f.check_box :preference %> <%= f.label :preference %> <%= f.check_box :create_to_do %> <%= f.label :create_to_do %>
+		  <%= f.check_box :preference%> <%= f.label :preference , "Preference Based Signups"%><br>
+		  <%= f.check_box :create_to_do %> <%= f.label :create_to_do, "Create To Dos" %> <br>
+		  <%= f.label :to_do_priority, "To Do Priority"%><%= f.number_field :to_do_priority, in: 1..5, step: 1 %> <br>
+		<ul>
       </div>
 
       <hr>
@@ -75,4 +79,5 @@
 
 
 </div>
+<% end %>
 
