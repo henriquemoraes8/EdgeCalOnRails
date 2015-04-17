@@ -97,10 +97,19 @@ class RepetitionScheme < ActiveRecord::Base
 		end
 	end
 
-	def suggest_slot_assignment
+	def get_all_users_preferences
+		unless is_preference_mode?
+			return
+		end
 
+	end
+
+	def suggest_slot_assignment
+		preferences = get_all_users_preferences
 		suggestion = {}
-		allowed_users
+		allowed_users.each do |u|
+			events.time_slots.where(:user_id => u.id)
+		end
 	end
 
 	def resolve_preferences_for_slots(slot_ids)
@@ -115,6 +124,10 @@ class RepetitionScheme < ActiveRecord::Base
 
 	def user_allowed?(user_id)
 		allowed_users.ids.include?(user_id)
+	end
+
+	def is_preference_mode?
+		RepetitionScheme.statuses[status] == RepetitionScheme.statuses[:preference_based]
 	end
 
 	private
@@ -137,10 +150,6 @@ class RepetitionScheme < ActiveRecord::Base
 		if RepetitionScheme.statuses[status] == RepetitionScheme.statuses[:preference_based]
 			self.max_time_slot_duration = min_time_slot_duration
 		end
-	end
-
-	def is_preference_mode?
-		RepetitionScheme.statuses[status] == RepetitionScheme.statuses[:preference_based]
 	end
 
 end
