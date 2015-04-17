@@ -115,9 +115,18 @@ class TimeSlotController < ApplicationController
     end
   end
   
+  def show_invitees
+    event = Event.find_by_id(params[:id])
+    @invitees = event.repetition_scheme.allowed_users
+    render '_invitees', layout: false
+    return
+  end
+  
   def scheduler
     @event = Event.find_by_id(params[:id])
     @slots = Hash.new
+    render '_scheduler', layout: false
+    return
   end
   
   def assign_user_to_slot

@@ -2,7 +2,7 @@
 
 <%= @event.title %><br>
 <% @repetition = Event.find_by_id(params[:id]).repetition_scheme %>
-<%= @repetition.status%>
+<%= @repetition.status %>
 
 <table>
 	<thead>
