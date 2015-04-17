@@ -102,13 +102,19 @@ class RepetitionScheme < ActiveRecord::Base
 			return
 		end
 
+		preferences = {}
+		allowed_users.each do |u|
+			preferences[u.id] = []
+			events.map {|e| e.time_slots.where(:user_id => u.id).map {|s| preferences[u.id] << s}}
+			preferences[u.id].sort_by {|t| t.preference}
+		end
 	end
 
 	def suggest_slot_assignment
 		preferences = get_all_users_preferences
 		suggestion = {}
 		allowed_users.each do |u|
-			events.time_slots.where(:user_id => u.id)
+			events.time_slots.where(:user_id => u.id).order('preference')
 		end
 	end
 

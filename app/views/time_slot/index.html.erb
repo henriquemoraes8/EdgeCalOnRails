@@ -21,7 +21,7 @@
 		  <a class="close-reveal-modal"></a>
 			<h3>Invitees</h3>
 			<ul>
-			<% for u in e.repetition_scheme.allowed_users do %>
+			<% e.repetition_scheme.allowed_users.each do |u| %>
 			<li><%= u.email %></li>
 			<% end %>
 			</ul>
