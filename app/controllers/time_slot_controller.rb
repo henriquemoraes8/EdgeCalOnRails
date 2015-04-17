@@ -43,21 +43,27 @@ class TimeSlotController < ApplicationController
     if params[:preference] == 1
       status = RepetitionScheme.statuses[:preference_based]
     else
-      status = RepetitionScheme.statuses[:normal]
+      status = RepetitionScheme.statuses[:regular]
     end
 
     repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration,
-                      status: status)
+                      status: status, creator_id: current_user.id)
+                      
 
     title = params[:event_blocks][:title]
     description = params[:event_blocks][:description]
     
     params[:event_blocks][:events].each do |e_param|
-      event = Event.new(event_params(e_param.merge(:title=>title, :description=>description)))
-      event.event_type = Event.event_types[:time_slot_block]
-      event.creator_id = current_user.id
-      if event.save
-        repetition.events << event
+      e_param[:title] = title
+      e_param[:description] = description
+      e_param[:start_time] = correct_time_from_datepicker(e_param[:start_time])
+      e_param[:end_time] = correct_time_from_datepicker(e_param[:end_time])
+      e_param[:event_type] = Event.event_types[:time_slot_block]
+      @event = Event.new(event_params(e_param))
+      
+      @event.creator_id = current_user.id
+      if @event.save
+        repetition.events << @event
       else
         @event = event
         flash[:error] = "Error in submission, try again"
@@ -66,10 +72,11 @@ class TimeSlotController < ApplicationController
       end
     end
     
+    all_users = []
     if !params[:user_participant].blank?
       params[:user_participant].keys.each do |u|
         if params[:user_participant][u] == "1"
-          repetition.allowed_users << User.where(id: u)
+          all_users << u.to_i
           # puts User.where(id: u).name
         end
       end
@@ -78,11 +85,13 @@ class TimeSlotController < ApplicationController
     if !params[:group_participant].blank?
       params[:group_participant].keys.each do |g|
         if params[:group_participant][g] == "1"
-          # repetition.allowed_users << User.where(id: g)
-          # puts User.where(id: u).name
+          all_users << g.all_user_ids
         end
       end
     end
+    all_users = all_users.flatten.uniq
+    
+    all_users.map {|u| repetition.allowed_users << User.find(u)}
 
     redirect_to(time_slot_index_path)
   end
@@ -160,7 +169,7 @@ class TimeSlotController < ApplicationController
   private
 
   def event_params(e_param)
-    e_param.permit(:title, :description, :start_time, :end_time)
+    e_param.permit(:title, :description, :start_time, :end_time, :event_type)
   end
 
 end
