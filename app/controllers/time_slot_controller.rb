@@ -162,6 +162,12 @@ class TimeSlotController < ApplicationController
     end
   end
   
+  def get_allowed_users
+    event = params[:id]
+    repetition = event.repetition_scheme
+    @allowed_users = repetition.allowed_users
+  end
+  
   def preference_based(event)
     return event.repetition_scheme.status == RepetitionScheme.statuses[:preference_based]
   end
