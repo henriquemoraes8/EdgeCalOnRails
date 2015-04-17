@@ -1,10 +1,36 @@
 <h2>Sign up for a time slot with <%= @user.name %></h2>
-<hr>
 
 <% if @events.count == 0 %>
+<hr>
     <h3>No time slot schedules available</h3>
 <% else %>
     <% @events.each do |e| %>
+	<hr>
+	<% if preference_based(e) %>
+	
+    <%= form_for('preference_signup', :url => {:controller => 'time_slot', :action => 'choose_slot_preferences'}) do |f| %>
+    <% #@events.each do |e| %>
+        <div class="event slot">
+          <em>Title:</em> <%= e.title %><br>
+          <em>Description:</em> <%= e.description %><br>
+		  <em>Duration:</em>  <%= e.permitted_slot_durations.first %>min<br>
+          <%= f.fields_for "#{e.id}" do |s| %>
+              <em>Start time:</em>
+              <%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>
+			  <%= s.label :preference, "Preference"%><%= s.number_field :preference, in: 1..5, step: 1 %>
+			  <br><br>
+              <!-- #s.text_field :slot_time, class: 'datetimepicker', id: "start_slot#{e.id}" -->
+          <% end %>
+        </div>
+        <%= f.submit 'Add Preference', class: "button radius" %>
+    <% end %>
+	
+	<% else %>
+	
+	<%#########################%>
+	<%# Normal TimeSlot Signup %>
+	<%#########################%>
+	
     <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'assign_time_slots'}) do |f| %>
     <% #@events.each do |e| %>
         <div class="event slot">
@@ -29,6 +55,8 @@
         </div>
         <%= f.submit 'save time slots', class: "button radius" %>
     <% end %>
+
+	<% end %>
 
     <%#= f.submit 'save time slots', class: "button radius" %>
 

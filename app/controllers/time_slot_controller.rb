@@ -125,14 +125,35 @@ class TimeSlotController < ApplicationController
   def scheduler
     @event = Event.find_by_id(params[:id])
     @slots = Hash.new
-    render '_scheduler', layout: false
-    return
   end
   
   def assign_user_to_slot
     user = params[:user]
     slot = params[:slot]
     @slots[user] = slot
+  end
+  
+  def choose_slot_preferences
+    params[:preference_signup].each do |e_id, e_hash|
+      event = Event.find(e_id.to_i)
+      duration = event.repetition_scheme.min_time_slot_duration
+      start_time = e_hash['slot_time']
+      puts "START #{start_time} DURATION #{duration}"
+      slot = TimeSlot.new(:start_time => start_time, :duration => duration,
+                          :event_id => event.id, :user_id => current_user.id, :preference => e_hash['preference'])
+      
+      if slot.save
+        flash[:notice] = "Successfully Signed Up!"
+        event.time_slots << slot
+      else
+        flash[:notice] = "I don't know.. we had some problem"
+        redirect_to signup, :id => event.creator_id
+        return
+      end
+
+    end
+    redirect_to time_slot_index_path
+  
   end
 
   def assign_time_slots
@@ -148,6 +169,7 @@ class TimeSlotController < ApplicationController
       end
 
       if slot.save
+        flash[:notice] = "Successfully Signed Up!"
         event.time_slots << slot
       else
         flash[:error] = slot.errors[:base]
@@ -186,7 +208,7 @@ class TimeSlotController < ApplicationController
   end
   
   def preference_based(event)
-    return event.repetition_scheme.status == RepetitionScheme.statuses[:preference_based]
+    return RepetitionScheme.statuses[event.repetition_scheme.status] == RepetitionScheme.statuses[:preference_based]
   end
 
   private
