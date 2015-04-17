@@ -14,15 +14,13 @@
       <em>End of block:</em><%= e.end_time.strftime("%-d %b - %H:%M") %><br>
 	  <a href="#" data-reveal-id="invitees-modal">View Invitees</a> |
 	  
-	  <%= link_to('Schedule Slots', {action: :scheduler, id: e.id}) %> |
+	  <%= link_to('Assign Slots', {action: :scheduler, id: e.id}) %> |
       <%= link_to('Delete', {:action => :destroy, :id => e.id, :class => 'action event'}) %>&nbsp;&nbsp;<br><br>
 	  
 	  	<div class="reveal-modal" id="invitees-modal" data-reveal>
 		  <a class="close-reveal-modal"></a>
 			<h3>Invitees</h3>
-			<% e.repetition_scheme.allowed_users.each do |invitee|%>
-				<li><%=invitee.email%> </li>
-			<%end%>
+
 		</div>
 		
       <% e.time_slots.each do |t| %>
