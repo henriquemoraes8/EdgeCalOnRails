@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   end
 
   def correct_time_from_datepicker(time)
-    if time.nil?
+    if time.blank?
       return nil
     end
     time = to_eastern_time(DateTime.parse(time))

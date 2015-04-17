@@ -40,7 +40,7 @@ class TimeSlotController < ApplicationController
       return
     end
 
-    if params[:preference] == 1
+    if params[:event_blocks][:preference] == '1'
       status = RepetitionScheme.statuses[:preference_based]
     else
       status = RepetitionScheme.statuses[:regular]
@@ -48,10 +48,33 @@ class TimeSlotController < ApplicationController
 
     repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration,
                       status: status, creator_id: current_user.id)
-                      
+    puts "REP SCHEME #{repetition}"
 
     title = params[:event_blocks][:title]
     description = params[:event_blocks][:description]
+
+    all_users = []
+    params[:user_participant].keys.each do |u|
+      if params[:user_participant][u] == '1'
+        all_users << u.to_i
+        # puts User.where(id: u).name
+      end
+    end
+    unless params[:group_participant].blank?
+      params[:group_participant].keys.each do |g|
+        if params[:group_participant][g] == '1'
+          all_users << g.all_user_ids
+        end
+      end
+    end
+    puts "ALL_USERS RESULT #{all_users}"
+    all_users = all_users.flatten.uniq
+    if all_users.empty?
+      flash[:error] = "you must select participants or groups for your slot event"
+      redirect_to time_slot_new_path
+      return
+    end
+    all_users.map {|u| repetition.allowed_users << User.find(u)}
     
     params[:event_blocks][:events].each do |e_param|
       e_param[:title] = title
@@ -59,40 +82,25 @@ class TimeSlotController < ApplicationController
       e_param[:start_time] = correct_time_from_datepicker(e_param[:start_time])
       e_param[:end_time] = correct_time_from_datepicker(e_param[:end_time])
       e_param[:event_type] = Event.event_types[:time_slot_block]
-      @event = Event.new(event_params(e_param))
+      event = Event.new(event_params(e_param))
       
-      @event.creator_id = current_user.id
-      if @event.save
-        repetition.events << @event
+      event.creator_id = current_user.id
+      if event.save
+        repetition.events << event
       else
-        @event = event
-        flash[:error] = "Error in submission, try again"
+        flash[:error] = "Error in submission, try again: #{event.errors.full_messages}"
+        repetition.destroy
         redirect_to time_slot_new_path
         return
       end
     end
-    
-    all_users = []
-    if !params[:user_participant].blank?
-      params[:user_participant].keys.each do |u|
-        if params[:user_participant][u] == "1"
-          all_users << u.to_i
-          # puts User.where(id: u).name
-        end
-      end
-    end
-    
-    if !params[:group_participant].blank?
-      params[:group_participant].keys.each do |g|
-        if params[:group_participant][g] == "1"
-          all_users << g.all_user_ids
-        end
-      end
-    end
-    all_users = all_users.flatten.uniq
-    
-    all_users.map {|u| repetition.allowed_users << User.find(u)}
 
+    puts "WILL CHECK CREATE_TO_DO PARAMS #{params[:create_to_do]}"
+    if params[:event_blocks][:create_to_do] == '1'
+      repetition.generate_to_dos_with_position(1)
+    end
+
+    flash[:notice] = "slot assignment created successfully"
     redirect_to(time_slot_index_path)
   end
 

@@ -99,7 +99,7 @@ class ToDo < ActiveRecord::Base
   end
 
   def stop_escalation_if_needed
-    if done && !job_id.nil?
+    if done && !job_id.nil? && !(Rufus::Scheduler.singleton.job(job_id)).nil?
       Rufus::Scheduler.singleton.job(job_id).unschedule
       self.job_id = nil
     end
@@ -124,7 +124,7 @@ class ToDo < ActiveRecord::Base
     if !reminder.nil?
       reminder.destroy
     end
-    if !job_id.nil?
+    if !job_id.nil? && !(Rufus::Scheduler.singleton.job(job_id)).nil?
       Rufus::Scheduler.singleton.job(job_id).unschedule
     end
   end

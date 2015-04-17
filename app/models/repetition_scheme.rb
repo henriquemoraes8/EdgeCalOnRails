@@ -84,21 +84,27 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	def generate_to_dos_with_position(position)
-		if RepetitionScheme.statuses[status] != RepetitionScheme.statuses[:preference_based]
+		unless is_preference_mode?
 			return
 		end
 
 		title = events.first.title
 		allowed_users.each do |u|
 			todo = ToDo.create(:creator_id => u.id, :position => position, :title => "Signup for a slot with #{creator.name}",
-			:description => title, :duration => 5)
+			:description => title, :duration => 5*60)
 			u.to_dos << todo
 			self.to_dos << todo
 		end
 	end
 
+	def suggest_slot_assignment
+
+		suggestion = {}
+		allowed_users
+	end
+
 	def resolve_preferences_for_slots(slot_ids)
-		if RepetitionScheme.statuses[status] != RepetitionScheme.statuses[:preference_based]
+		unless is_preference_mode?
 			return
 		end
 
@@ -131,6 +137,10 @@ class RepetitionScheme < ActiveRecord::Base
 		if RepetitionScheme.statuses[status] == RepetitionScheme.statuses[:preference_based]
 			self.max_time_slot_duration = min_time_slot_duration
 		end
+	end
+
+	def is_preference_mode?
+		RepetitionScheme.statuses[status] == RepetitionScheme.statuses[:preference_based]
 	end
 
 end
