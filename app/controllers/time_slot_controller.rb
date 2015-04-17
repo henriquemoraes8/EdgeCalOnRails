@@ -5,7 +5,9 @@
 
 
 class TimeSlotController < ApplicationController
-
+  
+  helper_method :preference_based
+  
   def index
     @events = current_user.get_time_slot_created_events
     @assigned_time_slots = current_user.time_slots
@@ -15,6 +17,8 @@ class TimeSlotController < ApplicationController
   def new
     @events = []
     @events << Event.new(:event_type => Event.event_types[:time_slot_block])
+    @users = User.all.where.not(:id => current_user.id)
+    @groups = current_user.groups
   end
 
   def create
@@ -36,10 +40,18 @@ class TimeSlotController < ApplicationController
       return
     end
 
-    repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration)
+    if params[:preference] == 1
+      status = RepetitionScheme.statuses[:preference_based]
+    else
+      status = RepetitionScheme.statuses[:normal]
+    end
+
+    repetition = RepetitionScheme.create(:min_time_slot_duration => min_duration, :max_time_slot_duration => max_duration,
+                      status: status)
 
     title = params[:event_blocks][:title]
     description = params[:event_blocks][:description]
+    
     params[:event_blocks][:events].each do |e_param|
       event = Event.new(event_params(e_param.merge(:title=>title, :description=>description)))
       event.event_type = Event.event_types[:time_slot_block]
@@ -51,6 +63,24 @@ class TimeSlotController < ApplicationController
         flash[:error] = "Error in submission, try again"
         redirect_to time_slot_new_path
         return
+      end
+    end
+    
+    if !params[:user_participant].blank?
+      params[:user_participant].keys.each do |u|
+        if params[:user_participant][u] == "1"
+          repetition.allowed_users << User.where(id: u)
+          # puts User.where(id: u).name
+        end
+      end
+    end
+    
+    if !params[:group_participant].blank?
+      params[:group_participant].keys.each do |g|
+        if params[:group_participant][g] == "1"
+          # repetition.allowed_users << User.where(id: g)
+          # puts User.where(id: u).name
+        end
       end
     end
 
@@ -66,6 +96,17 @@ class TimeSlotController < ApplicationController
     else
       @events = @user.get_time_slot_created_events
     end
+  end
+  
+  def scheduler
+    @event = Event.find_by_id(params[:id])
+    @slots = Hash.new
+  end
+  
+  def assign_user_to_slot
+    user = params[:user]
+    slot = params[:slot]
+    @slots[user] = slot
   end
 
   def assign_time_slots
@@ -110,6 +151,10 @@ class TimeSlotController < ApplicationController
     respond_to do |format|               
       format.js
     end
+  end
+  
+  def preference_based(event)
+    return event.repetition_scheme.status == RepetitionScheme.statuses[:preference_based]
   end
 
   private

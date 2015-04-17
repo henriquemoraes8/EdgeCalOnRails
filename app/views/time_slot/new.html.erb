@@ -20,25 +20,40 @@
             <%= r.time_select :max_duration, {:include_blank => true, :minute_step => 5, :time_separator => " hours and ", :start_hour => 0, :end_hour => 2} %> minutes
           </div>
       <% end %>
+	  
 
       <hr>
 
-      <h3>Preference options</h3>
+      <h3>Preference options</h3><br>
       <div class="field">
         <%= f.check_box :preference %> <%= f.label :preference %> <%= f.check_box :create_to_do %> <%= f.label :create_to_do %>
       </div>
 
       <hr>
 
-      <script type="text/javascript">
-        
-      </script>
+<h3>Participants</h3><br>
+<h4>Users</h4>
+	<% @users.each do |u| %>
+    	<%= check_box('user_participant',"#{u.id}") %>
+    	<%= u.email %>
+    	<br>
+	<% end %>
+	<br><br>
+	<h4>Groups</h4>
+	<% @groups.each do |g| %>
+    	<%= check_box('group_participant',"#{g.id}") %>
+   	 	<%= g.title %>
+    	<br>
+	<% end %>
+
+	  <hr>
 
       <h3>Blocks</h3>
 
 
       <div id="time_slot_events">
       <% @events.each do |e| %>
+	  	<%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
           <script type="text/javascript">
 
             $(document).ready(function(){
@@ -47,39 +62,12 @@
               $("#datetimepicker").datetimepicker();
               
               });
-              //location.reload();
             });
 
-          // if (localStorage.getItem("alert")===null){
-          //   alert("FEFF");
-          // }
-          // else{
-          //   alert(localStorage.getItem("alert"));
-          // }
-          //console.log(alert);
-          //if (alert ==){
-          //var alert = prompt("How many different slot blocks would you like?  Choose a number between 1 and 10", 1);
-          //}
-
-          //var num = parseInt(alert);
-
-          //if (isNaN(num)){
-            //alert = localStorage.setItem("alert", "You didn't enter a valid number.  How many different slot blocks would you like?");
-            //location.reload();
-          //}
-
-          //for (i=0; i<num; i++){
-              //$('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
-            //}
-            //location.reload();
           </script>
-          <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
-          <%#= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
       <% end %>
       </div>
-      <input type="button" value="Add Another Block" id="MyButton" >
-      <%#= f.button 'Add Event Block', id: 'add_button', class:'button radius', :action => :add_event_block, :remote => true %>
-
+      <input type="button" value="Add Another Block" id="MyButton" class="button radius">
 
       <div class="actions">
         <%= f.submit 'Create Time Slots', class: "button radius"%>

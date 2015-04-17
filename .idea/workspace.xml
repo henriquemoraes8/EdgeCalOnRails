@@ -2,7 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0dd890b-3a3f-4343-aea3-8c6c2d685bcf" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/views/time_slot/scheduler.html.erb" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/assets/javascripts/mass_event_creation.coffee" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/views/time_slot/add_event_block.html.erb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/views/time_slot/add_event_block.js.erb" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/time_slot/_form_event.html.erb" afterPath="$PROJECT_DIR$/app/views/time_slot/_form_event.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/assets/stylesheets/application.css.scss" afterPath="$PROJECT_DIR$/app/assets/stylesheets/application.css.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/layouts/application.html.erb" afterPath="$PROJECT_DIR$/app/views/layouts/application.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/time_slot/index.html.erb" afterPath="$PROJECT_DIR$/app/views/time_slot/index.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/devise/sessions/new.html.erb" afterPath="$PROJECT_DIR$/app/views/devise/sessions/new.html.erb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/time_slot/new.html.erb" afterPath="$PROJECT_DIR$/app/views/time_slot/new.html.erb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/models/repetition_scheme.rb" afterPath="$PROJECT_DIR$/app/models/repetition_scheme.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/schema.rb" afterPath="$PROJECT_DIR$/db/schema.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/controllers/time_slot_controller.rb" afterPath="$PROJECT_DIR$/app/controllers/time_slot_controller.rb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="EdgeCalOnRails.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,8 +43,8 @@
             <file leaf-file-name="schema.rb" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/db/schema.rb">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.668008" vertical-offset="1258" max-vertical-offset="2550">
-                    <caret line="106" column="43" selection-start-line="106" selection-start-column="43" selection-end-line="106" selection-end-column="43" />
+                  <state vertical-scroll-proportion="1.8148893" vertical-offset="1048" max-vertical-offset="2895">
+                    <caret line="130" column="43" selection-start-line="130" selection-start-column="43" selection-end-line="130" selection-end-column="43" />
                     <folding />
                   </state>
                 </provider>
@@ -146,21 +159,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="user.rb" pinned="false" current-in-tab="true">
+      <file leaf-file-name="user.rb" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/models/user.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.625" vertical-offset="755" max-vertical-offset="1395">
-              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="755" max-vertical-offset="1395">
+              <caret line="59" column="42" selection-start-line="59" selection-start-column="42" selection-end-line="59" selection-end-column="42" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="repetition_scheme.rb" pinned="false" current-in-tab="false">
+      <file leaf-file-name="repetition_scheme.rb" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/models/repetition_scheme.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1205" max-vertical-offset="2130">
-              <caret line="99" column="45" selection-start-line="99" selection-start-column="2" selection-end-line="99" selection-end-column="45" />
+            <state vertical-scroll-proportion="0.578125" vertical-offset="1490" max-vertical-offset="2130">
+              <caret line="124" column="9" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -246,8 +259,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1440" />
-    <option name="y" value="119" />
+    <option name="x" value="1681" />
+    <option name="y" value="-61" />
     <option name="width" value="1440" />
     <option name="height" value="843" />
   </component>
@@ -826,7 +839,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1440" y="119" width="1440" height="843" extended-state="0" />
+    <frame x="1681" y="-61" width="1440" height="843" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1242,26 +1255,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/models/user.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="755" max-vertical-offset="1395">
+          <caret line="59" column="42" selection-start-line="59" selection-start-column="42" selection-end-line="59" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/db/schema.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.668008" vertical-offset="1258" max-vertical-offset="2550">
-          <caret line="106" column="43" selection-start-line="106" selection-start-column="43" selection-end-line="106" selection-end-column="43" />
+        <state vertical-scroll-proportion="1.8148893" vertical-offset="1048" max-vertical-offset="2895">
+          <caret line="130" column="43" selection-start-line="130" selection-start-column="43" selection-end-line="130" selection-end-column="43" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/models/repetition_scheme.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1205" max-vertical-offset="2130">
-          <caret line="99" column="45" selection-start-line="99" selection-start-column="2" selection-end-line="99" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/models/user.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.625" vertical-offset="755" max-vertical-offset="1395">
-          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.578125" vertical-offset="1490" max-vertical-offset="2130">
+          <caret line="124" column="9" selection-start-line="124" selection-start-column="9" selection-end-line="124" selection-end-column="9" />
           <folding />
         </state>
       </provider>
