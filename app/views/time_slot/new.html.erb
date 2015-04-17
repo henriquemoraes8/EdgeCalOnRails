@@ -56,7 +56,7 @@
 
       <div id="time_slot_events">
       <% @events.each do |e| %>
-	  	<%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
+	  	
           <script type="text/javascript">
 
             $(document).ready(function(){
@@ -68,6 +68,7 @@
             });
 
           </script>
+          <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
       <% end %>
       </div>
       <input type="button" value="Add Another Block" id="MyButton" class="button radius">
