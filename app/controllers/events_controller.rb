@@ -211,8 +211,22 @@ class EventsController < ApplicationController
 
   def show_graphic_cal
     #Still needs to be implemented by @jeffday1113
-    start_date=params[:graphic_calendar][:start_date]
-    end_date=params[:graphic_calendar][:end_date]
+    start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
+    end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
+    @events = current_user.get_visible_events
+    @in_range_events = []
+    puts "START DATE IS HERE"
+    puts start_date
+    puts "NOW"
+    @events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    end
   end 
 
 
