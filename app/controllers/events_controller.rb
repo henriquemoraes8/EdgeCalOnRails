@@ -210,7 +210,16 @@ class EventsController < ApplicationController
   end
 
   def find_events_in_range
-    #Still needs to be implemented by @jeffday1113
+    # Still needs to be implemented by @jeffday1113
+
+    #### I tried... it doesn't work but might be useful - @weskpga
+    # @selected_events = Event.where(:start_time => @start_date.to_time.beginning_of_day..@end_date.to_time.end_of_day)
+    # puts "PRINTING START AND END DATE HERE"
+    # @start_date = params[:start_date]
+    # @end_date = params[:end_date]
+    # puts @start_date
+    # puts @end_date
+    # puts @selected_events
   end 
 
 
