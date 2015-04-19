@@ -18,7 +18,7 @@ class ToDosController < ApplicationController
   end
 
   def new
-    @todo = ToDo.new
+    @todo = ToDo.new(:escalation_step => 1)
     @todo_count = current_user.to_dos.count + 1
   end
 
@@ -67,7 +67,7 @@ class ToDosController < ApplicationController
   end
 
   def validate_to_do
-    if @todo.expiration.nil?
+    if @todo.expiration.nil? # or @todo.expiration.empty?
       return ''
     end
 
