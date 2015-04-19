@@ -209,8 +209,10 @@ class EventsController < ApplicationController
     render 'index.html'
   end
 
-  def find_events_in_range
+  def show_graphic_cal
     #Still needs to be implemented by @jeffday1113
+    start_date=params[:graphic_calendar][:start_date]
+    end_date=params[:graphic_calendar][:end_date]
   end 
 
 
