@@ -186,15 +186,22 @@ class EventsController < ApplicationController
   end
 
   def create_html_email
+
+    start_date = correct_time_from_datepicker(params[:events_email][:start_date])
+    end_date = correct_time_from_datepicker(params[:events_email][:end_date])
+    
+    if start_date>=end_date
+      flash[:error]="Start date must be after end date for email schedule!"
+      redirect_to events_path
+      return
+    end
+
     @own_events = current_user.created_events
     @visible_events = current_user.get_visible_events
     @modifiable_events = current_user.get_modifiable_events
     @busy_events = current_user.get_busy_events
     @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
-    start_date = correct_time_from_datepicker(params[:events_email][:start_date])
-    end_date = correct_time_from_datepicker(params[:events_email][:end_date])
-    
     @events = current_user.get_visible_events
     @in_range_events = []
     puts "START DATE IS HERE"
@@ -289,6 +296,13 @@ class EventsController < ApplicationController
   def show_graphic_cal
     start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
     end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
+    
+    if start_date>=end_date
+      flash[:error]="Start date must be after end date for email schedule!"
+      redirect_to events_path
+      return
+    end
+
     @own_events = current_user.created_events
     @visible_events = current_user.get_visible_events
     @modifiable_events = current_user.get_modifiable_events
