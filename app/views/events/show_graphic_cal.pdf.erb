@@ -1,0 +1,45 @@
+ <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js' %>
+
+<script>
+$(document).ready(function(){
+  $('#graphic_calendar').fullCalendar({
+	  
+	editable: false,
+	header: {
+      left: 'prev today next',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+	},
+	height: 500,
+	defaultView: 'basicWeek',
+	theme: true,
+	buttonIcons: {
+		prev: 'left-single-arrow',
+     	next: 'right-single-arrow'
+	},
+	  
+	eventSources: [
+		
+		{
+			url: '/events/show_events_in_range.json',
+			// Defaults to blue
+		},
+		
+	],
+	
+	windowResize: function(view) {
+	      if ($(window).width() < 514){
+	        $('#graphic_calendar').fullCalendar( 'changeView', 'agendaDay' );
+	      } else {
+	        $('#graphic_calendar').fullCalendar( 'changeView', 'agendaWeek' );
+	      }
+	 }
+	
+  })
+  $('#graphic_calendar').fullCalendar('refetchEvents')
+});
+</script>
+
+<div id = "graphic_calendar">
+
+</div>

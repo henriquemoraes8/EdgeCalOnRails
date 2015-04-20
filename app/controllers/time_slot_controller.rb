@@ -150,18 +150,16 @@ class TimeSlotController < ApplicationController
     params[:preference_signup].each do |e_id, e_hash|
       event = Event.find(e_id.to_i)
       duration = event.repetition_scheme.min_time_slot_duration
-      start_time = e_hash['slot_time']
-      puts "START #{start_time} DURATION #{duration}"
-      slot = TimeSlot.new(:start_time => start_time, :duration => duration,
-                          :event_id => event.id, :user_id => current_user.id, :preference => e_hash['preference'])
+      start_time = e_hash['slot_time'].to_datetime
+      puts "START #{start_time} START UTC: #{start_time.utc} DURATION #{duration} EVENT TIME: #{event.start_time}"
+      slot = TimeSlot.new(:start_time => start_time.utc, :duration => duration,
+                          :event_id => event.id, :user_id => current_user.id, :preference => e_hash['preference'].to_i)
       
       if slot.save
         flash[:notice] = "Preference successfully saved!"
         event.time_slots << slot
       else
-        flash[:error] = "Error submitting slot preference!"
-        redirect_to time_slot_index_path
-        return
+        flash[:error] = "Error submitting slot preference!\n#{slot.errors.full_messages.join(',\n')}"
       end
 
       redirect_to :action => :signup, id: event.creator_id
