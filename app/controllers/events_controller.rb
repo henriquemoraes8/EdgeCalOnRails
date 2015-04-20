@@ -192,7 +192,27 @@ class EventsController < ApplicationController
     @busy_events = current_user.get_busy_events
     @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
-    html = render_to_string(:template => "events/_list_index", :layout => false)
+    start_date = correct_time_from_datepicker(params[:events_email][:start_date])
+    end_date = correct_time_from_datepicker(params[:events_email][:end_date])
+    
+    @events = current_user.get_visible_events
+    @in_range_events = []
+    puts "START DATE IS HERE"
+    puts start_date
+    puts "NOW"
+    @events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    end
+
+    puts @in_range_events
+
+    html = render_to_string(:template => "events/_show_html_email.html.erb", :layout => false)
 
     puts "USER EMAIL IS: " + current_user.email
 
@@ -227,10 +247,39 @@ class EventsController < ApplicationController
     File.open(save_path, 'wb') do |file|
       file << pdf
     end
+  
+  
+  ######################
+  ### MODALS ##########
+  ######################
+  
+  def requests_modal
+    @request_maps = []
+    current_user.get_requested_events.map {|e| @request_maps << e.request_map}
+    render '_request_list', layout: 'modal'
+    return
+  end
+  
+  def new_event_modal
+    @event = Event.new
+    render 'new', layout: 'modal'
+    return
+  end
+  
+  def to_do_list_modal
+    @todos = ToDo.where(creator_id: current_user.id)
+    render '_to_do_list', layout: 'modal'
+    return
+  end
+  
+  def event_list_reveal_modal
+    event = Event.find_by_id(params[:id])
+    @invitees = event.repetition_scheme.allowed_users
+    render '_invitees', layout: 'modal'
+    return
   end
 
   def show_graphic_cal
-    #Still needs to be implemented by @jeffday1113
     start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
     end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
     @events = current_user.get_visible_events

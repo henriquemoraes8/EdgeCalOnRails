@@ -14,10 +14,7 @@ class TimeSlot < ActiveRecord::Base
   private
 
   def time_frame_allowed
-    if user_id && !event.time_slots.where(:user_id => user_id).empty?
-      errors[:base] = "user already has a time slot for this event"
-      return false
-    elsif !event.repetition_scheme.time_slot_start_time_allowed_for_event(event,start_time)
+    if !event.repetition_scheme.time_slot_start_time_allowed_for_event(event,start_time)
       errors[:base] = "start time does not align with a multiple of the minimum duration or does not fall within event date range"
       return false
     elsif (duration/60) % 5 != 0
@@ -29,9 +26,14 @@ class TimeSlot < ActiveRecord::Base
     elsif event.end_time < start_time + duration
       errors[:base] = "time slot exceeds event end time"
       return false
-    elsif event.time_slot_overlaps(self)
-      errors[:base] = "time slot overlaps with another scheduled slot"
-      return false
+    elsif !event.repetition_scheme.is_preference_mode?
+      if user_id && !event.time_slots.where(:user_id => user_id).empty?
+        errors[:base] = "user already has a time slot for this event"
+        return false
+      elsif event.time_slot_overlaps(self)
+        errors[:base] = "time slot overlaps with another scheduled slot"
+        return false
+      end
     end
 
     true
@@ -44,8 +46,11 @@ class TimeSlot < ActiveRecord::Base
     puts "ASSIGNED TO SLOT"
     user.subscribe_to_event(event_slot)
     puts "SUBSCRIBED TO USER 1"
-    event.creator.subscribe_to_event(event_slot)
-    puts "SUBSCRIBED TO USER 2"
+
+    unless event.repetition_scheme.is_preference_mode?
+      event.creator.subscribe_to_event(event_slot)
+      puts "SUBSCRIBED TO USER 2"
+    end
 
     self.save
   end

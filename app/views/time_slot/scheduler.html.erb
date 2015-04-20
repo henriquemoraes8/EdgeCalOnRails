@@ -1,8 +1,9 @@
-<h2>Slot Scheduler</h2>
+<h2>Assign Slots</h2>
 
-<%= @event.title %><br>
-<% @repetition = Event.find_by_id(params[:id]).repetition_scheme %>
-<%= @repetition.status %>
+<h4><%= @event.title %></h4>
+
+<div id="response_data">
+</div>
 
 <table>
 	<thead>
@@ -13,13 +14,22 @@
 		</tr>
 	</thead>
 	<tbody>
-		<% for u in @repetition.allowed_users %>
+				<% if false %>
+		<% for u in @preferences.keys %>
 		<tr>
 			<td><%= u.name %></td>
 			<td><%= u.email %></td>
-			<td>Event A - 1  --
-			<%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event, remote: true%></td>
+			<td>
+				
+				
+				Event A - 1  -- <%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event %><br>
+			</td>
 		</tr>
+				<% end %>
 		<% end %>
 	</tbody>
 </table>
+
+<% if false %>
+<%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event, remote: true, :html => {:id => "ajax_assign"} %>
+<% end %>

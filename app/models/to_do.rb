@@ -4,7 +4,7 @@ class ToDo < ActiveRecord::Base
   before_update :reschedule_if_needed, :notify_event_if_needed, :stop_escalation_if_needed
   before_create :verify_next_schedule
   after_create :setup_escalation, :setup_expiration
-  validate :validate_duration, :validate_expiration
+  validate :validate_duration, :validate_expiration, :validate_title
   before_destroy :destroy_reminder_escalation
 
   belongs_to :event
@@ -115,6 +115,14 @@ class ToDo < ActiveRecord::Base
   def validate_duration
     if duration.nil? || duration < 1 || duration%5 != 0
       errors[:base] = "a to do duration must be a multiple of 5 and greater than 0"
+      return false
+    end
+    true
+  end
+
+  def validate_title
+    if title.nil? || title.length <= 0
+      errors[:base] = "You need to have a title"
       return false
     end
     true

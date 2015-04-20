@@ -1,23 +1,28 @@
 <h2>Sign up for a time slot with <%= @user.name %></h2>
 
 <% if @events.count == 0 %>
-<hr>
+	<hr>
     <h3>No time slot schedules available</h3>
 <% else %>
     <% @events.each do |e| %>
-	<hr>
-	<% if preference_based(e) %>
-	
+		<hr>
+		<% if preference_based(e) %>
+		
+		<%###################################%>
+		<%# Preference-based TimeSlot Signup %>
+		<%###################################%>
+
     <%= form_for('preference_signup', :url => {:controller => 'time_slot', :action => 'choose_slot_preferences'}) do |f| %>
     <% #@events.each do |e| %>
         <div class="event slot">
           <em>Title:</em> <%= e.title %><br>
           <em>Description:</em> <%= e.description %><br>
+          <b>On <%= to_eastern_time(e.start_time).strftime("%-d %b from %H:%M to ") + to_eastern_time(e.end_time).strftime("%H:%M") %></b><br>
 		  <em>Duration:</em>  <%= e.permitted_slot_durations.first %>min<br>
           <%= f.fields_for "#{e.id}" do |s| %>
               <em>Start time:</em>
               <%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>
-			  <%= s.label :preference, "Preference"%><%= s.number_field :preference, in: 1..5, step: 1 %>
+			  <%= s.label :preference, "Preference"%><%= s.number_field :preference, in: 1..100, step: 1 %>
 			  <br><br>
               <!-- #s.text_field :slot_time, class: 'datetimepicker', id: "start_slot#{e.id}" -->
           <% end %>
@@ -31,34 +36,25 @@
 	<%# Normal TimeSlot Signup %>
 	<%#########################%>
 	
-    <%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'assign_time_slots'}) do |f| %>
-    <% #@events.each do |e| %>
-        <div class="event slot">
-          <em>Title:</em> <%= e.title %><br>
-          <em>Description:</em> <%= e.description %><br>
-          <%= f.fields_for "#{e.id}" do |s| %>
-              <em>Start time:</em>
-              <%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>
-              <em>Duration:</em>
-              <%= s.select :slot_duration, e.permitted_slot_durations %>
-              <!-- #s.text_field :slot_time, class: 'datetimepicker', id: "start_slot#{e.id}" -->
-              <script>
-                  $(<%"#start_slot#{e.id}"%>).datetimepicker({
-                      datepicker:false,
-                      allowTimes:[
-                          '12:00', '13:00', '15:00',
-                          '17:00', '17:05', '17:20', '19:00', '20:00'
-                      ]
-                  });
-              </script>
-          <% end %>
-        </div>
-        <%= f.submit 'save time slots', class: "button radius" %>
-    <% end %>
+    	<%= form_for('event_signup', :url => {:controller => 'time_slot', :action => 'assign_time_slots'}) do |f| %>
+        	<div class="event slot">
+          	<em>Title:</em> <%= e.title %><br>
+        	<em>Description:</em> <%= e.description %><br>
+        	<%= f.fields_for "#{e.id}" do |s| %>
+            	<em>Start time:</em>
+            	<%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>
+            	<em>Duration:</em>
+            	<%= s.select :slot_duration, e.permitted_slot_durations %>
+          	<% end %>
+        	</div>
+        	<%= f.submit 'save time slots', class: "button radius" %>
+    	<% end %>
 
 	<% end %>
 
     <%#= f.submit 'save time slots', class: "button radius" %>
 
-    <% end %>
+	<% end %>
 <% end %>
+
+<%= link_to "Back", {action: :index} %>

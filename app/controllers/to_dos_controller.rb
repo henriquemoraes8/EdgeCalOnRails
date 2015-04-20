@@ -111,6 +111,11 @@ class ToDosController < ApplicationController
   def get_to_do_list
     index
   end
+  
+  ######################
+  ### MODALS ##########
+  ######################
+
 
   private
 

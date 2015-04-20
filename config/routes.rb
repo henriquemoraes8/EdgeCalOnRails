@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   get 'groups/show'
 
   get 'groups/new'
+  
+  get 'groups/new_modal'
 
   get 'groups/edit'
 
@@ -48,6 +50,12 @@ Rails.application.routes.draw do
   post 'events/create'
 
   post 'subscription/manage'
+  
+  get 'events/requests_modal' => 'events#requests_modal'
+  
+  get 'events/new_event_modal' => 'events#new_event_modal'
+  
+  get 'events/to_do_list_modal' => 'events#to_do_list_modal'
   
   get 'events/busy_events.json' => 'events#busy_events'
   
