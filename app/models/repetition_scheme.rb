@@ -104,9 +104,9 @@ class RepetitionScheme < ActiveRecord::Base
 
 		preferences = {}
 		allowed_users.each do |u|
-			preferences[u.id] = []
-			events.map {|e| e.time_slots.where(:user_id => u.id).map {|s| preferences[u.id] << s}}
-			preferences[u.id].sort_by {|t| t.preference}
+			preferences[u] = []
+			events.map {|e| e.time_slots.where(:user_id => u.id).map {|s| preferences[u] << s}}
+			preferences[u].sort_by {|t| t.preference}
 		end
 		preferences
 	end

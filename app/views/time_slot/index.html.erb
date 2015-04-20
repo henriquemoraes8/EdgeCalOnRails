@@ -12,19 +12,14 @@
       <em>Description:</em> <%= e.description %><br>
       <em>Start of block:</em><%= e.start_time.strftime("%-d %b - %H:%M") %><br>
       <em>End of block:</em><%= e.end_time.strftime("%-d %b - %H:%M") %><br>
-	  <a href="#" data-reveal-id="invitees-modal">View Invitees</a> |
-	  
+	  <%= link_to "View Invitees", {action: :show_invitees, id: e.id}, data: {'reveal-id': "invitees-modal", 'reveal-ajax': true} %> |
+	  <% if preference_based(e) %>
 	  <%= link_to('Assign Slots', {action: :scheduler, id: e.id}) %> |
+	  <% end %>
       <%= link_to('Delete', {:action => :destroy, :id => e.id, :class => 'action event'}) %>&nbsp;&nbsp;<br><br>
 	  
 	  	<div class="reveal-modal" id="invitees-modal" data-reveal>
-		  <a class="close-reveal-modal"></a>
-			<h3>Invitees</h3>
-			<ul>
-			<% e.repetition_scheme.allowed_users.each do |u| %>
-			<li><%= u.email %></li>
-			<% end %>
-			</ul>
+		  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 		</div>
 		
       <% e.time_slots.each do |t| %>
@@ -49,6 +44,7 @@
 <% if @assigned_time_slots.count > 0 %>
     <h3>Assigned time slots</h3>
     <% @assigned_time_slots.each do |t| %>
+	<br><br>
         <div class="time slot">
           <em>Event Title:</em> <%= t.event.title %><br>
           <em>Event Description:</em> <%= t.event.description %><br>

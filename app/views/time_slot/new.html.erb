@@ -29,7 +29,7 @@
       <div class="field">
 		  <%= f.check_box :preference%> <%= f.label :preference , "Preference Based Signups"%><br>
 		  <%= f.check_box :create_to_do %> <%= f.label :create_to_do, "Create To Dos" %> <br>
-		  <%= f.label :to_do_priority, "To Do Priority"%><%= f.number_field :to_do_priority, in: 1..5, step: 1 %> <br>
+		  <%= f.label :to_do_priority, "To Do Priority"%><%= f.number_field :to_do_priority, in: 1..20, step: 1 %> <br>
       </div>
 
       <hr>
@@ -55,18 +55,19 @@
 
       <div id="time_slot_events">
       <% @events.each do |e| %>
-	  	<%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
+	  	
           <script type="text/javascript">
 
             $(document).ready(function(){
             $('#MyButton').click(function(){
               $('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
-              $("#datetimepicker").datetimepicker();
+              $(".datetimepicker").datetimepicker();
               
               });
             });
 
           </script>
+          <%= render :partial => 'form_event', :locals => {:f => f, :event => e} %>
       <% end %>
       </div>
       <input type="button" value="Add Another Block" id="MyButton" class="button radius">

@@ -1,4 +1,5 @@
 <%= f.fields_for "events[]", event do |ef| %>
+	<div class= "field">
       <%= ef.label :start_time %><br>
       <%= ef.text_field :start_time, class: 'datetimepicker' %>
     </div>

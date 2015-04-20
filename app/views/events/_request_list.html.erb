@@ -1,8 +1,5 @@
 <h1>My Requests</h1>
 
-<% @request_maps = [] %>
-<% current_user.get_requested_events.map {|e| @request_maps << e.request_map} %>
-
 <% if @request_maps.empty? %>
 	<i>You don't have any requests yet</i>
 <% else %>

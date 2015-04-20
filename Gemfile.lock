@@ -101,6 +101,8 @@ GEM
     jquery-ui-rails (5.0.3)
       railties (>= 3.2.16)
     json (1.8.2)
+    judge (2.0.6)
+      rails (>= 3.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     loofah (2.0.1)
@@ -207,6 +209,9 @@ GEM
       binding_of_caller (>= 0.7.2)
       railties (~> 4.0)
       sprockets-rails (>= 2.0, < 4.0)
+    wicked_pdf (0.11.0)
+      rails
+    wkhtmltopdf-heroku (2.12.2.1)
 
 PLATFORMS
   ruby
@@ -225,6 +230,7 @@ DEPENDENCIES
   jquery-rails
   jquery-timepicker-rails
   jquery-ui-rails
+  judge
   mailgun-ruby
   pg
   puma
@@ -242,3 +248,5 @@ DEPENDENCIES
   uglifier (>= 1.3.0)
   watu_table_builder
   web-console (~> 2.0)
+  wicked_pdf
+  wkhtmltopdf-heroku

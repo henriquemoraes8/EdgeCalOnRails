@@ -25,6 +25,8 @@ class EventsController < ApplicationController
     @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
     @friends = User.all
+
+
   end
 
   # GET /events/new
@@ -208,10 +210,63 @@ class EventsController < ApplicationController
     # it kinda fixes it.  Need to figure out what's happening
     render 'index.html'
   end
+  
+  
+  ######################
+  ### MODALS ##########
+  ######################
+  
+  def requests_modal
+    @request_maps = []
+    current_user.get_requested_events.map {|e| @request_maps << e.request_map}
+    render '_request_list', layout: false
+    return
+  end
+  
+  def new_event_modal
+    @event = Event.new
+    render 'new', layout: false
+    return
+  end
+  
+  def to_do_list_modal
+    @todos = ToDo.where(creator_id: current_user.id)
+    render '_to_do_list', layout: false
+    return
+  end
+  
+  def event_list_reveal_modal
+    event = Event.find_by_id(params[:id])
+    @invitees = event.repetition_scheme.allowed_users
+    render '_invitees', layout: false
+    return
+  end
 
-  def find_events_in_range
-    #Still needs to be implemented by @jeffday1113
-  end 
+  def show_graphic_cal
+    start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
+    end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
+    @events = current_user.get_visible_events
+    @in_range_events = []
+    puts "START DATE IS HERE"
+    puts start_date
+    puts "NOW"
+    @events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    end
+
+    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb"
+    save_path = Rails.root.join('Documentation','filename.pdf')
+    File.open(save_path, 'wb') do |file|
+      file << pdf
+    end
+    #render 'show_graphic_cal.json.jbuilder'
+  end
 
 
   private

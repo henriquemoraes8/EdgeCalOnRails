@@ -1,0 +1,17 @@
+$(document).ready(
+	$('#time_slot_assign').click(function (event) {
+	  alert('Hooray!');
+	  event.preventDefault(); // Prevent link from following its href
+	});
+	
+     function(){
+          $("a#ajax_assign").bind("ajax:success",
+                   function(evt, data, status, xhr){
+                        //this assumes the action returns an HTML snippet
+                        document.getElementById("response_data").innerHTML = "Success!";
+           }).bind("ajax:error", function(evt, data, status, xhr){
+                    //do something with the error here
+                    document.getElementById("response_data").innerHTML = "Failure!";
+           });
+});
+

@@ -71,6 +71,7 @@ class TimeSlotController < ApplicationController
     all_users = all_users.flatten.uniq
     if all_users.empty?
       flash[:error] = "you must select participants or groups for your slot event"
+      repetition.destroy
       redirect_to time_slot_new_path
       return
     end
@@ -83,6 +84,7 @@ class TimeSlotController < ApplicationController
       e_param[:end_time] = correct_time_from_datepicker(e_param[:end_time])
       e_param[:event_type] = Event.event_types[:time_slot_block]
       event = Event.new(event_params(e_param))
+      puts "WILL CREATE EVENT PREFERENCE BASED #{event}"
       
       event.creator_id = current_user.id
       if event.save
@@ -97,7 +99,8 @@ class TimeSlotController < ApplicationController
 
     puts "WILL CHECK CREATE_TO_DO PARAMS #{params[:create_to_do]}"
     if params[:event_blocks][:create_to_do] == '1'
-      repetition.generate_to_dos_with_position(1)
+      position = params[:event_blocks][:to_do_priority].to_i
+      repetition.generate_to_dos_with_position(position == 0 ? 1 : position)
     end
 
     flash[:notice] = "slot assignment created successfully"
@@ -115,15 +118,48 @@ class TimeSlotController < ApplicationController
     end
   end
   
+  def show_invitees
+    event = Event.find_by_id(params[:id])
+    @invitees = event.repetition_scheme.allowed_users
+    render '_invitees', layout: false
+    return
+  end
+  
   def scheduler
     @event = Event.find_by_id(params[:id])
-    @slots = Hash.new
+    $slots = Hash.new
+    @allowed_users = @event.repetition_scheme.allowed_users
   end
   
   def assign_user_to_slot
     user = params[:user]
     slot = params[:slot]
-    @slots[user] = slot
+    $slots[user] = slot
+    render 'scheduler'
+    return
+  end
+  
+  def choose_slot_preferences
+    params[:preference_signup].each do |e_id, e_hash|
+      event = Event.find(e_id.to_i)
+      duration = event.repetition_scheme.min_time_slot_duration
+      start_time = e_hash['slot_time']
+      puts "START #{start_time} DURATION #{duration}"
+      slot = TimeSlot.new(:start_time => start_time, :duration => duration,
+                          :event_id => event.id, :user_id => current_user.id, :preference => e_hash['preference'])
+      
+      if slot.save
+        flash[:notice] = "Preference successfully saved!"
+        event.time_slots << slot
+      else
+        flash[:error] = "Error submitting slot preference!"
+        redirect_to time_slot_index_path
+        return
+      end
+
+    end
+    redirect_to time_slot_index_path
+  
   end
 
   def assign_time_slots
@@ -139,6 +175,7 @@ class TimeSlotController < ApplicationController
       end
 
       if slot.save
+        flash[:notice] = "Successfully Signed Up!"
         event.time_slots << slot
       else
         flash[:error] = slot.errors[:base]
@@ -177,7 +214,7 @@ class TimeSlotController < ApplicationController
   end
   
   def preference_based(event)
-    return event.repetition_scheme.status == RepetitionScheme.statuses[:preference_based]
+    return RepetitionScheme.statuses[event.repetition_scheme.status] == RepetitionScheme.statuses[:preference_based]
   end
 
   private
