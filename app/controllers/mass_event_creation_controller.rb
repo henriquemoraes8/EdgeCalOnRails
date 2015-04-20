@@ -84,7 +84,16 @@ class MassEventCreationController < ApplicationController
       event.each do |e|
         parameter = e.split(%r{:\s*}, 2)
         @error += validate_parameter_length(parameter, index)
-        (event_hash[parameter.first.downcase.strip] = parameter.count > 1 ? parameter.second.strip : "") if parameter.count > 0
+        parameter_key = parameter.first.downcase.strip
+        if parameter_key == 'block'
+          if event_hash.keys.include? parameter_key
+            event_hash[parameter_key] << parameter.second.strip if parameter.count == 2
+          else
+            event_hash[parameter_key] = parameter.second.strip if parameter.count == 2
+          end
+        else
+          (event_hash[parameter_key] = parameter.count > 1 ? parameter.second.strip : "") if parameter.count > 0
+        end
       end
       event_hash[:type] = key
 
@@ -153,7 +162,7 @@ class MassEventCreationController < ApplicationController
 
   def validate_slot(slot_hash, line)
     validate_mandatory_arguments(slot_hash, line, ['title', 'min', 'max', 'block'])
-    validate_keys_of_arguments(slot_hash, line, ['title', 'description', 'min', 'max', 'block', :type])
+    validate_keys_of_arguments(slot_hash, line, ['title', 'description', 'min', 'max', 'block', 'participants', 'groups', 'preference', 'send to-do', :type])
   end
 
   def validate_mandatory_arguments(arguments, line, mandatory_keys)
@@ -280,15 +289,36 @@ class MassEventCreationController < ApplicationController
     value_error += validate_date(values, 'start', line)
     value_error += validate_date(values, 'end', line)
 
-    if values.keys.include? 'position' && !is_int?(values['position'])
-      value_error += "event #{line}: position is not an integer\n"
-    else
-      values['position'] = values['position'].to_i
-    end
+    value_error += validate_integer(values, 'position', line)
+    value_error += validate_integer(values, 'send to-do', line)
 
     value_error += validate_duration(values, 'duration', line)
     value_error += validate_duration(values, 'min', line)
     value_error += validate_duration(values, 'max', line)
+
+    if values.keys.include? 'block'
+      parsed_dates = []
+      values['block'].each do |dates|
+        date_times = values['block'].split
+        if date_times.count != 3
+          value_error += "event #{line}: block needs a date, a start, and end time\n"
+        else
+          parsed_ranges = []
+          date_times.each do |d|
+            parsed_ranges = []
+            begin
+              d.to_datetime
+            rescue
+              value_error += "event #{line}: block has incorrect date time format\n"
+              break
+            end
+            parsed_ranges << d.to_datetime
+          end
+          parsed_dates << parsed_ranges
+        end
+      end
+      values['block'] = parsed_dates
+    end
 
     if values.keys.include? 'block'
       date_times = values['block'].split
@@ -297,16 +327,18 @@ class MassEventCreationController < ApplicationController
       if date_times.count != 3
         value_error += "event #{line}: block needs a date, a start, and end time\n"
       else
+        parsed_ranges = []
         date_times.each do |d|
+          parsed_ranges = []
           begin
             d.to_datetime
           rescue
             value_error += "event #{line}: block has incorrect date time format\n"
             break
           end
-          parsed_dates << d.to_datetime
+          parsed_ranges << d.to_datetime
         end
-        values['block'] = parsed_dates
+        parsed_dates = parsed_ranges
       end
     end
 
@@ -351,6 +383,20 @@ class MassEventCreationController < ApplicationController
     end
 
     date_error
+  end
+
+  def validate_integer(args, key, line)
+    int_error = ''
+    if !(args.keys.include? key)
+      return date_error
+    end
+
+    if !is_int?(args[key])
+      int_error += "event #{line}: #{key} does not have an integer value\n"
+      return int_error
+    end
+    args[key] = args[key].to_i
+    int_error
   end
 
   def is_int?(integer)
