@@ -25,6 +25,8 @@ class EventsController < ApplicationController
     @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
     @friends = User.all
+
+
   end
 
   # GET /events/new
@@ -227,6 +229,13 @@ class EventsController < ApplicationController
         @in_range_events << e
       end
     end
+
+    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb"
+    save_path = Rails.root.join('Documentation','filename.pdf')
+    File.open(save_path, 'wb') do |file|
+      file << pdf
+    end
+    #render 'show_graphic_cal.json.jbuilder'
   end 
 
 
