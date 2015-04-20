@@ -88,6 +88,19 @@ class GroupsController < ApplicationController
     @group=Group.find(params[:id]).destroy
     redirect_to(:action => 'index')
   end
+  
+  #######################
+  ####### MODALS ########
+  #######################
+  
+  def new_modal
+    @group = Group.new
+    @users = User.where.not(id: current_user.id)
+    render 'new', layout: false
+    return
+  end
+  
+  
 
   private
 

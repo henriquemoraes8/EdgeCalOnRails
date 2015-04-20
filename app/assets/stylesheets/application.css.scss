@@ -10,7 +10,7 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- //= require foundation_and_overrides
+ *= require foundation_and_overrides
  *= require jquery-ui/datepicker
  *= require jquery.datetimepicker
  *= require jquery.timepicker.css
@@ -18,6 +18,8 @@
  *= require_self
  *= require_tree .
  */
+
+@import "foundation-icons";
 
 .flash_error {
 	margin: 5px;

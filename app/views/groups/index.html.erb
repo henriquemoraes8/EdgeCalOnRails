@@ -1,72 +1,54 @@
 <h1>Groups</h1>
 <br>
-<a href="#" data-reveal-id="new-group-modal">New Group</a>
-<div class="reveal-modal" id="new-group-modal" data-reveal>
-	<a class="close-reveal-modal"></a>
-	<h2>New Group</h2>
-	<% @group = Group.new %>
-	<% @users = User.where.not(id: current_user.id) %>
-	<%= render 'form' %>
-</div>
+<%= link_to "New Group", {action: :new_modal}, data: {'reveal-id': "new-group-modal", 'reveal-ajax': true } %>
 <br>
-<body>
-	<!--<a href="#" class="button" data-reveal-id="new_group">New Group</a>-->
-	<!--<div class="reveal-modal" id="new_group" data-reveal>-->
-		<%#new_attributes = controller.new%>	
-		<%#@group=new_attributes[0]%>
-		<%#@users = new_attributes[1]%>
-		<%#= render 'shared/group_form'%>
-  		<!--<a class="close-reveal-modal">x</a>-->
-  		<!--%= render 'form' %-->
-	<!--</div>-->
-</body>
+<br>
 
-<!--<p>Find me in app/views/groups/index.html.erb</p>-->
+<table>
+<thead>
+	<tr>
+		<th>Title</th>
+		<th>Description</th>
+		<th>Actions</th>
+	</tr>
+</thead>
+
 <tbody>
-<hr>
-<% grps = @groups.all %>
-<% grps.each do |group|%>
-
+<% if @groups.size == 0 %>
+	<em>No Groups Found</em>
+	<% else %>
+<% @groups.each do |group|%>
 <tr>
-	<td><strong>Group Title: </strong><%=group.title %></td><br>
-	<td><strong>Group Description: </strong><%=group.description %></td><br>
+	<td><%=group.title %></td>
+	<td><%=group.description %></td>
+	<td>
+	<a href="#" data-reveal-id="view-members-modal">View All Group Members</a> | <%= link_to('Edit Group', {:action => :edit, :id => group.id, :class => 'action request'}) %> |
+	<a href="#" data-reveal-id="delete_group"> <i class="fi-x size-16"></i> </a>
+	</td>
 
-	<a href="#" data-reveal-id="view-members-modal">View All Group Members</a>
 	<div class="reveal-modal" id="view-members-modal" data-reveal>
-			<h2>List of Group Members</h2><br>
+		<a class="close-reveal-modal"></a>
+			<h2>List of Group Members</h2>
+			<br>
 			<% group.members.each do |member|%>
 				<li><%=member.email%> </li>
-			<%end%>
-  		<!--%= render 'form' %-->
-		
-  		<a class="close-reveal-modal"></a>
-  		<!--%= render 'form' %-->
+			<%end%>		
 	</div>
 	
-	
-
-	<%= link_to('Edit Group', {:action => :edit, :id => group.id, :class => 'action request'}) %>
-
-	<!-- TODO: Print out member names, not the raw membership -->
-	<a href="#" data-reveal-id="delete_group"> &nbsp Delete Group</a>
 	<div class="reveal-modal" id="delete_group" data-reveal>
-		
 		ARE YOU SURE YOU WANT TO DELETE THIS GROUP?<br>
-			<%= link_to 'Delete this Group', group, method: :delete%>
-  		<!--%= render 'form' %-->
-		
+			<%= link_to 'Delete this Group', group, method: :delete%>		
   		<a class="close-reveal-modal"></a>
-  		<!--%= render 'form' %-->
 	</div>
-	<hr>
-	<br>
-	<br>
+	
 </tr>
-<%end%>
-<% if grps.size == 0 %>
-	<em>No Groups Found</em>
-<% end %>
-<script>
-  		$(document).foundation();
-</script>
 </tbody>
+
+<%end%>
+<% end %>
+</table>
+
+
+<div class="reveal-modal" id="new-group-modal" data-reveal>
+	<a class="close-reveal-modal"></a>
+</div>
