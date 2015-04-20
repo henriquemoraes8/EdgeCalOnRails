@@ -4,6 +4,7 @@
     <th>Description</th>
     <th>Priority</th>
     <th>Duration</th>
+	<th>Status</th>
 	<th>Actions</th>
   </tr>
   
@@ -16,6 +17,13 @@
 			<% unless todo.duration.nil? %>
 			<%= "#{pluralize(todo.duration/3600, 'hour') if todo.duration/3600 > 0} #{pluralize(todo.duration%60, 'minute') if todo.duration%60 > 0}" %></td>
 			<% end %>
+		<td>
+			<% if todo.done? %>
+				Done
+			<% else %>
+				Withstanding
+			<% end %>
+		</td>
 		<td>
 		<%= link_to('<i class="fi-check large"></i> Done'.html_safe, {controller: :to_dos, :action => :done, :id => todo.id, :class => 'action todo'}) if !todo.done? %><br>
         <%= link_to('<i class="fi-page-edit large"></i> Edit'.html_safe, {controller: :to_dos, :action => :edit, :id => todo.id, :class => 'action todo'}) %><br>

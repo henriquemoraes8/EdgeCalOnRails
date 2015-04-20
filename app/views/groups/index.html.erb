@@ -26,7 +26,7 @@
 	</td>
 
 	<div class="reveal-modal" id="view-members-modal" data-reveal>
-		<a class="close-reveal-modal"></a>
+		<a class="close-reveal-modal"><i class="fi-x large"></i></a>
 			<h2>List of Group Members</h2>
 			<br>
 			<% group.members.each do |member|%>
@@ -34,10 +34,13 @@
 			<%end%>		
 	</div>
 	
-	<div class="reveal-modal" id="delete_group" data-reveal>
-		ARE YOU SURE YOU WANT TO DELETE THIS GROUP?<br>
+	<div style="width: 40%" class="reveal-modal" id="delete_group" data-reveal>
+		<br>
+		<a class="close-reveal-modal"><i class="fi-x large"></i></a>
+		<strong>ARE YOU SURE YOU WANT TO DELETE THIS GROUP?</strong><br>
 			<%= link_to 'Delete this Group', group, method: :delete%>		
-  		<a class="close-reveal-modal"></a>
+		<br>
+		<br>
 	</div>
 	
 </tr>

@@ -1,9 +1,15 @@
 <h2>Assign Slots</h2>
-
+<br>
 <h4><%= @event.title %></h4>
+<h5><%= @event.start_time.strftime("%d %B - %H:%M") %></h5>
+<br>
+<%= link_to('Suggest Schedule', {action: :suggest_schedule, event_id: @event.id}, data: {'reveal-id': "suggest-schedule-modal", 'reveal-ajax': true}) %>
+<br>
+<br>
 
-<div id="response_data">
-</div>
+	  	<div class="reveal-modal" id="suggest-schedule-modal" data-reveal style="width: 50%">
+		  <a class="close-reveal-modal"><i class="fi-x large"></i></a>
+		</div>
 
 <table>
 	<thead>
@@ -14,22 +20,32 @@
 		</tr>
 	</thead>
 	<tbody>
-				<% if false %>
-		<% for u in @preferences.keys %>
-		<tr>
-			<td><%= u.name %></td>
-			<td><%= u.email %></td>
-			<td>
-				
-				
-				Event A - 1  -- <%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event %><br>
-			</td>
-		</tr>
+		<%= form_tag({controller: 'time_slot', action: :assign_slots, id: @event.id})  do %>
+		<% @preferences.keys.each do |user| %>
+			<tr>
+				<td><%= user.name  %></td>
+				<td><%= user.email %></td>
+				<td>
+				<% if @preferences[user].count == 0 %>
+					No Preferences Provided!
+				<% else %>
+					<% @preferences[user].each do |pref| %>
+						<%= to_eastern_time(pref.start_time.localtime).strftime("%H:%M") %> --  <%= pref.preference %> -- <%= radio_button_tag("users[#{user.id}]", pref.id) %><br>
+					<% end %>
 				<% end %>
+				</td>
+			</tr>
 		<% end %>
+
+
+		
 	</tbody>
 </table>
 
+		<%= submit_tag "Confirm Assignments", class: "button radius" %>
+		<% end %>
+
+	
 <% if false %>
 <%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event, remote: true, :html => {:id => "ajax_assign"} %>
 <% end %>

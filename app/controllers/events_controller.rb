@@ -176,6 +176,24 @@ class EventsController < ApplicationController
     render 'show.json.jbuilder'
   end
   
+  def preferenced_slots
+    slots = current_user.time_slots
+    @events = []
+    slots.each do |s|
+        @events << s.event
+    end
+    render 'time_slot_event.json.jbuilder'
+  end
+  
+  def resolved_slots
+    slots = current_user.get_time_slot_created_events
+    @events = []
+    slots.each do |s|
+      @events << s.event
+    end
+    render 'show.json.jbuilder'
+  end
+  
   # GET /events/1/get_subscribers
   def get_subscribers
     @event = Event.find(params[:id])
@@ -185,10 +203,10 @@ class EventsController < ApplicationController
     end
   end
 
-  def create_html_email
+  def create_html_email(start_date, end_date)
 
-    start_date = correct_time_from_datepicker(params[:events_email][:start_date])
-    end_date = correct_time_from_datepicker(params[:events_email][:end_date])
+    #start_date = correct_time_from_datepicker(params[:events_email][:start_date])
+    #end_date = correct_time_from_datepicker(params[:events_email][:end_date])
     
     if start_date>=end_date
       flash[:error]="Start date must be after end date for email schedule!"
@@ -294,77 +312,80 @@ class EventsController < ApplicationController
   end
 
   def show_graphic_cal
-    start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
-    end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
-    
-    if start_date>=end_date
-      flash[:error]="Start date must be after end date for email schedule!"
-      redirect_to events_path
-      return
-    end
-
-    @own_events = current_user.created_events
-    @visible_events = current_user.get_visible_events
-    @modifiable_events = current_user.get_modifiable_events
-    @busy_events = current_user.get_busy_events
-    @in_range_events = []
-    puts "START DATE IS HERE"
-    puts start_date
-    puts "NOW"
-    @own_events.each do |e|
-      puts "New Event"
-      puts e.start_time
-
-      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
-        puts "CORRECT"
-        @in_range_events << e
-      end
-    
-    end
-
-    @visible_events.each do |e|
-      puts "New Event"
-      puts e.start_time
-
-      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
-        puts "CORRECT"
-        @in_range_events << e
-      end
-    
-    end
-
-    @modifiable_events.each do |e|
-      puts "New Event"
-      puts e.start_time
-
-      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
-        puts "CORRECT"
-        @in_range_events << e
-      end
-    
-    end
-
-    @busy_events.each do |e|
-      puts "New Event"
-      puts e.start_time
-
-      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
-        puts "CORRECT"
-        @in_range_events << e
-      end
-    
-    end
-    
-    if !@in_range_events.empty? 
-      print_pdf
-
-      send_email_with_attachment
+    @start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
+    @end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
+    if params[:commit] == 'Text Email'
+      create_html_email(@start_date, @end_date)
     else
-      send_no_events_email
+    
+      if @start_date>=@end_date
+        flash[:error]="Start date must be after end date for email schedule!"
+        redirect_to events_path
+        return
+      end
+
+      @own_events = current_user.created_events
+      @visible_events = current_user.get_visible_events
+      @modifiable_events = current_user.get_modifiable_events
+      @busy_events = current_user.get_busy_events
+      @in_range_events = []
+      puts "START DATE IS HERE"
+      puts @start_date
+      puts "NOW"
+      @own_events.each do |e|
+        puts "New Event"
+        puts e.start_time
+
+        if e.start_time>=@start_date && e.end_time<=@end_date && !@in_range_events.include?(e)
+          puts "CORRECT"
+          @in_range_events << e
+        end
+    
+      end
+
+      @visible_events.each do |e|
+        puts "New Event"
+        puts e.start_time
+
+        if e.start_time>=@start_date && e.end_time<=@end_date && !@in_range_events.include?(e)
+          puts "CORRECT"
+          @in_range_events << e
+        end
+    
+      end
+
+      @modifiable_events.each do |e|
+        puts "New Event"
+        puts e.start_time
+
+        if e.start_time>=@start_date && e.end_time<=@end_date && !@in_range_events.include?(e)
+          puts "CORRECT"
+          @in_range_events << e
+        end
+    
+      end
+
+      @busy_events.each do |e|
+        puts "New Event"
+        puts e.start_time
+
+        if e.start_time>=@start_date && e.end_time<=@end_date && !@in_range_events.include?(e)
+          puts "CORRECT"
+          @in_range_events << e
+        end
+    
+      end
+    
+      if !@in_range_events.empty? 
+        print_pdf
+
+        send_email_with_attachment
+      else
+        send_no_events_email
+      end
+
+      redirect_to events_path
     end
-
-    redirect_to events_path
-
     #render 'show_graphic_cal.json.jbuilder'
   end
 
