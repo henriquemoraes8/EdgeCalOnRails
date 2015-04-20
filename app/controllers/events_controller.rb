@@ -180,15 +180,13 @@ class EventsController < ApplicationController
     slots = current_user.time_slots
     @events = []
     slots.each do |s|
-      if s.event.repetition_scheme.preference_based
         @events << s.event
-      end
     end
     render 'time_slot_event.json.jbuilder'
   end
   
   def resolved_slots
-    slots = current_user.time_slots
+    slots = current_user.get_time_slot_created_events
     @events = []
     slots.each do |s|
       @events << s.event

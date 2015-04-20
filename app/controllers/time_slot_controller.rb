@@ -181,8 +181,8 @@ class TimeSlotController < ApplicationController
   
   def confirm_suggested
     # params[:schedule].nil?
-    if params[:schedule].nil?
-      flash[:error] = "#{params[:schedule]}"
+    if params[:schedule].nil? || params[:schedule].length == 0
+      flash[:error] = "Need to assign at least one user to a slot!"
       redirect_to :action => :scheduler, id: params[:id].to_i
       return
     end
