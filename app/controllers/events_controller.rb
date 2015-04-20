@@ -176,6 +176,26 @@ class EventsController < ApplicationController
     render 'show.json.jbuilder'
   end
   
+  def preferenced_slots
+    slots = current_user.time_slots
+    @events = []
+    slots.each do |s|
+      if s.event.repetition_scheme.preference_based
+        @events << s.event
+      end
+    end
+    render 'time_slot_event.json.jbuilder'
+  end
+  
+  def resolved_slots
+    slots = current_user.time_slots
+    @events = []
+    slots.each do |s|
+      @events << s.event
+    end
+    render 'show.json.jbuilder'
+  end
+  
   # GET /events/1/get_subscribers
   def get_subscribers
     @event = Event.find(params[:id])

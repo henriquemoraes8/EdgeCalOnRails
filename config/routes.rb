@@ -17,6 +17,10 @@ Rails.application.routes.draw do
   
   get 'time_slot/show_preferences'
   
+  get 'time_slot/suggest_schedule'
+  
+  get 'time_slot/confirm_suggested'
+  
   post 'time_slot/scheduler/assign_slots' => "time_slot#assign_slots"
 
   get 'requests/index'
@@ -70,6 +74,10 @@ Rails.application.routes.draw do
   get 'events/PUD_events.json' => 'events#PUD_events'
   
   get 'events/invited_events.json' => 'events#invited_events'
+  
+  get 'events/resolved_slots.json' => 'events#resolved_slots'
+  
+  get 'events/preferenced_slots.json' => 'events#preferenced_slots'
     
   # GET /events/1/get_subscribers
   get 'events/:id/get_subscribers' => 'events#get_subscribers'

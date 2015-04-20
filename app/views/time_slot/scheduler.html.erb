@@ -1,8 +1,15 @@
 <h2>Assign Slots</h2>
-
+<br>
 <h4><%= @event.title %></h4>
+<h5><%= @event.start_time.strftime("%d %B - %H:%M") %></h5>
+<br>
+<%= link_to('Suggest Schedule', {action: :suggest_schedule, event_id: @event.id}, data: {'reveal-id': "suggest-schedule-modal", 'reveal-ajax': true}) %>
+<br>
+<br>
 
-
+	  	<div class="reveal-modal" id="suggest-schedule-modal" data-reveal style="width: 50%">
+		  <a class="close-reveal-modal"><i class="fi-x large"></i></a>
+		</div>
 
 <table>
 	<thead>

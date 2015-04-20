@@ -63,7 +63,12 @@ class TimeSlotController < ApplicationController
     unless params[:group_participant].blank?
       params[:group_participant].keys.each do |g|
         if params[:group_participant][g] == '1'
-          all_users << g.all_user_ids
+          group = Group.find_by_id(g.to_i)
+          group.all_user_ids.each do |user|
+            if user.to_i != current_user.id
+              all_users << user.to_i
+            end
+          end
         end
       end
     end
@@ -137,6 +142,14 @@ class TimeSlotController < ApplicationController
     @preferences = @event.repetition_scheme.get_all_users_preferences
   end
   
+  def suggest_schedule
+    @event = Event.find_by_id(params[:event_id])
+    repetition = @event.repetition_scheme
+    @suggestion = repetition.suggest_slot_assignment
+    render 'suggest_schedule', layout: 'modal'
+    return
+  end
+  
   def assign_user_to_slot
     user = params[:user]
     slot = params[:slot]
@@ -166,6 +179,27 @@ class TimeSlotController < ApplicationController
   
   end
   
+  def confirm_suggested
+    # params[:schedule].nil?
+    if params[:schedule].nil?
+      flash[:error] = "#{params[:schedule]}"
+      redirect_to :action => :scheduler, id: params[:id].to_i
+      return
+    end
+    event = Event.find_by_id(params[:id].to_i)
+    schedule = params[:schedule]
+    slots = schedule.values
+    slot_ids = []
+    slots.each do |s|
+      slot_ids << s.to_i
+    end
+    event.repetition_scheme.resolve_preferences_for_slots(slot_ids)
+    
+    flash[:notice] = "Successfully assigned slots for #{event.title}"
+    
+    redirect_to time_slot_index_path
+  end
+  
   def assign_slots
     
     if params[:users].nil?
@@ -173,16 +207,16 @@ class TimeSlotController < ApplicationController
       redirect_to :action => :scheduler, id: params[:id].to_i
       return
     end
-    
+    event = Event.find_by_id(params[:id].to_i)
     users = params[:users]
     slots = users.values
     slot_ids = []
     slots.each do |s|
       slot_ids << s.to_i
     end
-    Event.find_by_id(params[:id].to_i).repetition_scheme.resolve_preferences_for_slots(slot_ids)
+    event.repetition_scheme.resolve_preferences_for_slots(slot_ids)
     
-    flash[:notice] = "#{slot_ids}"
+    flash[:notice] = "Successfully assigned slots for #{event.title}"
     
     redirect_to time_slot_index_path
     
