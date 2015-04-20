@@ -137,6 +137,11 @@ class RepetitionScheme < ActiveRecord::Base
 			return
 		end
 
+		preferences = get_all_users_preferences
+		to_delete = []
+		preferences.keys.map {|u| preferences[u].map {|t| to_delete << t if !(slot_ids.include? t.id)}}
+		to_delete.map {|t| t.destroy}
+
 		to_dos.map {|t| t.done = true; t.save }
 		self.status = RepetitionScheme.statuses[:resolved]
 		save
