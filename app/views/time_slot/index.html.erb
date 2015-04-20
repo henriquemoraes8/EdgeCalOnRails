@@ -12,9 +12,12 @@
       <em>Description:</em> <%= e.description %><br>
       <em>Start of block:</em><%= to_eastern_time(e.start_time).strftime("%-d %b - %H:%M") %><br>
       <em>End of block:</em><%= to_eastern_time(e.end_time).strftime("%-d %b - %H:%M") %><br>
-	  <%= link_to "View Invitees", {action: :show_invitees, id: e.id}, data: {'reveal-id': "invitees-modal", 'reveal-ajax': true} %> |
+
 	  <% if preference_based(e) %>
-	  <%= link_to('Assign Slots', {action: :scheduler, id: e.id}) %> |
+	  	<%= link_to('View Preferences', {action: :show_preferences, event_id: e.id}, data: {'reveal-id': "view-prefs-modal", 'reveal-ajax': true}) %> |
+	  	<%= link_to('Assign Slots', {action: :scheduler, id: e.id}) %> |
+	  <% else %>
+	  	  <%= link_to "View Invitees", {action: :show_invitees, id: e.id}, data: {'reveal-id': "invitees-modal", 'reveal-ajax': true} %> |
 	  <% end %>
       <%= link_to('Delete', {:action => :destroy, :id => e.id, :class => 'action event'}) %>&nbsp;&nbsp;<br><br>
 	  
@@ -22,16 +25,10 @@
 		  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 		</div>
 		
-      <% e.time_slots.each do |t| %>
-          <div class="time slot">
-            <p>
-              <em>Asignee:</em> <%= t.user.email %><br>
-              <em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
-              <em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %><br>
-              <%= link_to('Cancel', {:action => :destroy_slot, :id => t.id, :class => 'action slot'}) %>
-            </p>
-          </div>
-      <% end %>
+	  	<div class="reveal-modal" id="view-prefs-modal" data-reveal>
+		  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+		</div>
+	
     </div>
     <br>
     <br>

@@ -1,8 +1,4 @@
-<h2>Assign Slots</h2>
-
-<h4><%= @event.title %></h4>
-
-
+<h2>Time Slot Preferences</h2>
 
 <table>
 	<thead>
@@ -12,8 +8,9 @@
 			<th>Preferences</th>
 		</tr>
 	</thead>
+	
 	<tbody>
-
+	
 		<% @preferences.keys.each do |user| %>
 			<tr>
 				<td><%= user.name  %></td>
@@ -23,18 +20,12 @@
 					No Preferences Provided!
 				<% else %>
 					<% @preferences[user].each do |pref| %>
-						<%= to_eastern_time(pref.start_time.localtime).strftime("%H:%M") %> --  <%= pref.preference %> -- <%= radio_button_tag(user, :slot) %><br>
+						<%= to_eastern_time(pref.start_time.localtime).strftime("%H:%M") %>  -  <%= pref.preference %><br>
 					<% end %>
 				<% end %>
 				</td>
 			</tr>
 		<% end %>
 
-		
 	</tbody>
 </table>
-
-	
-<% if false %>
-<%= link_to "Assign", {controller: 'time_slot', action: :assign_user_to_slot}, user: u, slot: @event, remote: true, :html => {:id => "ajax_assign"} %>
-<% end %>

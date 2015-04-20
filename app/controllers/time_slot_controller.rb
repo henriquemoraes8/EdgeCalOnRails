@@ -125,6 +125,13 @@ class TimeSlotController < ApplicationController
     return
   end
   
+  def show_preferences
+    event = Event.find_by_id(params[:event_id])
+    @preferences = event.repetition_scheme.get_all_users_preferences
+    render 'show_preferences', layout: 'modal'
+    return
+  end
+  
   def scheduler
     @event = Event.find_by_id(params[:id])
     $slots = Hash.new

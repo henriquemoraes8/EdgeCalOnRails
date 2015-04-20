@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'time_slot/new'
 
   get 'time_slot/index'
+  
+  get 'time_slot/show_preferences'
 
   get 'requests/index'
 
@@ -50,6 +52,8 @@ Rails.application.routes.draw do
   post 'events/create'
 
   post 'subscription/manage'
+  
+  post 'time_slot/assign_slots'
   
   get 'events/requests_modal' => 'events#requests_modal'
   
