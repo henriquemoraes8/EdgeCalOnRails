@@ -210,11 +210,20 @@ class Event < ActiveRecord::Base
 		time.hour*3600 + time.min*60
 	end
 
+	# not in use
+	def validate_title
+    	if title.nil? || title.length <= 0
+      		errors[:base] = "You need to have a title"
+      		return false
+    	end
+    	true
+  	end
+
 	def time_concise
-    if start_time.nil? || end_time.nil?
-      errors[:base] = 'Need to supply a start and end time'
-      return false
-    end
+    	if start_time.nil? || end_time.nil?
+      		errors[:base] = 'Need to supply a start and end time'
+      		return false
+    	end
 		if start_time >= end_time
 			errors[:base] = "Start time must be before end time"
 			return false

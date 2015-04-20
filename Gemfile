@@ -73,6 +73,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'sprockets'
 
+gem 'judge'
+
 gem 'wicked_pdf'
 
 gem 'wkhtmltopdf-heroku'
