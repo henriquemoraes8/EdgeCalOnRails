@@ -1,14 +1,6 @@
-<h2>Events that are in the rangs</h2>
+<h2>Events that are in the range</h2>
 
-<head>
-	<%= javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js" %>
-    <%= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" %>
-</head>
-
-
-
-<%@in_range_events.each do |e|%>
-	<li><%=e.description%></li>
-	<li><%=e.start_time%></li>
-	<li><%=e.end_time%></li>
-<%end%>
+<div id="graphic_calendar">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'>	
+</script>
+</div>

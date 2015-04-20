@@ -26,7 +26,11 @@ class EventsController < ApplicationController
 
     @friends = User.all
 
-
+    # pdf = render_to_string pdf: "test_file", template: "events/index.html.erb", javascript_delay: 1000
+    # save_path = Rails.root.join('Documentation','filename.pdf')
+    # File.open(save_path, 'wb') do |file|
+    #   file << pdf
+    # end
   end
 
   # GET /events/new
@@ -211,13 +215,27 @@ class EventsController < ApplicationController
     render 'index.html'
   end
 
+  # GET /events/visible_events.json
+  def show_events_in_range
+    @in_range_events=$in_range_events
+    render 'events_in_range.json.jbuilder'
+    #print_pdf
+  end
+
+  def print_pdf
+    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
+    save_path = Rails.root.join('Documentation','filename.pdf')
+    File.open(save_path, 'wb') do |file|
+      file << pdf
+    end
+  end
 
   def show_graphic_cal
     #Still needs to be implemented by @jeffday1113
     start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
     end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
     @events = current_user.get_visible_events
-    @in_range_events = []
+    $in_range_events = []
     puts "START DATE IS HERE"
     puts start_date
     puts "NOW"
@@ -227,17 +245,22 @@ class EventsController < ApplicationController
 
       if e.start_time>=start_date && e.end_time<=end_date
         puts "CORRECT"
-        @in_range_events << e
+        $in_range_events << e
       end
+    
     end
-
-    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb"
+    
+    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
     save_path = Rails.root.join('Documentation','filename.pdf')
     File.open(save_path, 'wb') do |file|
       file << pdf
     end
+
+    
+
     #render 'show_graphic_cal.json.jbuilder'
   end
+
 
 
   private
