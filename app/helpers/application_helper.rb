@@ -24,4 +24,8 @@ module ApplicationHelper
     render(:partial => 'application/error_messages', :locals => {:object => object})
   end
 
+  def to_eastern_time(time)
+    time.in_time_zone('Eastern Time (US & Canada)')
+  end
+
 end

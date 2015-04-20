@@ -61,7 +61,7 @@
             $(document).ready(function(){
             $('#MyButton').click(function(){
               $('#time_slot_events').append("<div class='partial'><%= escape_javascript render(:partial => 'form_event', :locals => { :f => f, :event => e }) %>");
-              $(".datetimepicker").datetimepicker();
+              $("#datetimepicker").datetimepicker();
               
               });
             });
