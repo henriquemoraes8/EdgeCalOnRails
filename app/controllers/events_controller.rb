@@ -206,7 +206,9 @@ class EventsController < ApplicationController
       end
     end
 
-    html = render_to_string(:template => "events/_list_index", :layout => false)
+    puts @in_range_events
+
+    html = render_to_string(:template => "events/_show_html_email.html.erb", :layout => false)
 
     puts "USER EMAIL IS: " + current_user.email
 
