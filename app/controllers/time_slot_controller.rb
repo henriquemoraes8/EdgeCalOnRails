@@ -158,7 +158,7 @@ class TimeSlotController < ApplicationController
       end
 
     end
-    redirect_to time_slot_index_path
+  
   
   end
 
