@@ -125,7 +125,7 @@ class TimeSlotController < ApplicationController
   def scheduler
     @event = Event.find_by_id(params[:id])
     $slots = Hash.new
-    @allowed_users = @event.repetition_scheme.allowed_users
+    @preferences = @event.repetition_scheme.get_all_users_preferences
   end
   
   def assign_user_to_slot
