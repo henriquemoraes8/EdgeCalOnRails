@@ -50,7 +50,6 @@ class MassEventCreationController < ApplicationController
 
     flash[:notice] = "Events created successfully"
 
-    created_events.map {|e| e.destroy}
     render :index
     return
     #redirect_to events_path
@@ -259,16 +258,28 @@ class MassEventCreationController < ApplicationController
 
   def create_slot_event(args)
     puts "ARGS SLOT #{args}"
-    repetition = RepetitionScheme.create(:min_time_slot_duration => args['min'], :max_time_slot_duration => args['max'])
+    status = (args.include? 'preference') ? RepetitionScheme.statuses[:preference_based] : RepetitionScheme.statuses[:regular]
+    repetition = RepetitionScheme.create(:min_time_slot_duration => args['min'], :max_time_slot_duration => args['max'], :status => status,
+                                         :creator_id => current_user.id)
     all_users = parse_participants(args, args['title'])
     if @error.length > 0
       return repetition
     end
+    all_users.map {|u| repetition.allowed_users << User.find(u)}
 
-    args['block'].each do |b|
+    args['block'].each do |dates|
       event = Event.new(:title => args['title'], :description => args['description'],
-      :event_type => Event.event_types[:time_slot_block])
+      :event_type => Event.event_types[:time_slot_block], :start_time => dates[0], :end_time => dates[1])
+      if event.save
+        repetition.events << event
+      else
+        @error += "Error creating slot block for #{args['title']}. #{event.errors.full_messages.join(', ')}"
+      end
     end
+    if args.include? 'send to-do'
+      repetition.generate_to_dos_with_position(args['send to-do'])
+    end
+
     repetition
   end
 
@@ -353,8 +364,8 @@ class MassEventCreationController < ApplicationController
   end
 
   def parse_start_end_time(times)
-    start = DateTime.new(times[0].year,times[0].month,times[0].day,times[1].hour,times[1].minute)
-    end_time = DateTime.new(times[0].year,times[0].month,times[0].day,times[2].hour,times[2].minute)
+    start = adjust_time_zone_offset(DateTime.new(times[0].year,times[0].month,times[0].day,times[1].hour,times[1].minute))
+    end_time = adjust_time_zone_offset(DateTime.new(times[0].year,times[0].month,times[0].day,times[2].hour,times[2].minute))
     [start, end_time]
   end
 
@@ -390,7 +401,7 @@ class MassEventCreationController < ApplicationController
         date_error += "event #{line}: #{key} in incorrect format\n"
         return date_error
       end
-      args[key] = args[key].to_datetime
+      args[key] = adjust_time_zone_offset(args[key].to_datetime)
     end
 
     date_error
