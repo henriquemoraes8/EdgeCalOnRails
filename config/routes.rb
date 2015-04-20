@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   get 'groups/show'
 
   get 'groups/new'
+  
+  get 'groups/new_modal'
 
   get 'groups/edit'
 
