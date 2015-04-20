@@ -3,7 +3,6 @@
 <%= link_to "New Group", {action: :new_modal}, data: {'reveal-id': "new-group-modal", 'reveal-ajax': true } %>
 <br>
 <br>
-
 <table>
 <thead>
 	<tr>
@@ -22,8 +21,8 @@
 	<td><%=group.title %></td>
 	<td><%=group.description %></td>
 	<td>
-	<a href="#" data-reveal-id="view-members-modal">View All Group Members</a> | <%= link_to('Edit Group', {:action => :edit, :id => group.id, :class => 'action request'}) %> |
-	<a href="#" data-reveal-id="delete_group"> <i class="fi-x size-16"></i> </a>
+	<a href="#" data-reveal-id="view-members-modal"><i class="fi-list large"></i></a> | <%= link_to('<i class="fi-page-edit large"></i>'.html_safe, {:action => :edit, :id => group.id, :class => 'action request'}) %> |
+	<a href="#" data-reveal-id="delete_group"> <i class="fi-x large"></i> </a>
 	</td>
 
 	<div class="reveal-modal" id="view-members-modal" data-reveal>
