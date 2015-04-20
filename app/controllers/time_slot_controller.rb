@@ -125,12 +125,14 @@ class TimeSlotController < ApplicationController
   def scheduler
     @event = Event.find_by_id(params[:id])
     @slots = Hash.new
+    @allowed_users = @event.repetition_scheme.allowed_users
   end
   
   def assign_user_to_slot
     user = params[:user]
     slot = params[:slot]
-    @slots[user] = slot
+    # @slots[user] = slot
+    return
   end
   
   def choose_slot_preferences
@@ -143,11 +145,11 @@ class TimeSlotController < ApplicationController
                           :event_id => event.id, :user_id => current_user.id, :preference => e_hash['preference'])
       
       if slot.save
-        flash[:notice] = "Successfully Signed Up!"
+        flash[:notice] = "Preference successfully saved!"
         event.time_slots << slot
       else
-        flash[:notice] = "I don't know.. we had some problem"
-        redirect_to signup, :id => event.creator_id
+        flash[:error] = "Error submitting slot preference!"
+        redirect_to time_slot_index_path
         return
       end
 
