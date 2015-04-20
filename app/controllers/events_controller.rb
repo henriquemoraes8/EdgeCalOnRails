@@ -25,6 +25,8 @@ class EventsController < ApplicationController
     @date = params[:month] ? Date.parse(params[:month]) : Date.today
 
     @friends = User.all
+
+
   end
 
   # GET /events/new
@@ -208,10 +210,6 @@ class EventsController < ApplicationController
     # it kinda fixes it.  Need to figure out what's happening
     render 'index.html'
   end
-
-  def find_events_in_range
-    #Still needs to be implemented by @jeffday1113
-  end 
   
   
   ######################
@@ -243,6 +241,33 @@ class EventsController < ApplicationController
     render '_invitees', layout: false
     return
   end
+
+  def show_graphic_cal
+    start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
+    end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
+    @events = current_user.get_visible_events
+    @in_range_events = []
+    puts "START DATE IS HERE"
+    puts start_date
+    puts "NOW"
+    @events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    end
+
+    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb"
+    save_path = Rails.root.join('Documentation','filename.pdf')
+    File.open(save_path, 'wb') do |file|
+      file << pdf
+    end
+    #render 'show_graphic_cal.json.jbuilder'
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
