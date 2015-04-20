@@ -59,6 +59,7 @@ class RepetitionScheme < ActiveRecord::Base
 		#puts "** REP TIME ALLOWED **"
 		#puts "** seconds of min #{min_time_slot_duration}"
 		start_allowed = event.start_time
+
 		if start_time < event.start_time || start_time > event.end_time
 			return false
 		end
