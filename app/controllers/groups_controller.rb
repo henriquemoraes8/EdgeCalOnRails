@@ -96,7 +96,7 @@ class GroupsController < ApplicationController
   def new_modal
     @group = Group.new
     @users = User.where.not(id: current_user.id)
-    render 'new', layout: false
+    render 'new', layout: 'modal'
     return
   end
   

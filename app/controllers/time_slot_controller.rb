@@ -118,7 +118,7 @@ class TimeSlotController < ApplicationController
   def show_invitees
     event = Event.find_by_id(params[:id])
     @invitees = event.repetition_scheme.allowed_users
-    render '_invitees', layout: false
+    render '_invitees', layout: 'modal'
     return
   end
   

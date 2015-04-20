@@ -237,26 +237,26 @@ class EventsController < ApplicationController
   def requests_modal
     @request_maps = []
     current_user.get_requested_events.map {|e| @request_maps << e.request_map}
-    render '_request_list', layout: false
+    render '_request_list', layout: 'modal'
     return
   end
   
   def new_event_modal
     @event = Event.new
-    render 'new', layout: false
+    render 'new', layout: 'modal'
     return
   end
   
   def to_do_list_modal
     @todos = ToDo.where(creator_id: current_user.id)
-    render '_to_do_list', layout: false
+    render '_to_do_list', layout: 'modal'
     return
   end
   
   def event_list_reveal_modal
     event = Event.find_by_id(params[:id])
     @invitees = event.repetition_scheme.allowed_users
-    render '_invitees', layout: false
+    render '_invitees', layout: 'modal'
     return
   end
 

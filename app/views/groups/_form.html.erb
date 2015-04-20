@@ -11,10 +11,11 @@
 	</div>
 
 	<div class = "members">
-		<h5>Choose Members</h5>
+		<h4>Choose Members</h4>
 		<%@users.each do |user|%>
-			<li><%= check_box('members', "#{user.id}") %>
-			<%= user.email%></li>
+			<%= check_box('members', "#{user.id}") %>
+			<%= user.email%>
+			<br>
 			<%#=f.label :members, user.email%>
 			<%#= f.check_box :members%>
 		<% end %>
