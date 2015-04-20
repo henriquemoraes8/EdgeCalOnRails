@@ -77,7 +77,7 @@ gem 'sprockets'
 
 gem 'wicked_pdf'
 
-gem 'wkhtmltopdf-heroku'
+gem 'wkhtmltopdf-heroku', '~> 0.12.2.1'
 
 #gem 'pdfkit'
 
