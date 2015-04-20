@@ -221,18 +221,24 @@ class EventsController < ApplicationController
     # Define your message parameters
     puts "SENDING EMAIL HERE"
 
-    RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
-    "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
-      :from => "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>",
-      :to => current_user.email,
-      :subject => "Here's your schedule!",
-      :html => html.to_str
+    if !@in_range_events.empty? 
 
-    puts "EMAIL OFFICIALLY SENT"
+      RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
+      "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
+        :from => "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>",
+        :to => current_user.email,
+        :subject => "Here's your schedule!",
+        :html => html.to_str
+
+      puts "EMAIL OFFICIALLY SENT"
+    else
+      send_no_events_email
+    end
+
 
     # A strange bug is happening, so I'm putting this here for now because
     # it kinda fixes it.  Need to figure out what's happening
-    render 'index.html'
+    redirect_to events_path
   end
 
   # GET /events/visible_events.json
@@ -242,8 +248,8 @@ class EventsController < ApplicationController
   end
 
   def print_pdf
-    pdf = render_to_string pdf: "show_graphic_cal", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
-    save_path = Rails.root.join('Documentation','show_graphic_cal.pdf')
+    pdf = render_to_string pdf: "show_graphic_cal", template: "events/_show_html_email.html.erb"
+    save_path = Rails.root.join('app/assets/images','show_graphic_cal.pdf')
     File.open(save_path, 'wb') do |file|
       file << pdf
     end
@@ -335,27 +341,29 @@ class EventsController < ApplicationController
     
     end
     
-    pdf = render_to_string pdf: "show_graphic_cal", template: "events/_show_html_email.html.erb"
-    save_path = Rails.root.join('app/assets/images','show_graphic_cal.pdf')
-    File.open(save_path, 'wb') do |file|
-      file << pdf
+    if !@in_range_events.empty? 
+      print_pdf
+
+      send_email_with_attachment
+    else
+      send_no_events_email
     end
 
-    send_email_with_attachment
+    redirect_to events_path
 
     #render 'show_graphic_cal.json.jbuilder'
   end
 
-  def send_email_with_attachment
-    # data = Multimap.new
-    # data[:from] = "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>"
-    # data[:to] = current_user.email
-    # data[:subject] = "Here's your schedule!"
-    # data[:html] = "Attached is the graphical view"
-    # data[:attachment] = File.new(File.join("files", "app/assets/images/show_graphic_cal.pdf"))
-    # RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
-    # "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages", data
+  def send_no_events_email
+    RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
+    "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
+      :from => "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>",
+      :to => current_user.email,
+      :subject => "No events in specified time period!",
+      :text => "The time range you recently requested contains no events!"
+  end
 
+  def send_email_with_attachment
     data=Hash.new { |hash, key| hash[key] = [] }
     data[:from] = "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>"
     data[:to] = current_user.email
@@ -365,13 +373,6 @@ class EventsController < ApplicationController
     RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
     "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages", data
 
-    # RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
-    # "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
-    #   :from => "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>",
-    #   :to => current_user.email,
-    #   :subject => "Here's your schedule!",
-    #   :text => "Attached is the graphical view",
-    #   :attachment => "app/assets/images/show_graphic_cal.pdf"
   end
 
 
