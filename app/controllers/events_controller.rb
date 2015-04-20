@@ -26,7 +26,11 @@ class EventsController < ApplicationController
 
     @friends = User.all
 
-
+    # pdf = render_to_string pdf: "test_file", template: "events/index.html.erb", javascript_delay: 1000
+    # save_path = Rails.root.join('Documentation','filename.pdf')
+    # File.open(save_path, 'wb') do |file|
+    #   file << pdf
+    # end
   end
 
   # GET /events/new
@@ -230,6 +234,20 @@ class EventsController < ApplicationController
     # it kinda fixes it.  Need to figure out what's happening
     render 'index.html'
   end
+
+  # GET /events/visible_events.json
+  def show_events_in_range
+    @in_range_events=$in_range_events
+    render 'events_in_range.json.jbuilder'
+  end
+
+  def print_pdf
+    pdf = render_to_string pdf: "show_graphic_cal", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
+    save_path = Rails.root.join('Documentation','show_graphic_cal.pdf')
+    File.open(save_path, 'wb') do |file|
+      file << pdf
+    end
+  end
   
   
   ######################
@@ -265,27 +283,95 @@ class EventsController < ApplicationController
   def show_graphic_cal
     start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
     end_date=correct_time_from_datepicker(params[:graphic_calendar][:end_date])
-    @events = current_user.get_visible_events
+    @own_events = current_user.created_events
+    @visible_events = current_user.get_visible_events
+    @modifiable_events = current_user.get_modifiable_events
+    @busy_events = current_user.get_busy_events
     @in_range_events = []
     puts "START DATE IS HERE"
     puts start_date
     puts "NOW"
-    @events.each do |e|
+    @own_events.each do |e|
       puts "New Event"
       puts e.start_time
 
-      if e.start_time>=start_date && e.end_time<=end_date
+      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
         puts "CORRECT"
         @in_range_events << e
       end
+    
     end
 
-    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb"
-    save_path = Rails.root.join('Documentation','filename.pdf')
+    @visible_events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    
+    end
+
+    @modifiable_events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    
+    end
+
+    @busy_events.each do |e|
+      puts "New Event"
+      puts e.start_time
+
+      if e.start_time>=start_date && e.end_time<=end_date && !@in_range_events.include?(e)
+        puts "CORRECT"
+        @in_range_events << e
+      end
+    
+    end
+    
+    pdf = render_to_string pdf: "show_graphic_cal", template: "events/_show_html_email.html.erb"
+    save_path = Rails.root.join('app/assets/images','show_graphic_cal.pdf')
     File.open(save_path, 'wb') do |file|
       file << pdf
     end
+
+    send_email_with_attachment
+
     #render 'show_graphic_cal.json.jbuilder'
+  end
+
+  def send_email_with_attachment
+    # data = Multimap.new
+    # data[:from] = "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>"
+    # data[:to] = current_user.email
+    # data[:subject] = "Here's your schedule!"
+    # data[:html] = "Attached is the graphical view"
+    # data[:attachment] = File.new(File.join("files", "app/assets/images/show_graphic_cal.pdf"))
+    # RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
+    # "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages", data
+
+    data=Hash.new { |hash, key| hash[key] = [] }
+    data[:from] = "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>"
+    data[:to] = current_user.email
+    data[:subject] = "Here's your schedule!"
+    data[:html] = "Attached is the graphical view"
+    data[:attachment] = File.new("app/assets/images/show_graphic_cal.pdf")
+    RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
+    "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages", data
+
+    # RestClient.post "https://api:key-345efdd486ec59509f9161b99b78d333"\
+    # "@api.mailgun.net/v3/sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org/messages",
+    #   :from => "EdgeCal Team <mailgun@sandboxb478b65d1ad94458945aa2e6e6549bba.mailgun.org>",
+    #   :to => current_user.email,
+    #   :subject => "Here's your schedule!",
+    #   :text => "Attached is the graphical view",
+    #   :attachment => "app/assets/images/show_graphic_cal.pdf"
   end
 
 
