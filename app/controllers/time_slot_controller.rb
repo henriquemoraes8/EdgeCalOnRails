@@ -180,7 +180,7 @@ class TimeSlotController < ApplicationController
     slots.each do |s|
       slot_ids << s.to_i
     end
-      # slots.first.event.repetition_scheme.resolve_preferences_for_slots(slot_ids)
+    Event.find_by_id(params[:id].to_i).repetition_scheme.resolve_preferences_for_slots(slot_ids)
     
     flash[:notice] = "#{slot_ids}"
     
