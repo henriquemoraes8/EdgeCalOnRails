@@ -114,6 +114,9 @@ class MassEventCreationController < ApplicationController
 
   def validate_input(input_array)
     line = 1
+    if input_array.empty?
+      @error += "You must enter text to be parsed"
+    end
     input_array.each do |e|
       case e[:type]
         when TYPE_REGULAR

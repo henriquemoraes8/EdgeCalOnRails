@@ -2,16 +2,16 @@
 
 <%= form_for('events_email', :url => {:action => 'create_html_email'}) do |f|%>
 
-<div class="field">
-  <%= label :start, 'Starting Date:' %><br>
-  <%= f.text_field :start_date, class: 'datetimepicker' %>
-</div>
-<div class="field">
-  <%= label :end, 'Ending Date:' %><br>
-  <%= f.text_field :end_date, class: 'datetimepicker' %>
-</div>
-<%= f.submit 'Search', class: "button radius" %>
+	<div class="field">
+  		<%= label :start, 'Starting Date:' %><br>
+  		<%= f.text_field :start_date, class: 'datetimepicker' %>
+	</div>
+
+	<div class="field">
+  		<%= label :end, 'Ending Date:' %><br>
+  		<%= f.text_field :end_date, class: 'datetimepicker' %>
+	</div>
+	
+	<%= f.submit 'Search', class: "button radius" %>
+
 <%end%>
-
-
-<!--%= link_to('Email My Schedule', {:action => :create_html_email, :id => current_user.id, :class => 'html email', :remote => true}) %-->
