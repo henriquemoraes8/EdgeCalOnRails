@@ -1,0 +1,31 @@
+<h2>Time Slot Preferences</h2>
+
+<table>
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Preferences</th>
+		</tr>
+	</thead>
+	
+	<tbody>
+	
+		<% @preferences.keys.each do |user| %>
+			<tr>
+				<td><%= user.name  %></td>
+				<td><%= user.email %></td>
+				<td>
+				<% if @preferences[user].count == 0 %>
+					No Preferences Provided!
+				<% else %>
+					<% @preferences[user].each do |pref| %>
+						<%= to_eastern_time(pref.start_time.localtime).strftime("%H:%M") %>  -  <%= pref.preference %><br>
+					<% end %>
+				<% end %>
+				</td>
+			</tr>
+		<% end %>
+
+	</tbody>
+</table>

@@ -34,9 +34,11 @@ gem 'rest-client'
 gem 'mailgun-ruby'
 #########################################
 
+gem 'rails_layout'
+
+
 # Basic HTML layout template
 group :development do
-  gem 'rails_layout'
 end
 
 ################

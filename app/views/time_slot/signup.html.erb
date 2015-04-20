@@ -40,6 +40,7 @@
         	<div class="event slot">
           	<em>Title:</em> <%= e.title %><br>
         	<em>Description:</em> <%= e.description %><br>
+			<b>On <%= to_eastern_time(e.start_time).strftime("%-d %b from %H:%M to ") + to_eastern_time(e.end_time).strftime("%H:%M") %></b><br>
         	<%= f.fields_for "#{e.id}" do |s| %>
             	<em>Start time:</em>
             	<%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>

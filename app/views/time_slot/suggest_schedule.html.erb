@@ -1,0 +1,9 @@
+<h3>Suggested Schedule</h3>
+<br>
+
+<% @suggestion.keys.each do |u| %>
+	<%= u.name %> <em>(<%= u.email %>)</em> -- <strong style="margin-left: 1em"><%= to_eastern_time(@suggestion[u].start_time.localtime).strftime("%H:%M") %></strong>
+	<br>
+<% end %>
+<br>
+<%= link_to "Confirm", {action: :confirm_suggested, :id => @event.id, :schedule => @suggestion}, class: "button radius"%>
