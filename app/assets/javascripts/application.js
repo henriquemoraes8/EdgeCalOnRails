@@ -20,6 +20,10 @@
 //= require jquery.datetimepicker
 //= require jquery.datetimepicker/init
 //= require jquery.timepicker.js
+
+//= require underscore
+//= require json2
+//= require judge
 	
 //= require_tree .
 

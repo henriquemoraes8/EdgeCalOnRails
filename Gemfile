@@ -73,6 +73,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'sprockets'
 
+gem 'judge'
+
 # for creating Entity Relationship Diagrams (Database diagram)
 # gem 'ruby-graphviz', group: :development
 # gem 'rails-erd', group: :development
