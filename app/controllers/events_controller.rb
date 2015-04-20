@@ -189,7 +189,7 @@ class EventsController < ApplicationController
     slots = current_user.get_time_slot_created_events
     @events = []
     slots.each do |s|
-      @events << s.event
+      @events << s
     end
     render 'show.json.jbuilder'
   end
