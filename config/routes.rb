@@ -70,6 +70,8 @@ Rails.application.routes.draw do
   # GET /events/1/get_subscribers
   get 'events/:id/get_subscribers' => 'events#get_subscribers'
 
+  get 'events/show_events_in_range.json' => 'events#show_events_in_range'
+
   devise_for :users
   
   devise_scope :user do

@@ -1,14 +1,6 @@
+<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js' %>
+<%=wicked_pdf_stylesheet_link_tag "calendar"%>
+<%= wicked_pdf_javascript_include_tag "graphic_calendar" %>
+
+
 <h2>Events that are in the specified date range</h2>
-
-<head>
-	<%= javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js" %>
-    <%= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js" %>
-</head>
-
-
-
-<%@in_range_events.each do |e|%>
-	<li><%=e.description%></li>
-	<li><%=e.start_time%></li>
-	<li><%=e.end_time%></li>
-<%end%>
