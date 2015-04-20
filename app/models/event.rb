@@ -151,18 +151,19 @@ class Event < ActiveRecord::Base
 			return []
 		end
 
-		current_time = start_time
+		current_time = start_time.localtime
 		min_duration = repetition_scheme.min_time_slot_duration
+		is_preference = repetition_scheme.status == 'preference_based'
 		slots = []
 		time_slots.map {|s| slots << s}
 		current_slot = slots.shift
 		permitted_times = []
 
-		while to_seconds(current_time + min_duration) <= to_seconds(end_time)
-			if current_slot.nil? || to_seconds(current_time) < to_seconds(current_slot.start_time)
+		while to_seconds(current_time + min_duration) <= to_seconds(end_time.localtime)
+			if current_slot.nil? || to_seconds(current_time) < to_seconds(current_slot.start_time.localtime) || is_preference
 				permitted_times << current_time
 				current_time += min_duration
-			elsif	to_seconds(current_time) >= to_seconds(current_slot.start_time + current_slot.duration)
+			elsif	to_seconds(current_time) >= to_seconds(current_slot.start_time.localtime + current_slot.duration)
 				current_slot = slots.shift
 			else
 				current_time += min_duration

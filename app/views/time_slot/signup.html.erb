@@ -18,7 +18,7 @@
           <%= f.fields_for "#{e.id}" do |s| %>
               <em>Start time:</em>
               <%= s.select :slot_time, e.permitted_slot_start_times.map {|t| [t.strftime("%H:%M"), t]} %>
-			  <%= s.label :preference, "Preference"%><%= s.number_field :preference, in: 1..5, step: 1 %>
+			  <%= s.label :preference, "Preference"%><%= s.number_field :preference, in: 1..100, step: 1 %>
 			  <br><br>
               <!-- #s.text_field :slot_time, class: 'datetimepicker', id: "start_slot#{e.id}" -->
           <% end %>
