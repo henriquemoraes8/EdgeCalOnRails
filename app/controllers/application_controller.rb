@@ -22,7 +22,11 @@ class ApplicationController < ActionController::Base
     if time.blank?
       return nil
     end
-    time = to_eastern_time(DateTime.parse(time))
+    adjust_time_zone_offset(DateTime.parse(time))
+  end
+
+  def adjust_time_zone_offset(time)
+    time = to_eastern_time(time)
     time -= time.utc_offset.seconds
     time
   end

@@ -259,11 +259,13 @@ class MassEventCreationController < ApplicationController
 
   def create_slot_event(args)
     puts "ARGS SLOT #{args}"
-    repetition = RepetitionScheme.create(:min_time_slot_duration => args['min'], :max_time_slot_duration => args['max'])
+    status = args.include? 'preference' ? RepetitionScheme.statuses[:regular] : RepetitionScheme.statuses[:preference_based]
+    repetition = RepetitionScheme.create(:min_time_slot_duration => args['min'], :max_time_slot_duration => args['max'], :status => status)
     all_users = parse_participants(args, args['title'])
     if @error.length > 0
       return repetition
     end
+    all_users.map {|u| repetition.allowed_users}
 
     args['block'].each do |b|
       event = Event.new(:title => args['title'], :description => args['description'],
@@ -353,8 +355,8 @@ class MassEventCreationController < ApplicationController
   end
 
   def parse_start_end_time(times)
-    start = DateTime.new(times[0].year,times[0].month,times[0].day,times[1].hour,times[1].minute)
-    end_time = DateTime.new(times[0].year,times[0].month,times[0].day,times[2].hour,times[2].minute)
+    start = adjust_time_zone_offset(DateTime.new(times[0].year,times[0].month,times[0].day,times[1].hour,times[1].minute))
+    end_time = adjust_time_zone_offset(DateTime.new(times[0].year,times[0].month,times[0].day,times[2].hour,times[2].minute))
     [start, end_time]
   end
 
