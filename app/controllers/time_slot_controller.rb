@@ -71,6 +71,7 @@ class TimeSlotController < ApplicationController
     all_users = all_users.flatten.uniq
     if all_users.empty?
       flash[:error] = "you must select participants or groups for your slot event"
+      repetition.destroy
       redirect_to time_slot_new_path
       return
     end
@@ -83,6 +84,7 @@ class TimeSlotController < ApplicationController
       e_param[:end_time] = correct_time_from_datepicker(e_param[:end_time])
       e_param[:event_type] = Event.event_types[:time_slot_block]
       event = Event.new(event_params(e_param))
+      puts "WILL CREATE EVENT PREFERENCE BASED #{event}"
       
       event.creator_id = current_user.id
       if event.save
@@ -97,7 +99,8 @@ class TimeSlotController < ApplicationController
 
     puts "WILL CHECK CREATE_TO_DO PARAMS #{params[:create_to_do]}"
     if params[:event_blocks][:create_to_do] == '1'
-      repetition.generate_to_dos_with_position(1)
+      position = params[:event_blocks][:to_do_priority].to_i
+      repetition.generate_to_dos_with_position(position == 0 ? 1 : position)
     end
 
     flash[:notice] = "slot assignment created successfully"

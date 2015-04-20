@@ -102,14 +102,33 @@ class RepetitionScheme < ActiveRecord::Base
 			return
 		end
 
+		preferences = {}
+		allowed_users.each do |u|
+			preferences[u] = []
+			events.map {|e| e.time_slots.where(:user_id => u.id).map {|s| preferences[u] << s}}
+			preferences[u].sort_by {|t| t.preference}
+		end
+		preferences
 	end
 
 	def suggest_slot_assignment
 		preferences = get_all_users_preferences
+		puts "GOT PREFERENCES"
+		preferences.reject!{|k,v| v.count == 0}
+		puts "REJECTED"
+		ordered_keys = preferences.keys.sort_by{|k| preferences[k].count}
+		puts "ORDERED"
 		suggestion = {}
-		allowed_users.each do |u|
-			events.time_slots.where(:user_id => u.id)
+		ordered_keys.each do |u|
+			preferences[u].each do |t|
+				unless overlaps?(suggestion, t)
+					puts "GOT SUGGESTION #{t}\n"
+					suggestion[u] = t
+					break
+				end
+			end
 		end
+		suggestion
 	end
 
 	def resolve_preferences_for_slots(slot_ids)
@@ -131,6 +150,16 @@ class RepetitionScheme < ActiveRecord::Base
 	end
 
 	private
+
+	def overlaps?(suggestion, time_slot)
+		suggestion.keys.each do |u|
+			other = suggestion[u]
+			if (other.start_time - (time_slot.start_time + time_slot.duration))*((other.start_time + other.duration) - time_slot.start_time) < 0
+				return true
+			end
+		end
+		false
+	end
 
 	def max_min_duration
 		#puts "VALIDATION MIN #{min_time_slot_duration} MAX #{max_time_slot_duration}"
