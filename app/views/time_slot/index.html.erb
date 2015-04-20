@@ -44,7 +44,19 @@
 <% if @assigned_time_slots.count > 0 %>
     <h3>Assigned time slots</h3>
     <% @assigned_time_slots.each do |t| %>
-	<br><br>
+		<br>
+		<% if preference_based(t.event) %>
+		<div class="preference-time-slot">
+       	 	<em>Event Title:</em> <%= t.event.title %><br>
+        	<em>Event Description:</em> <%= t.event.description %><br>
+        	<em>At:</em> <%= t.start_time.strftime("%-d %b - %H:%M") %><br>
+        	<em>Duration: </em> <%= "#{pluralize(t.duration/3600, 'hour') if t.duration/3600 > 0} #{pluralize((t.duration/60)%60, 'minute') if (t.duration/60)%60 > 0}" %><br>
+        	<%= link_to('Cancel', {:action => :destroy_slot, :id => t.id, :class => 'action event'}) %>&nbsp;&nbsp;
+        	<%= link_to('Change', {:action => :signup, :id => t.event.creator_id, :e_id => t.event_id, :class => 'action slot'}) %>&nbsp;&nbsp;
+		</div>
+	
+	
+	<% else %>
         <div class="time slot">
           <em>Event Title:</em> <%= t.event.title %><br>
           <em>Event Description:</em> <%= t.event.description %><br>
@@ -54,6 +66,7 @@
           <%= link_to('Change', {:action => :signup, :id => t.event.creator_id, :e_id => t.event_id, :class => 'action slot'}) %>&nbsp;&nbsp;
         </div>
     <% end %>
+	<% end %>
     <hr>
 <% end %>
 

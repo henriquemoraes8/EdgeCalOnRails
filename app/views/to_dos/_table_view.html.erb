@@ -1,5 +1,3 @@
-<!--h3>To Do List</h3-->
-
 <table class="listing" summary="To Do List">
   <tr class="header">
     <th>Title</th>
@@ -19,9 +17,9 @@
 			<%= "#{pluralize(todo.duration/3600, 'hour') if todo.duration/3600 > 0} #{pluralize(todo.duration%60, 'minute') if todo.duration%60 > 0}" %></td>
 			<% end %>
 		<td>
-        <%= link_to('Delete', {controller: :to_dos, :action => :destroy, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
-        <%= link_to('Edit', {controller: :to_dos, :action => :edit, :id => todo.id, :class => 'action todo'}) %>&nbsp;&nbsp;
-        <%= link_to('Done', {controller: :to_dos, :action => :done, :id => todo.id, :class => 'action todo'}) if !todo.done? %>
+		<%= link_to('<i class="fi-check large"></i> Done'.html_safe, {controller: :to_dos, :action => :done, :id => todo.id, :class => 'action todo'}) if !todo.done? %><br>
+        <%= link_to('<i class="fi-page-edit large"></i> Edit'.html_safe, {controller: :to_dos, :action => :edit, :id => todo.id, :class => 'action todo'}) %><br>
+		<%= link_to('<i class="fi-x large"></i> Delete'.html_safe, {controller: :to_dos, :action => :destroy, :id => todo.id, :class => 'action todo'}) %>
 		</td>
       </tr>
   <% end %>
