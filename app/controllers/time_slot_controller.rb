@@ -157,8 +157,8 @@ class TimeSlotController < ApplicationController
         return
       end
 
+      redirect_to :action => :signup, id: event.creator_id
     end
-  
   
   end
 
