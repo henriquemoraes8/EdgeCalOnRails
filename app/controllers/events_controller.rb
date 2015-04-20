@@ -211,6 +211,7 @@ class EventsController < ApplicationController
     render 'index.html'
   end
 
+
   def show_graphic_cal
     #Still needs to be implemented by @jeffday1113
     start_date=correct_time_from_datepicker(params[:graphic_calendar][:start_date])
@@ -236,7 +237,7 @@ class EventsController < ApplicationController
       file << pdf
     end
     #render 'show_graphic_cal.json.jbuilder'
-  end 
+  end
 
 
   private
