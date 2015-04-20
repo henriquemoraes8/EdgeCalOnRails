@@ -72,7 +72,7 @@ class ToDosController < ApplicationController
     end
 
     if @todo.escalation_step <= 0
-      return 'priority raise must be an integer greater then or equal to 1'
+      return 'priority raise must be an integer greater than or equal to 1'
     end
     ''
   end

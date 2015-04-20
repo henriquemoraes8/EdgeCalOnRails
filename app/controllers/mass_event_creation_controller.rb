@@ -49,7 +49,7 @@ class MassEventCreationController < ApplicationController
     end
 
     flash[:notice] = "Events created successfully"
-
+    @text = ''
     render :index
     return
     #redirect_to events_path
