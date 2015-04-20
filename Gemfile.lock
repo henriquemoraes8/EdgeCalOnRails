@@ -101,8 +101,6 @@ GEM
     jquery-ui-rails (5.0.3)
       railties (>= 3.2.16)
     json (1.8.2)
-    judge (2.0.6)
-      rails (>= 3.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     loofah (2.0.1)
@@ -230,7 +228,6 @@ DEPENDENCIES
   jquery-rails
   jquery-timepicker-rails
   jquery-ui-rails
-  judge
   mailgun-ruby
   pg
   puma
