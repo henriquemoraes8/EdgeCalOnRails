@@ -224,7 +224,7 @@ class MassEventCreationController < ApplicationController
   def create_to_do_event(args)
     puts "ARGS TODO #{args}"
     to_do = ToDo.new(:title => args['title'], :description => args['description'],
-    :position => args['position'], :duration => args['duration']*60, :creator_id => current_user.id)
+    :position => args['position'], :duration => args['duration'], :creator_id => current_user.id)
     if !to_do.save
       @error += "Error creating to do #{to_do.title}. #{to_do.errors[:base]}"
     end
@@ -269,7 +269,7 @@ class MassEventCreationController < ApplicationController
 
     args['block'].each do |dates|
       event = Event.new(:title => args['title'], :description => args['description'],
-      :event_type => Event.event_types[:time_slot_block], :start_time => dates[0], :end_time => dates[1])
+      :event_type => Event.event_types[:time_slot_block], :start_time => dates[0], :end_time => dates[1], :creator_id => current_user.id)
       if event.save
         repetition.events << event
       else
@@ -381,7 +381,7 @@ class MassEventCreationController < ApplicationController
     elsif !duration.empty? && duration.to_i % 5 != 0
       duration_error += "event #{line}: #{key} is not a multiple of 5\n"
     else
-      args[key] = duration.to_i
+      args[key] = duration.to_i*60
     end
     duration_error
   end

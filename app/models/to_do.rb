@@ -35,7 +35,7 @@ class ToDo < ActiveRecord::Base
   end
 
   def self.options_for_escalation_recurrence
-    return [['never', ToDo.recurrences[:no_recurrence]],['minute',ToDo.recurrences[:minutely]],
+    return [['never', ToDo.recurrences[:no_recurrence]],['10 seconds',ToDo.recurrences[:less_than_minute]],['minute',ToDo.recurrences[:minutely]],
             ['hour', ToDo.recurrences[:hourly]],['day', ToDo.recurrences[:daily]],
             ['two days', ToDo.recurrences[:every_other_day]],['week', ToDo.recurrences[:weekly]],
             ['month', ToDo.recurrences[:monthly]]]
