@@ -13,7 +13,7 @@
 		</tr>
 	</thead>
 	<tbody>
-
+		<%= form_tag({controller: 'time_slot', action: :assign_slots, id: @event.id})  do %>
 		<% @preferences.keys.each do |user| %>
 			<tr>
 				<td><%= user.name  %></td>
@@ -23,16 +23,20 @@
 					No Preferences Provided!
 				<% else %>
 					<% @preferences[user].each do |pref| %>
-						<%= to_eastern_time(pref.start_time.localtime).strftime("%H:%M") %> --  <%= pref.preference %> -- <%= radio_button_tag(user, :slot) %><br>
+						<%= to_eastern_time(pref.start_time.localtime).strftime("%H:%M") %> --  <%= pref.preference %> -- <%= radio_button_tag("users[#{user.id}]", pref.id) %><br>
 					<% end %>
 				<% end %>
 				</td>
 			</tr>
 		<% end %>
 
+
 		
 	</tbody>
 </table>
+
+		<%= submit_tag "Confirm Assignments", class: "button radius" %>
+		<% end %>
 
 	
 <% if false %>

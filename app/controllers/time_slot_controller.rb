@@ -134,7 +134,6 @@ class TimeSlotController < ApplicationController
   
   def scheduler
     @event = Event.find_by_id(params[:id])
-    $slots = Hash.new
     @preferences = @event.repetition_scheme.get_all_users_preferences
   end
   
@@ -165,6 +164,28 @@ class TimeSlotController < ApplicationController
       redirect_to :action => :signup, id: event.creator_id
     end
   
+  end
+  
+  def assign_slots
+    
+    if params[:users].nil?
+      flash[:error] = "Must assign everyone a slot!"
+      redirect_to :action => :scheduler, id: params[:id].to_i
+      return
+    end
+    
+    users = params[:users]
+    slots = users.values
+    slot_ids = []
+    slots.each do |s|
+      slot_ids << s.to_i
+    end
+      # slots.first.event.repetition_scheme.resolve_preferences_for_slots(slot_ids)
+    
+    flash[:notice] = "#{slot_ids}"
+    
+    redirect_to time_slot_index_path
+    
   end
 
   def assign_time_slots
