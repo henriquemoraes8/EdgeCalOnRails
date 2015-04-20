@@ -10,8 +10,8 @@
     <div class="event time slot">
       <em>Title:</em> <%= e.title %><br>
       <em>Description:</em> <%= e.description %><br>
-      <em>Start of block:</em><%= e.start_time.strftime("%-d %b - %H:%M") %><br>
-      <em>End of block:</em><%= e.end_time.strftime("%-d %b - %H:%M") %><br>
+      <em>Start of block:</em><%= to_eastern_time(e.start_time).strftime("%-d %b - %H:%M") %><br>
+      <em>End of block:</em><%= to_eastern_time(e.end_time).strftime("%-d %b - %H:%M") %><br>
 	  <%= link_to "View Invitees", {action: :show_invitees, id: e.id}, data: {'reveal-id': "invitees-modal", 'reveal-ajax': true} %> |
 	  <% if preference_based(e) %>
 	  <%= link_to('Assign Slots', {action: :scheduler, id: e.id}) %> |

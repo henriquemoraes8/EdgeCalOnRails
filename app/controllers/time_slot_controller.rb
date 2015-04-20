@@ -152,13 +152,15 @@ class TimeSlotController < ApplicationController
         flash[:notice] = "Preference successfully saved!"
         event.time_slots << slot
       else
-        flash[:error] = "Error submitting slot preference!"
+        flash[:error] = "Error submitting slot preference!\n#{slot.errors.full_messages.join(',\n')}"
         redirect_to time_slot_index_path
         return
       end
 
+      redirect_to :action => :signup, :id => event.creator_id
+      return
+
     end
-    redirect_to time_slot_index_path
   
   end
 
@@ -182,7 +184,6 @@ class TimeSlotController < ApplicationController
         redirect_to signup, :id => event.creator_id
         return
       end
-
     end
     redirect_to time_slot_index_path
   end
