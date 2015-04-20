@@ -49,6 +49,12 @@ Rails.application.routes.draw do
 
   post 'subscription/manage'
   
+  get 'events/requests_modal' => 'events#requests_modal'
+  
+  get 'events/new_event_modal' => 'events#new_event_modal'
+  
+  get 'events/to_do_list_modal' => 'events#to_do_list_modal'
+  
   get 'events/busy_events.json' => 'events#busy_events'
   
   get 'events/visible_events.json' => 'events#visible_events'

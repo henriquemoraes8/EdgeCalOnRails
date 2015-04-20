@@ -1,6 +1,5 @@
 <h1>My To-Do's</h1>
 
-<% @todos = ToDo.where(creator_id: current_user.id) %>
 <% if (@todos == nil) then %>
 	<i>You don't have any to-do's yet</i>
 <% else %>

@@ -1,14 +1,14 @@
 <%# This renders the actual graphical calendar (fullcalendar.js) %>
 <%# See assets/javascripts/events.js.erb %>
 <% content_for :calendar do %>
-	<a href="#" data-reveal-id="new-event-modal"><%= image_tag("add.png") %></a>
+	<%= link_to image_tag("add.png"), {action: :new_event_modal}, data: {'reveal-id': "new-event-modal", 'reveal-ajax': true} %>
 	<br>
 	<br>
-	<a href="#" data-reveal-id="event-lists">All Events</a> | 
-	<a href="#" data-reveal-id="to-do-list">To Do List</a> |
-	<a href="#" data-reveal-id="requests">My Requests</a> |
-	<a href="#" data-reveal-id="events-email">Email My Schedule</a> |
-	<a href="#" data-reveal-id="graphic-events-email">Email My Graphic Schedule</a>
+	<%= link_to "All Events", '#', data: {'reveal-id': "event-lists"} %> | 
+	<%= link_to "To Do List", {action: :to_do_list_modal}, data: {'reveal-id': "to_do_list_modal", 'reveal-ajax': true} %> |
+		<%= link_to "My Requests", {action: :requests_modal}, data: {'reveal-id': "requests_modal", 'reveal-ajax': true} %> |
+	<%= link_to "Email My Schedule", '#', data: {'reveal-id': "events-email"} %> |
+	<%= link_to "Email My Graphic Schedule", '#', data: {'reveal-id': "graphic-events-email"} %>
 	<br>
 	<br>
 	<div id="calendar"><script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/1.6.4/fullcalendar.min.js'></script></div>
@@ -16,9 +16,6 @@
 
 <div class="reveal-modal" id="new-event-modal" data-reveal>
 		<a class="close-reveal-modal"></a>
-		<h1>New Event</h1>
-		<% @event = Event.new %>
-		<%= render "form" %>
 </div>
 
 <div class="reveal-modal" id="event-lists" data-reveal>
@@ -26,14 +23,12 @@
 		<%= render "list_index" %>
 </div>
 
-<div class="reveal-modal" id="to-do-list" data-reveal>
-		<a class="close-reveal-modal"></a>
-		<%= render "to_do_list" %>
+<div class="reveal-modal" id="to_do_list_modal" data-reveal>
+		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
 
-<div class="reveal-modal" id="requests" data-reveal>
+<div class="reveal-modal" id="requests_modal" data-reveal>
 		<a class="close-reveal-modal"></a>
-		<%= render "request_list" %>
 </div>
 
 <div class="reveal-modal" id="events-email" data-reveal>
