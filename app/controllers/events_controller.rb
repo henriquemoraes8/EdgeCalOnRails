@@ -219,12 +219,11 @@ class EventsController < ApplicationController
   def show_events_in_range
     @in_range_events=$in_range_events
     render 'events_in_range.json.jbuilder'
-    #print_pdf
   end
 
   def print_pdf
-    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
-    save_path = Rails.root.join('Documentation','filename.pdf')
+    pdf = render_to_string pdf: "show_graphic_cal", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
+    save_path = Rails.root.join('Documentation','show_graphic_cal.pdf')
     File.open(save_path, 'wb') do |file|
       file << pdf
     end
@@ -250,8 +249,8 @@ class EventsController < ApplicationController
     
     end
     
-    pdf = render_to_string pdf: "test_file", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
-    save_path = Rails.root.join('Documentation','filename.pdf')
+    pdf = render_to_string pdf: "show_graphic_cal", template: "events/show_graphic_cal.html.erb", javascript_delay: 3000
+    save_path = Rails.root.join('Documentation','show_graphic_cal.pdf')
     File.open(save_path, 'wb') do |file|
       file << pdf
     end
