@@ -21,6 +21,8 @@ gem 'jquery-datetimepicker-rails'
 
 gem 'jquery-timepicker-rails'
 
+gem 'railroady'
+
 # Puma webserver for hosting (better performance)
 gem 'puma'
 

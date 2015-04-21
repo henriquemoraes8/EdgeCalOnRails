@@ -174,7 +174,7 @@ class TimeSlotController < ApplicationController
         flash[:error] = "Error submitting slot preference!\n#{slot.errors.full_messages.join(',\n')}"
       end
 
-      redirect_to :action => :signup, id: event.creator_id
+      redirect_to :action => :signup, id: event.repetition_scheme.creator_id
     end
   
   end

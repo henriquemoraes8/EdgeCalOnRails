@@ -35,7 +35,7 @@ class ToDo < ActiveRecord::Base
   end
 
   def self.options_for_escalation_recurrence
-    return [['never', ToDo.recurrences[:no_recurrence]],['minute',ToDo.recurrences[:minutely]],
+    return [['never', ToDo.recurrences[:no_recurrence]],['10 seconds',ToDo.recurrences[:less_than_minute]],['minute',ToDo.recurrences[:minutely]],
             ['hour', ToDo.recurrences[:hourly]],['day', ToDo.recurrences[:daily]],
             ['two days', ToDo.recurrences[:every_other_day]],['week', ToDo.recurrences[:weekly]],
             ['month', ToDo.recurrences[:monthly]]]
@@ -45,7 +45,7 @@ class ToDo < ActiveRecord::Base
 
   def can_be_allocated(end_time)
     puts "SEE IF #{title} CAN BE ALLOCATED, EVENTNIL #{event_id.nil?}, DONE #{done}"
-    expiration_not_a_problem = expiration.nil? || round_second(expiration) >= end_time
+    expiration_not_a_problem = expiration.nil? || expiration.change(:sec => 0) >= end_time
     return event_id.nil? && !done && expiration_not_a_problem
   end
 
