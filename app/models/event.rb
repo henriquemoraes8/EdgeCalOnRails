@@ -99,7 +99,6 @@ class Event < ActiveRecord::Base
 				self.title = "allocated for to-do: #{t.title}"
 				self.description = t.description
 				puts "GOT A TODO AND ASSIGNED ID #{id}"
-				t.event_updated
 				save
 				return
 			end

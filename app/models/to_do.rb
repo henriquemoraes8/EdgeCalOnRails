@@ -45,7 +45,7 @@ class ToDo < ActiveRecord::Base
 
   def can_be_allocated(end_time)
     puts "SEE IF #{title} CAN BE ALLOCATED, EVENTNIL #{event_id.nil?}, DONE #{done}"
-    expiration_not_a_problem = expiration.nil? || round_second(expiration) >= end_time
+    expiration_not_a_problem = expiration.nil? || expiration.change(:sec => 0) >= end_time
     return event_id.nil? && !done && expiration_not_a_problem
   end
 
