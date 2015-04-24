@@ -6,7 +6,7 @@ class RepetitionScheme < ActiveRecord::Base
 	validate :max_min_duration
 	before_create :equalize_slot_duration
 
-	has_many :events
+	has_many :events, :dependent => :destroy
 	has_and_belongs_to_many :allowed_users, :class_name => 'User'
 	has_many :to_dos, :dependent => :destroy
 	belongs_to :creator, :class_name => 'User'
